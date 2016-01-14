@@ -3,90 +3,100 @@ package data;
 import static helpers.Artist.*;
 
 public class TileGrid {
+
+	private static Tile[][] Map;
+	private static int TilesWide;
+	private static int TilesHigh;
 	
-	public Tile[][] map;
-	private int tilesWide;
-	private int tilesHigh;
-	private Tile startTile;	//Tile that enemies will spawn on. Currently unique for each map.
-	
-	public TileGrid(){
-		this.tilesWide = 25;
-		this.tilesHigh = 15;
-		map = new Tile[25][15];
-		for (int i = 0; i < map.length; i++){
-			for (int j = 0; j < map[i].length; j++){
-				map[i][j] = new Tile(i*TILE_SIZE, j*TILE_SIZE, TILE_SIZE, TILE_SIZE, TileType.Grass);
+	private static Tile StartTile; // Tile that enemies will spawn on. Currently
+									// unique for each map.
+	private static Tile GoalTile; // Tile that all enemies try to get to. Lives
+									// are lost when an enemy makes it there.
+									//These may be later changed to lists to 
+									//allow for multiple spawn points.
+
+	public static void CreateMap() {
+		TilesWide = 25;
+		TilesHigh = 15;
+		Map = new Tile[25][15];
+		for (int i = 0; i < Map.length; i++) {
+			for (int j = 0; j < Map[i].length; j++) {
+				Map[i][j] = new Tile(i * TILE_SIZE, j * TILE_SIZE, TILE_SIZE, TILE_SIZE, TileType.Grass);
 			}
 		}
 	}
 	
-	public TileGrid(int[][] newMap){
-		this.startTile = startTile;
-		this.tilesWide = newMap[0].length;
-		this.tilesHigh = newMap.length;
-		map = new Tile[tilesWide][tilesHigh];
-		for (int i = 0; i < map.length; i++){
-			for (int j = 0; j < map[i].length; j++){
-				switch (newMap[j][i]){
+	public static void CreateMap(int[][] newMap){
+		TilesWide = newMap[0].length;
+		TilesHigh = newMap.length;
+		Map = new Tile[TilesWide][TilesHigh];
+		for (int i = 0; i < Map.length; i++) {
+			for (int j = 0; j < Map[i].length; j++) {
+				switch (newMap[j][i]) {
 				case 0:
-					map[i][j] = new Tile(i*TILE_SIZE, j*TILE_SIZE, TILE_SIZE, TILE_SIZE, TileType.Grass);
+					Map[i][j] = new Tile(i * TILE_SIZE, j * TILE_SIZE, TILE_SIZE, TILE_SIZE, TileType.Grass);
 					break;
-				
 				case 1:
-					map[i][j] = new Tile(i*TILE_SIZE, j*TILE_SIZE, TILE_SIZE, TILE_SIZE, TileType.Dirt);
+					Map[i][j] = new Tile(i * TILE_SIZE, j * TILE_SIZE, TILE_SIZE, TILE_SIZE, TileType.Dirt);
 					break;
-					
 				case 2:
-					map[i][j] = new Tile(i*TILE_SIZE, j*TILE_SIZE, TILE_SIZE, TILE_SIZE, TileType.Water);
+					Map[i][j] = new Tile(i * TILE_SIZE, j * TILE_SIZE, TILE_SIZE, TILE_SIZE, TileType.Water);
+					break;
+				case 3:
+					Map[i][j] = new Tile(i * TILE_SIZE, j * TILE_SIZE, TILE_SIZE, TILE_SIZE, TileType.Start);
+					StartTile = Map[i][j];
+					break;
+				case 4:
+					Map[i][j] = new Tile(i * TILE_SIZE, j * TILE_SIZE, TILE_SIZE, TILE_SIZE, TileType.Goal);
+					GoalTile = Map[i][j];
+					break;
+				case 5:
+					Map[i][j] = new Tile(i * TILE_SIZE, j * TILE_SIZE, TILE_SIZE, TILE_SIZE, TileType.NULL);
 					break;
 				}
 			}
 		}
 	}
-	
-	public void setTile(int xCoord, int yCoord, TileType type){
-		map[xCoord][yCoord] = new Tile(xCoord*TILE_SIZE, yCoord*TILE_SIZE, TILE_SIZE, TILE_SIZE, type);
+
+	public static void SetTile(int xCoord, int yCoord, TileType type) {
+		Map[xCoord][yCoord] = new Tile(xCoord * TILE_SIZE, yCoord * TILE_SIZE, TILE_SIZE, TILE_SIZE, type);
 	}
-	
-	public Tile getTile(int xPlace, int yPlace){
-		if (xPlace < tilesWide && yPlace < tilesHigh && xPlace >= 0 && yPlace >= 0){
-			return map[xPlace][yPlace];
-		}
-		else {
+
+	public static Tile GetTile(int xPlace, int yPlace) {
+		if (xPlace < TilesWide && yPlace < TilesHigh && xPlace >= 0 && yPlace >= 0) {
+			return Map[xPlace][yPlace];
+		} else {
 			return new Tile(0, 0, 0, 0, TileType.NULL);
 		}
 	}
-	
-	public void draw(){
-		for (int i = 0; i < map.length; i++){
-			for (int j = 0; j < map[i].length; j++){
-				map[i][j].draw();
+
+	public static void Draw() {
+		for (int i = 0; i < Map.length; i++) {
+			for (int j = 0; j < Map[i].length; j++) {
+				Map[i][j].draw();
 			}
 		}
 	}
 
-	public int getTilesWide() {
-		return tilesWide;
+	//This shouldn't be needed once StartTile is detemined on map loading
+	public static void SetStartTile(Tile startTile) {
+		TileGrid.StartTile = startTile;
 	}
 
-	public void setTilesWide(int tilesWide) {
-		this.tilesWide = tilesWide;
-	}
-
-	public int getTilesHigh() {
-		return tilesHigh;
-	}
-
-	public void setTilesHigh(int tilesHigh) {
-		this.tilesHigh = tilesHigh;
+	public static Tile GetStartTile() {
+		return StartTile;
 	}
 	
-	public void setStartTile(Tile startTile){
-		this.startTile = startTile;
+	public static Tile GetGoalTile(){
+		return GoalTile;
 	}
 	
-	public Tile getStartTile(){
-		return startTile;
+	public static int GetTilesHigh(){
+		return TilesHigh;
+	}
+	
+	public static int GetTilesWide(){
+		return TilesWide;
 	}
 
 }

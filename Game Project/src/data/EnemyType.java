@@ -7,29 +7,29 @@ public enum EnemyType {
 	
 	EnemyUFO(QuickLoad("UFO"), 100, 60, TILE_SIZE, TILE_SIZE){
 		@Override
-		public EnemyUFO makeEnemy(int level, Tile startTile, TileGrid grid){
-			return new EnemyUFO(level, startTile, grid);
+		public EnemyUFO makeEnemy(int level){
+			return new EnemyUFO(level);
 		}
 	},
 	
 	EnemyUFO2(QuickLoad("UFO"), 130, 75, TILE_SIZE, TILE_SIZE){
 		@Override
-		public EnemyUFO makeEnemy(int level, Tile startTile, TileGrid grid){
-			return new EnemyUFO(level, startTile, grid);
+		public EnemyUFO makeEnemy(int level){
+			return new EnemyUFO(level);
 		}
 	},
 	
 	EnemySpacePlane(QuickLoad("starfighter64"), 20, 100, TILE_SIZE, TILE_SIZE){
 		@Override
-		public EnemySpacePlane makeEnemy(int level, Tile startTile, TileGrid grid){
-			return new EnemySpacePlane(level, startTile, grid);
+		public EnemySpacePlane makeEnemy(int level){
+			return new EnemySpacePlane(level);
 		}
 	},
 	
 	EnemyNuke(QuickLoad("nuke"), 500, 10, TILE_SIZE, TILE_SIZE){
 		@Override
-		public EnemyNuke makeEnemy(int level, Tile startTile, TileGrid grid){
-			return new EnemyNuke(level, startTile, grid);
+		public EnemyNuke makeEnemy(int level){
+			return new EnemyNuke(level);
 		}
 	};
 	
@@ -44,5 +44,5 @@ public enum EnemyType {
 		this.height = height;
 	}
 
-	public abstract Enemy makeEnemy(int level, Tile startTile, TileGrid grid);
+	public abstract Enemy makeEnemy(int level);
 }

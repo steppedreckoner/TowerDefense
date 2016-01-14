@@ -1,7 +1,5 @@
 package data;
 
-import static helpers.Artist.*;
-
 import java.util.ArrayList;
 
 public class WaveManager {
@@ -9,7 +7,6 @@ public class WaveManager {
 	private float timeSinceLastWave, timeBetweenEnemies;
 	private int waveNumber;
 	private Wave currentWave;
-	private TileGrid grid;
 	
 	private boolean gameComplete = false;
 
@@ -19,12 +16,11 @@ public class WaveManager {
 	
 	private EnemyType enemyType;
 
-	public WaveManager(TileGrid grid) {
+	public WaveManager() {
 		// this.enemyType = enemyType;
 		// this.enemiesPerWave = enemiesPerWave;
 		// this.timeBetweenEnemies = timeBetweenEnemies;
 		this.enemyType = EnemyType.EnemySpacePlane;
-		this.grid = grid;
 		this.timeSinceLastWave = 0;
 		this.waveNumber = 0;
 
@@ -61,7 +57,7 @@ public class WaveManager {
 	}
 
 	private void newWave(EnemyType enemyType, int enemiesPerWave, float timeBetweenEnemies) {
-		currentWave = new Wave(grid, enemyType, 1, enemiesPerWave, timeBetweenEnemies);
+		currentWave = new Wave(enemyType, 1, enemiesPerWave, timeBetweenEnemies);
 		waveNumber++;
 		System.out.println("Beginning Wave " + waveNumber);
 	}

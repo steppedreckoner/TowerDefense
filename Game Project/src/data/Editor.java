@@ -4,6 +4,7 @@ import static helpers.Artist.HEIGHT;
 import static helpers.Artist.TILE_SIZE;
 import static helpers.Leveler.LoadMap;
 import static helpers.Leveler.SaveMap;
+import static data.TileGrid.*;
 
 import java.util.Scanner;
 
@@ -12,12 +13,11 @@ import org.lwjgl.input.Mouse;
 
 public class Editor {
 
-	private TileGrid grid;
 	private int index;
 	private TileType[] types;
 
 	public Editor() {
-		this.grid = new TileGrid();
+		CreateMap();
 		this.index = 0;		
 		this.types = new TileType[3];
 		this.types[0] = TileType.Grass;
@@ -26,11 +26,11 @@ public class Editor {
 	}
 
 	public void Update() {
-		grid.draw();
+		TileGrid.Draw();
 		
 		// Handle mouse input
 		if (Mouse.isButtonDown(0)) {
-			SetTile();
+			setTile();
 		}
 		// Handle keyboard input
 		while (Keyboard.next()) {
@@ -42,17 +42,16 @@ public class Editor {
 				Scanner sc = new Scanner(System.in);
 				String mapName = sc.next();
 				sc.close();
-				SaveMap(grid, mapName);
+				SaveMap(mapName);
 			}
-			if (Keyboard.getEventKey() == Keyboard.KEY_L && Keyboard.getEventKeyState()) {
-				
-				grid = LoadMap("mapTest");
+			if (Keyboard.getEventKey() == Keyboard.KEY_L && Keyboard.getEventKeyState()) {				
+				LoadMap("mapTest");
 			}
 		}
 	}
 
-	private void SetTile() {
-		grid.setTile((int) Math.floor(Mouse.getX() / TILE_SIZE),
+	private void setTile() {
+		TileGrid.SetTile((int) Math.floor(Mouse.getX() / TILE_SIZE),
 				(int) Math.floor((HEIGHT - Mouse.getY() - 1) / TILE_SIZE), types[index]);
 
 	}

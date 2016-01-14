@@ -12,7 +12,6 @@ public class Boot {
 	public Boot(){
 		
 		
-		System.out.println("GitHub Test");
 		//Call static method in Artist class to initialize OpenGL calls
 		BeginSession();
 		

@@ -2,8 +2,8 @@ package data;
 
 public class EnemySpacePlane extends Enemy {
 
-	public EnemySpacePlane(int level, Tile startTile, TileGrid grid) {
-		super(EnemyType.EnemySpacePlane, level, startTile, grid);
+	public EnemySpacePlane(int level) {
+		super(EnemyType.EnemySpacePlane, level);
 	}
 	
 	@Override

@@ -11,10 +11,8 @@ public class Wave {
 	private CopyOnWriteArrayList<Enemy> enemyList;
 	private int level, enemiesPerWave, enemiesSpawned;
 	private boolean waveComplete;
-	private TileGrid grid;
 
-	public Wave(TileGrid grid, EnemyType enemyType, int level, int enemiesPerWave, float spawnTime) {
-		this.grid = grid;
+	public Wave(EnemyType enemyType, int level, int enemiesPerWave, float spawnTime) {
 		this.enemyType = enemyType;
 		this.level = level;
 		this.enemiesPerWave = enemiesPerWave;
@@ -50,9 +48,10 @@ public class Wave {
 			waveComplete = true;
 		}
 	}
-
+	
+	//Might want to change this so that start tile can be set by spawn method
 	public void spawn(EnemyType type, int level) {
-		enemyList.add(type.makeEnemy(level, grid.getStartTile(), grid));
+		enemyList.add(type.makeEnemy(level));
 		enemiesSpawned++;
 	}
 

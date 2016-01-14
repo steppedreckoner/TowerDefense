@@ -2,6 +2,7 @@ package data;
 
 import static helpers.Artist.*;
 import static helpers.Clock.Delta;
+import static data.TileGrid.*;
 
 import org.newdawn.slick.opengl.Texture;
 
@@ -11,7 +12,6 @@ public abstract class Enemy implements Entity {
 	private float x, y, speed, health, startHealth;
 	private Texture texture, healthBackground, healthForeground, healthBorder;
 	private Tile startTile;
-	private TileGrid grid;
 	private boolean first;
 	protected boolean alive;
 	
@@ -21,13 +21,12 @@ public abstract class Enemy implements Entity {
 	private int[] directions;
 	private Tile nextCP;
 
-	public Enemy(Texture texture, Tile startTile, TileGrid grid, int width, int height, float health, float speed) {
+	public Enemy(Texture texture, TileGrid grid, int width, int height, float health, float speed) {
 		this.texture = texture;
 		this.healthBackground = QuickLoad("healthbackground");
 		this.healthForeground = QuickLoad("healthforeground");
 		this.healthBorder = QuickLoad("healthborder");
-		this.startTile = startTile;
-		this.grid = grid;
+		this.startTile = TileGrid.GetStartTile();
 		this.x = startTile.getX();
 		this.y = startTile.getY();
 		this.width = width;
@@ -44,13 +43,12 @@ public abstract class Enemy implements Entity {
 		this.alive = true;
 	}
 	
-	public Enemy(EnemyType type, int level, Tile startTile, TileGrid grid){
+	public Enemy(EnemyType type, int level){
 		this.texture = type.texture;
 		this.healthBackground = QuickLoad("healthBackground");
 		this.healthForeground = QuickLoad("healthForeground");
 		this.healthBorder = QuickLoad("healthBorder");
-		this.startTile = startTile;
-		this.grid = grid;
+		this.startTile = TileGrid.GetStartTile();
 		this.x = startTile.getX();
 		this.y = startTile.getY();
 		this.width = type.width;
@@ -100,18 +98,18 @@ public abstract class Enemy implements Entity {
 	}
 
 	// Find the next corner and the new direction that needs to be taken there
+	//Whole system should be redone with Pathfinder class
 	private Tile findNextCP(Tile s, int[] dir) {
 		Tile next = null;
 		boolean found = false;
 		int counter = 1;	//Keeps track of how many tiles away we're looking
 		while (!found) {
-			if (s.getXPlace() + dir[0] * counter == grid.getTilesWide()
-					|| s.getYPlace() + dir[1] * counter == grid.getTilesHigh() || s.getType() != grid
-							.getTile(s.getXPlace() + dir[0] * counter, s.getYPlace() + dir[1] * counter).getType()) {
+			if (s.getXPlace() + dir[0] * counter == GetTilesWide()
+					|| s.getYPlace() + dir[1] * counter == GetTilesHigh() || s.getType() != GetTile(s.getXPlace() + dir[0] * counter, s.getYPlace() + dir[1] * counter).getType()) {
 
 				found = true;
 				counter -= 1;
-				next = grid.getTile(s.getXPlace() + dir[0] * counter, s.getYPlace() + dir[1] * counter);
+				next = GetTile(s.getXPlace() + dir[0] * counter, s.getYPlace() + dir[1] * counter);
 			}
 
 			counter++;
@@ -122,10 +120,10 @@ public abstract class Enemy implements Entity {
 	// Given a tile, which direction should an enemy travel. Returns false if no direction is found
 	private boolean findNextD(Tile s) {
 		boolean foundNextD = true;
-		Tile u = grid.getTile(s.getXPlace(), s.getYPlace() - 1);
-		Tile r = grid.getTile(s.getXPlace() + 1, s.getYPlace());
-		Tile d = grid.getTile(s.getXPlace(), s.getYPlace() + 1);
-		Tile l = grid.getTile(s.getXPlace() - 1, s.getYPlace());
+		Tile u = GetTile(s.getXPlace(), s.getYPlace() - 1);
+		Tile r = GetTile(s.getXPlace() + 1, s.getYPlace());
+		Tile d = GetTile(s.getXPlace(), s.getYPlace() + 1);
+		Tile l = GetTile(s.getXPlace() - 1, s.getYPlace());
 		
 		//Check if square in a given direction matches type, and ensures it's not the square we just came from
 		if (s.getType() == u.getType() && !(directions[0] == 0 && directions[1] == 1)) {
@@ -240,10 +238,6 @@ public abstract class Enemy implements Entity {
 
 	public void setFirst(boolean first) {
 		this.first = first;
-	}
-
-	public TileGrid getTileGrid() {
-		return grid;
 	}
 
 	public boolean isAlive() {

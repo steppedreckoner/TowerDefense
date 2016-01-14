@@ -6,19 +6,18 @@ import org.lwjgl.input.Mouse;
 import helpers.Clock;
 
 import static helpers.Artist.*;
+import static data.TileGrid.*;
 
 import java.util.ArrayList;
 
 public class Player {
 
-	private TileGrid grid;
 	private TileType[] types;
 	private WaveManager waveManager;
 	private ArrayList<Tower> towerList;
 	public static int Cash, Lives;
 
-	public Player(TileGrid grid, WaveManager waveManager) {
-		this.grid = grid;
+	public Player(WaveManager waveManager) {
 		this.types = new TileType[3];
 		this.types[0] = TileType.Grass;
 		this.types[1] = TileType.Dirt;
@@ -72,24 +71,21 @@ public class Player {
 			if (Keyboard.getEventKey() == Keyboard.KEY_T && Keyboard.getEventKeyState()) {
 				if (modifyCash(-40)) {
 					// Get tile at mouse coordinates and place tower there
-					Tile tile = grid.getTile((int) Math.floor(Mouse.getX() / TILE_SIZE),
-							(int) Math.floor((HEIGHT - Mouse.getY() - 1) / TILE_SIZE));
+					Tile tile = GetTile((int) Math.floor(Mouse.getX() / TILE_SIZE),(int) Math.floor((HEIGHT - Mouse.getY() - 1) / TILE_SIZE));
 					towerList.add(new TowerCannonBlue(tile, waveManager.getCurrentWave().getEnemyList()));
 				}
 			}
 			if (Keyboard.getEventKey() == Keyboard.KEY_R && Keyboard.getEventKeyState()) {
 				if (modifyCash(-40)) {
 					// Get tile at mouse coordinates and place tower there
-					Tile tile = grid.getTile((int) Math.floor(Mouse.getX() / TILE_SIZE),
-							(int) Math.floor((HEIGHT - Mouse.getY() - 1) / TILE_SIZE));
+					Tile tile = GetTile((int) Math.floor(Mouse.getX() / TILE_SIZE),(int) Math.floor((HEIGHT - Mouse.getY() - 1) / TILE_SIZE));
 					towerList.add(new TowerCannonRed(tile, waveManager.getCurrentWave().getEnemyList()));
 				}
 			}
 			if (Keyboard.getEventKey() == Keyboard.KEY_I && Keyboard.getEventKeyState()) {
 				if (modifyCash(-110)) {
 					// Get tile at mouse coordinates and place tower there
-					Tile tile = grid.getTile((int) Math.floor(Mouse.getX() / TILE_SIZE),
-							(int) Math.floor((HEIGHT - Mouse.getY() - 1) / TILE_SIZE));
+					Tile tile = GetTile((int) Math.floor(Mouse.getX() / TILE_SIZE),(int) Math.floor((HEIGHT - Mouse.getY() - 1) / TILE_SIZE));
 					towerList.add(new TowerIce(tile, waveManager.getCurrentWave().getEnemyList()));
 				}
 			}

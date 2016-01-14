@@ -1,26 +1,26 @@
 package data;
 
+import static data.TileGrid.*;
+
 public class Game {
 
-	private TileGrid grid;
 	private Player player;
 	private WaveManager waveManager;
 	
 	//Temp Variables
-	private Tile startTile;
 	
-	public Game(int[][] map){
-		grid = new TileGrid(map);
-		startTile = grid.getTile(5, 7);
-		grid.setStartTile(startTile);
-		waveManager = new WaveManager(grid);
-		player = new Player(grid, waveManager);
+	public Game(int[][] newMap){
+		//Calls to TileGrid Class. Initializes the map
+		CreateMap(newMap);
+		SetStartTile(GetTile(5,7));
+		waveManager = new WaveManager();
+		player = new Player(waveManager);
 		player.setup();
 		
 	}
 	
 	public void Update(){
-		grid.draw();			//Draw the board
+		TileGrid.Draw();		//Draw the board
 		waveManager.update();	//Enemy Actions
 		player.update();		//Player Actions
 	}
