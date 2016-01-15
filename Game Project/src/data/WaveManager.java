@@ -20,7 +20,7 @@ public class WaveManager {
 		// this.enemyType = enemyType;
 		// this.enemiesPerWave = enemiesPerWave;
 		// this.timeBetweenEnemies = timeBetweenEnemies;
-		this.enemyType = EnemyType.EnemySpacePlane;
+		this.enemyType = EnemyType.EnemyUFO;
 		this.timeSinceLastWave = 0;
 		this.waveNumber = 0;
 

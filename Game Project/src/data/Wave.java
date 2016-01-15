@@ -13,6 +13,7 @@ public class Wave {
 	private boolean waveComplete;
 
 	public Wave(EnemyType enemyType, int level, int enemiesPerWave, float spawnTime) {
+		TileDist.ResetDistMap();	//Patch to keep travel information from previous waves from altering new wave's path
 		this.enemyType = enemyType;
 		this.level = level;
 		this.enemiesPerWave = enemiesPerWave;

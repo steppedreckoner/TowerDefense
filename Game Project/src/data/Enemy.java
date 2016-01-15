@@ -1,7 +1,6 @@
 package data;
 
-import static helpers.Artist.DrawQuadTex;
-import static helpers.Artist.QuickLoad;
+import static helpers.Artist.*;
 import static helpers.Clock.Delta;
 
 import org.newdawn.slick.opengl.Texture;
@@ -10,7 +9,7 @@ public abstract class Enemy implements Entity {
 
 	private int width, height;
 	private float x, y, speed, health, startHealth;
-	private Texture texture, healthBackground, healthForeground, healthBorder;
+	protected Texture texture, healthBackground, healthForeground, healthBorder;
 	private Tile startTile;
 	private boolean first, canFly;
 	protected boolean alive;

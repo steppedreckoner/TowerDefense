@@ -14,6 +14,10 @@ public class TileDist extends Tile {
 		this.tile = tile;
 		SetTileDist(this);
 	}
+	
+	public static void ResetDistMap(){
+		DistMap = new TileDist[GetTilesWide()][GetTilesHigh()];
+	}
 
 	public int getDistance(){
 		return distance;

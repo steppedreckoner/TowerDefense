@@ -11,5 +11,6 @@ public class EnemyUFO extends Enemy {
 		alive = false;
 		Player.modifyCash(20);
 	}
-
+	
+	
 }
