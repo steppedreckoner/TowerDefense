@@ -78,11 +78,6 @@ public class TileGrid {
 		}
 	}
 
-	//This shouldn't be needed once StartTile is detemined on map loading
-	public static void SetStartTile(Tile startTile) {
-		TileGrid.StartTile = startTile;
-	}
-
 	public static Tile GetStartTile() {
 		return StartTile;
 	}

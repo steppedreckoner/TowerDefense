@@ -2,6 +2,7 @@ package data;
 
 import org.newdawn.slick.opengl.Texture;
 
+import static data.TileGrid.GetTile;
 import static helpers.Artist.*;
 
 public class Tile {
@@ -21,6 +22,34 @@ public class Tile {
 	
 	public void draw(){
 		DrawQuadTex(texture, x, y, width, height);
+	}
+	
+	public boolean equals(Tile t){
+		if (t.getType() == this.getType() &&
+				t.getHeight() == this.getHeight() &&
+				t.getWidth() == this.getWidth() &&
+				t.getXPlace() == this.getXPlace() &&
+				t.getYPlace() == this.getYPlace()){
+			return true;
+		}
+		return false;
+	}
+	
+	public Tile[] getNeighbors(){
+		Tile[] neighbors = new TileDist[4];
+		neighbors[0] = GetTile(this.getXPlace(), this.getYPlace() - 1);
+		neighbors[1] = GetTile(this.getXPlace() + 1, this.getYPlace());
+		neighbors[2] = GetTile(this.getXPlace(), this.getYPlace() + 1);
+		neighbors[3] = GetTile(this.getXPlace() - 1, this.getYPlace());
+		return neighbors;
+	}
+	
+	public boolean canGround(){
+		return this.type.canGround;
+	}
+	
+	public boolean canFly(){
+		return this.type.canFly;
 	}
 
 	public float getX() {

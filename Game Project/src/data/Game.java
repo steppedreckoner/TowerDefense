@@ -7,14 +7,10 @@ public class Game {
 	private Player player;
 	private WaveManager waveManager;
 	
-	//Temp Variables
-	
 	public Game(int[][] newMap){
-		//Calls to TileGrid Class. Initializes the map
-		CreateMap(newMap);
-		SetStartTile(GetTile(5,7));
-		waveManager = new WaveManager();
-		player = new Player(waveManager);
+		CreateMap(newMap);	//Initializes the map (TileGrid Class)
+		waveManager = new WaveManager();	//Deals with spawning enemies
+		player = new Player(waveManager);	//Allows for player interactions
 		player.setup();
 		
 	}

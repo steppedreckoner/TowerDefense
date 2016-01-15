@@ -18,5 +18,17 @@ public enum TileType {
 		this.canGround = canGround;
 		this.canFly = canFly;
 	}
+	
+	public boolean canBuild(){
+		return this.canBuild;
+	}
+	
+	public boolean canGround(){
+		return this.canGround;
+	}
+	
+	public boolean canFly(){
+		return this.canFly;
+	}
 
 }

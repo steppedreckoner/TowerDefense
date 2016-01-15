@@ -1,5 +1,11 @@
 package helpers;
 
+import static data.TileGrid.CreateMap;
+import static data.TileGrid.GetTile;
+import static data.TileGrid.GetTilesHigh;
+import static data.TileGrid.GetTilesWide;
+import static data.TileGrid.SetTile;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -8,10 +14,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import data.Tile;
-import data.TileGrid;
 import data.TileType;
-
-import static data.TileGrid.*;
 
 public class Leveler {
 	
