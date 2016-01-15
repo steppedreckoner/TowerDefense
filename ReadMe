@@ -11,6 +11,7 @@ I have since diverged, including the following.
 -Reworked the game map to be static
 -Enums for easier selection of enemies and projectiles
 
+
 Instructions:
 
 PLAY: Begins a new game. Enemy type can be changed by pressing 1, 2 or 3. Note that each wave will be 
@@ -23,7 +24,8 @@ look like it's doing nothing). Save and Load features (S and L) are currently bu
 
 QUIT: Quits.
 
-TO DO:
+
+To Do:
 
 -Improved saving and loading. Play button loads a map from a file, and new maps can be loaded after 
 beginning a game. 
