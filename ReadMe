@@ -4,12 +4,13 @@ This project aims to both demonstrate and expand my programming ability. I initi
 in conjunction with a tutorial (found at https://www.youtube.com/channel/UC0MHs87ehhLOtPQf_bAWDEA), but
 I have since diverged, including the following.
 
--Pathfinder class to handle enemy navigation
--Start and end tiles determined on loading map, no longer have to be hardcoded
+-Pathfinder class to handle enemy navigation. This will eventually allow for enemies to navigate around
+ player placed obstacles.
+-Start and end tiles determined on loading map, no longer have to be hardcoded.
 -Navigation done with Dijkstra's algorithm. Allows for reliable navigation of maps with 
  tracks wider than 1 tile.
--Reworked the game map to be static
--Enums for easier selection of enemies and projectiles
+-Reworked the game map to be static.
+-Enums for easier selection of enemies and projectiles.
 
 
 Instructions:
@@ -32,11 +33,20 @@ beginning a game.
 
 -Tower selection menu and tower placement with mouse.
 
--More tower and projectile types, with unlock progression
+-More tower and projectile types, with unlock progression.
+
+-Level up of towers.
+
+-One tower can shoot multiple types of projectiles. Perhaps "special shots" will be unlocked at a 
+ certain level.
+
+-Towers can be removed by player, probably with partial refund.
 
 -More enemy types with level progression for the same enemy type.
 
--No lives left causes a game over screen with option to reset
+-Lives and money displayed on-screen.
+
+-Losing all lives causes a game over screen with an option to reset.
 
 -Balancing
 
