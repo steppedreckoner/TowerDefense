@@ -1,14 +1,17 @@
 package data;
 
+import static helpers.Artist.DrawQuadTex;
+import static helpers.Artist.HEIGHT;
+import static helpers.Artist.QuickLoad;
+import static helpers.Artist.*;
+import static helpers.StateManager.mouseButton0;
+
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.opengl.Texture;
 
 import UI.UI;
-import helpers.Artist;
 import helpers.StateManager;
 import helpers.StateManager.GameState;
-
-import static helpers.Artist.*;
 
 public class MainMenu {
 
@@ -24,7 +27,7 @@ public class MainMenu {
 	}
 	
 	private void UpdateButtons(){
-		if (Mouse.isButtonDown(0)){
+		if (Mouse.isButtonDown(0) && ! mouseButton0){
 			if (menuUI.isButtonClicked("Play")){
 				StateManager.setState(GameState.GAME);
 			}
@@ -35,10 +38,12 @@ public class MainMenu {
 				System.exit(0);
 			}
 		}
+		mouseButton0 = Mouse.isButtonDown(0);
 	}
 	
 	public void Update(){
-		DrawQuadTex(background, (WIDTH - 1600) / 2, (HEIGHT - 891) / 2, 2048, 1024);
+		ClearDisplay();
+		DrawQuadTex(background, (WIDTH - background.getImageWidth()) / 2, (HEIGHT - background.getImageHeight()) / 2, 2048, 1024);	//background tex is 1600 x 891
 		menuUI.draw();
 		UpdateButtons();
 	}

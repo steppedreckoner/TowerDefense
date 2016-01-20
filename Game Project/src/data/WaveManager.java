@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class WaveManager {
 
-	private float timeSinceLastWave, timeBetweenEnemies;
+//	private float timeSinceLastWave, timeBetweenEnemies;
 	private int waveNumber;
 	private Wave currentWave;
 	
-	private boolean gameComplete = false;
+	private boolean gameComplete;
 
 	private ArrayList<EnemyType> enemyTypeList;
 	private ArrayList<Integer> enemiesPerWaveList;
@@ -21,10 +21,16 @@ public class WaveManager {
 		// this.enemiesPerWave = enemiesPerWave;
 		// this.timeBetweenEnemies = timeBetweenEnemies;
 		this.enemyType = EnemyType.EnemyUFO;
-		this.timeSinceLastWave = 0;
+//		this.timeSinceLastWave = 0;
 		this.waveNumber = 0;
+		this.gameComplete = false;
 
 		this.enemyTypeList = new ArrayList<EnemyType>();
+		enemyTypeList.add(EnemyType.EnemyUFO);
+		enemyTypeList.add(EnemyType.EnemySpacePlane);
+		enemyTypeList.add(EnemyType.EnemyNuke);
+		enemyTypeList.add(EnemyType.EnemyUFO);
+		enemyTypeList.add(EnemyType.EnemyUFO);
 		this.enemiesPerWaveList = new ArrayList<Integer>();
 		this.timeBetweenEnemiesList = new ArrayList<Float>();
 
@@ -38,7 +44,7 @@ public class WaveManager {
 		}
 
 		newWave(enemyType, enemiesPerWaveList.get(waveNumber),
-				timeBetweenEnemiesList.get(waveNumber));
+				timeBetweenEnemiesList.get(waveNumber), 1);
 	}
 
 	public void update() {
@@ -47,8 +53,9 @@ public class WaveManager {
 				currentWave.update();
 			} else if (waveNumber < enemiesPerWaveList.size()) {
 				//Sets currentWave to to wave of specified type 
-				newWave(enemyType, enemiesPerWaveList.get(waveNumber),
-						timeBetweenEnemiesList.get(waveNumber));
+//				newWave(EnemyType.EnemyUFO, enemiesPerWaveList.get(waveNumber),	//Gets random enemy type
+//						timeBetweenEnemiesList.get(waveNumber), 2);
+				newWave(enemiesPerWaveList.get(waveNumber), timeBetweenEnemiesList.get(waveNumber));
 			} else {
 				System.out.println("Game Complete!");
 				gameComplete = true;
@@ -56,10 +63,19 @@ public class WaveManager {
 		}
 	}
 
-	private void newWave(EnemyType enemyType, int enemiesPerWave, float timeBetweenEnemies) {
-		currentWave = new Wave(enemyType, 1, enemiesPerWave, timeBetweenEnemies);
+	private void newWave(EnemyType enemyType, int enemiesPerWave, float timeBetweenEnemies, int level) {
+		currentWave = new Wave(enemyType, level, enemiesPerWave, timeBetweenEnemies);
 		waveNumber++;
-		System.out.println("Beginning Wave " + waveNumber);
+		System.out.println("Beginning Wave " + waveNumber + ": " + enemyType + " - Level " + level);
+	}
+	
+	private void newWave(int enemiesPerWave, float timeBetweenEnemies){
+		int level = 1;
+		if (waveNumber + 1 > 2){	//Add one because waveNumber isn't updated until after this evaluation
+			level = 2;
+			System.out.println(level);
+		}
+		newWave(EnemyType.EnemyUFO, enemiesPerWave, timeBetweenEnemies, level);
 	}
 	
 	public Wave getCurrentWave(){

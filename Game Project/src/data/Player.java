@@ -4,6 +4,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 import helpers.Clock;
+import helpers.StateManager;
 
 import static helpers.Artist.*;
 import static data.TileGrid.*;
@@ -16,6 +17,7 @@ public class Player {
 	private WaveManager waveManager;
 	private ArrayList<Tower> towerList;
 	public static int Cash, Lives;
+	public static final int STARTING_CASH = 150, STARTING_LIVES = 10;
 
 	public Player(WaveManager waveManager) {
 		this.types = new TileType[3];
@@ -29,8 +31,8 @@ public class Player {
 	}
 
 	public void setup() {
-		Cash = 100;
-		Lives = 10;
+		Cash = STARTING_CASH;
+		Lives = STARTING_LIVES;
 	}
 
 	public static boolean modifyCash(int amount) {
@@ -42,11 +44,15 @@ public class Player {
 		System.out.println("Insufficient Funds!");
 		return false;
 	}
-
+	
+	//Might want to add a life every x waves
 	public static void modifyLives(int amount) {
 		Lives += amount;
 		if (amount == -1){
 			System.out.println("Ouch! Lost 1 Life! " + Lives + " remaining!");
+		}
+		if (Lives <= 0){
+			StateManager.setState(StateManager.GameState.GAMEOVER);
 		}
 	}
 
@@ -87,6 +93,21 @@ public class Player {
 					// Get tile at mouse coordinates and place tower there
 					Tile tile = GetTile((int) Math.floor(Mouse.getX() / TILE_SIZE),(int) Math.floor((HEIGHT - Mouse.getY() - 1) / TILE_SIZE));
 					towerList.add(new TowerIce(tile, waveManager.getCurrentWave().getEnemyList()));
+				}
+			}
+			//Basic tower deletion
+			//TO DO: Change tower cost to be part of the TowerType so cost can be refunded on deletion
+			if (Keyboard.getEventKey() == Keyboard.KEY_D && Keyboard.getEventKeyState()){
+				Tile tile = GetTile((int) Math.floor(Mouse.getX() / TILE_SIZE),(int) Math.floor((HEIGHT - Mouse.getY() - 1) / TILE_SIZE));
+				Tower tower = null;
+				for (Tower t : towerList){
+					if (tile == t.getStartTile()){
+						tower = t;
+						break;
+					}
+				}
+				if (tower != null){
+					towerList.remove(tower);
 				}
 			}
 			if (Keyboard.getEventKey() == Keyboard.KEY_1 && Keyboard.getEventKeyState()) {

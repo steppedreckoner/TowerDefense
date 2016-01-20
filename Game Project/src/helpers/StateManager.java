@@ -2,29 +2,33 @@ package helpers;
 
 import data.Editor;
 import data.Game;
+import data.GameOver;
 import data.MainMenu;
 
 public class StateManager {
 
 	public static enum GameState {
-		MAINMENU, GAME, EDITOR
+		MAINMENU, GAME, EDITOR, GAMEOVER
 	}
 	
 	public static GameState gameState = GameState.MAINMENU;
-	public static MainMenu mainMenu;
-	public static Game game;
-	public static Editor editor;
+	public static MainMenu MainMenu;
+	public static Game Game;
+	public static Editor Editor;
+	public static GameOver GameOver;
+	
+	public static boolean mouseButton0;
 	
 	static int[][] map = {
-			{3, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 			{1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 			{1, 1, 1, 0, 0, 1, 0, 1, 1, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 			{0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 			{0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0},
-			{0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0},
-			{0, 0, 0, 0, 1, 1, 1, 2, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0},
-			{0, 0, 0, 0, 1, 1, 0, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 0, 0, 0, 0},
-			{0, 0, 0, 0, 1, 2, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0},
+			{0, 0, 0, 0, 1, 1, 1, 2, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0},
+			{0, 0, 0, 0, 1, 1, 0, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 4, 0, 0, 0, 0},
+			{0, 0, 0, 0, 1, 2, 0, 0, 1, 0, 0, 0, 1, 3, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 			{0, 0, 0, 0, 1, 0, 2, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 			{0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 			{0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -36,22 +40,34 @@ public class StateManager {
 	public static void Update(){
 		switch(gameState){
 		case MAINMENU:
-			if (mainMenu == null){
-				mainMenu = new MainMenu();
+			Game = null;
+			if (MainMenu == null){
+				MainMenu = new MainMenu();
 			}
-			mainMenu.Update();
+			MainMenu.Update();
 			break;
 		case GAME:
-			if (game == null){
-				game = new Game(map);
+			if (Game == null){
+				GameOver = null;
+				Game = new Game(map);
+				System.out.println("New Game");
 			}
-			game.Update();
+			Game.Update();
 			break;
 		case EDITOR:
-			if (editor == null){
-				editor = new Editor();
+			if (Editor == null){
+				Editor = new Editor();
+				System.out.println("New Editor");
 			}
-			editor.Update();
+			Editor.Update();
+			break;
+		case GAMEOVER:
+			if (GameOver == null){
+				Game = null;
+				GameOver = new GameOver();
+				System.out.println("New GameOver");
+			}
+			GameOver.Update();
 			break;
 		}
 	}

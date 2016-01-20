@@ -14,4 +14,20 @@ public class TowerIce extends Tower{
 		projectiles.add(new ProjectileIceBullet(target, x, y));
 	}
 
+	@Override
+	protected Enemy acquireTarget() {
+		hasTarget = false;
+		for (int i = 0; i < this.enemies.size(); i++){
+			if (this.isInRange(this.enemies.get(i)) && !this.enemies.get(i).isSlowed){	//Earliest spawned that is not already slowed
+				hasTarget = true;
+				return this.enemies.get(i);
+			}
+		}
+		if (this.enemies.size() > 0){
+			hasTarget = true;
+			return this.enemies.get(0);
+		}
+		return null;
+	}
+
 }

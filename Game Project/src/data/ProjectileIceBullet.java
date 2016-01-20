@@ -10,6 +10,7 @@ public class ProjectileIceBullet extends Projectile {
 	public void doDamage(){
 		super.getTarget().setSpeed(5f);
 		super.doDamage();
+		this.getTarget().isSlowed = true;
 	}
 	
 }

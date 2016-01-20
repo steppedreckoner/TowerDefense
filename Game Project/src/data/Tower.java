@@ -14,22 +14,21 @@ public abstract class Tower implements Entity {
 	protected float timeSinceLastShot;
 	private float rateOfFire;
 	private float angle;
-	private int width, height, damage, range;
+	private int width, height, range;
 	protected Enemy target;
 	private Texture[] textures;
 	private Tile startTile;
-	private CopyOnWriteArrayList<Enemy> enemies;
+	protected CopyOnWriteArrayList<Enemy> enemies;
 	protected ArrayList<Projectile> projectiles;
-	private boolean hasTarget;
+	protected boolean hasTarget;
 
 	public Tower(TowerType type, Tile startTile, CopyOnWriteArrayList<Enemy> enemies) {
 		this.textures = type.textures;
-//		this.damage = type.damage;
 		this.range = type.range;
 		this.rateOfFire = type.rateOfFire;
 		this.startTile = startTile;
-		this.x = startTile.getX();
-		this.y = startTile.getY();
+		this.x = this.startTile.getX();
+		this.y = this.startTile.getY();
 		this.width = startTile.getWidth();
 		this.height = startTile.getHeight();
 		this.enemies = enemies;
@@ -66,21 +65,11 @@ public abstract class Tower implements Entity {
 		}
 	}
 
-	private Enemy acquireTarget() {
-		hasTarget = false;
-		Enemy closest = null;
-		float closestDistance = -1;
-		for (Enemy e : enemies) {
-			if (((findDistance(e) < closestDistance) || (closestDistance < 0)) && e.isAlive()) {
-				closestDistance = findDistance(e);
-				closest = e;
-				hasTarget = true;
-			}
-		}
-		return closest;
-	}
+	protected abstract Enemy acquireTarget();
+	
+	public abstract void shoot(Enemy target);
 
-	private boolean isInRange(Enemy e) {
+	protected boolean isInRange(Enemy e) {
 		float totalDist = findDistance(e);
 		if (totalDist < this.range) {
 			return true;
@@ -88,27 +77,16 @@ public abstract class Tower implements Entity {
 		return false;
 	}
 
-	private float findDistance(Enemy e) {
+	protected float findDistance(Enemy e) {
 		float xDist = e.getX() - x;
 		float yDist = e.getY() - y;
 		return (float) Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
-	}
-
-	private boolean hasTarget() {
-		if (this.target == null) {
-			return false;
-		}
-		return true;
 	}
 
 	private float calculateAngle() {
 		double angleTemp = Math.atan2(target.getY() - y, target.getX() - x);
 		return (float) Math.toDegrees(angleTemp) - 90;
 	}
-
-	//Overide in subclasses
-	
-	public abstract void shoot(Enemy target);
 
 	public void RefreshEnemies(CopyOnWriteArrayList<Enemy> newEnemies) {
 		enemies = newEnemies;
@@ -148,6 +126,10 @@ public abstract class Tower implements Entity {
 	
 	public Enemy getTarget(){
 		return target;
+	}
+	
+	public Tile getStartTile(){
+		return startTile;
 	}
 
 }

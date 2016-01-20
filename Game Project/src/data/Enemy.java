@@ -7,13 +7,14 @@ import org.newdawn.slick.opengl.Texture;
 
 public abstract class Enemy implements Entity {
 
-	private int width, height;
+	private int width, height, level;
 	private float x, y, speed, health, startHealth;
 	protected Texture texture, healthBackground, healthForeground, healthBorder;
 	private Tile startTile;
 	private boolean first, canFly;
 	protected boolean alive;
 	private Pathfinder pathfinder;
+	public boolean isSlowed;
 
 	// Used in a constructor to automatically scale difficulty within a single
 	// enemy type
@@ -41,9 +42,11 @@ public abstract class Enemy implements Entity {
 		this.directions[1] = 0; // Y direction
 		this.first = true;
 		this.alive = true;
+		this.isSlowed = false;
 	}
 
 	public Enemy(EnemyType type, int level) {
+		this.setLevel(level);
 		this.canFly = type.canFly;
 		this.pathfinder = new Pathfinder(canFly);
 		this.texture = type.texture;
@@ -182,6 +185,14 @@ public abstract class Enemy implements Entity {
 
 	public int[] getDirections() {
 		return directions;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
 	}
 
 }
