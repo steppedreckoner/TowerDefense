@@ -1,5 +1,8 @@
 NOT A FINISHED PRODUCT - STILL IN ACTIVE DEVELOPMENT
 
+Note: If features aren't working as described, check the commit messages as they might be more current 
+than this readme.
+
 This project aims to both demonstrate and expand my programming ability. I initially began development 
 in conjunction with a tutorial (found at https://www.youtube.com/channel/UC0MHs87ehhLOtPQf_bAWDEA), but
 I have since diverged, including the following.
@@ -15,9 +18,9 @@ I have since diverged, including the following.
 
 Instructions:
 
-PLAY: Begins a new game. Enemy type can be changed by pressing 1, 2 or 3. Note that each wave will be 
-all the same type (type change will happen on the next wave). Place different towers with R, T or I.
-each has a cost, and will not be placed if you don't have enough money. 
+PLAY: Begins a new game. Enemy type cannot currently be changed. Place towers with "T". You can change what
+get placed by pressing 1, 2 or 3. Towers can be deleted with 80% refund by hovering over a tower and pressing
+"D".
 
 EDITOR: Loads a map with all grass tiles. Tile type can be modifed by clicking on a tile. Switch the type
 that clicking changes to by pressing the right arrow key (default is grass, so initially clicking will
@@ -40,13 +43,13 @@ beginning a game.
 -One tower can shoot multiple types of projectiles. Perhaps "special shots" will be unlocked at a 
  certain level.
 
--Towers can be removed by player, probably with partial refund.
+-(DONE) Towers can be removed by player, probably with partial refund.
 
--More enemy types with level progression for the same enemy type.
+-(PARTIAL) More enemy types with level progression for the same enemy type.
 
 -Lives and money displayed on-screen.
 
--Losing all lives causes a game over screen with an option to reset.
+-(DONE) Losing all lives causes a game over screen with an option to reset.
 
 -Balancing
 
