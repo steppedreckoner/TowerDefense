@@ -1,7 +1,6 @@
 package data;
 
 import static data.TileGrid.CreateMap;
-import static helpers.StateManager.mouseButton0;
 import static helpers.Artist.*;
 
 import org.lwjgl.input.Mouse;
@@ -14,6 +13,7 @@ public class Game {
 
 	private Player player;
 	private WaveManager waveManager;
+	private boolean mouseButton0;
 	
 	private UI gameUI;
 	
@@ -25,12 +25,13 @@ public class Game {
 		player = new Player(waveManager);	//Allows for player interactions
 		player.setup();
 		
+		this.mouseButton0 = false;
 		this.gameUI = new UI();
 		gameUI.addButton("Menu", "menubutton", (WIDTH - 256) / 2, (int) (HEIGHT * .5f));
 	}
 	
 	private void UpdateButtons(){
-		if (Mouse.isButtonDown(0) && ! mouseButton0){
+		if (Mouse.isButtonDown(0) && !mouseButton0){
 			if (gameUI.isButtonClicked("Menu")){
 				StateManager.setState(GameState.MAINMENU);
 			}
@@ -40,7 +41,7 @@ public class Game {
 	
 	public void Update(){
 		TileGrid.Draw();		//Draw the board
-		player.update();		//Player Actions
+		player.update();
 		if (player.showPauseMenu()){
 			waveManager.pauseDraw();
 			gameUI.draw();

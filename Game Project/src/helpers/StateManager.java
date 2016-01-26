@@ -21,8 +21,6 @@ public class StateManager {
 	public static Editor Editor;
 	public static GameOver GameOver;
 	
-	public static boolean mouseButton0;
-	
 	static int[][] map = {
 			{3, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 			{1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},

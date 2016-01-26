@@ -38,6 +38,13 @@ public abstract class Tower implements Entity {
 		this.angle = 0f;
 		this.cost = type.getCost();
 	}
+	
+	public void pauseUpdate(){
+		for (Projectile p : projectiles){
+			p.draw();
+		}
+		this.draw();
+	}
 
 	public void update() {
 		target = acquireTarget();
@@ -58,6 +65,13 @@ public abstract class Tower implements Entity {
 			}
 		}
 		this.draw();
+	}
+	
+	//Used to illustrate towers that are about to be placed
+	public static void PlacementDraw(TowerType type, int x, int y){
+		for (int i = 0; i < type.textures.length; i++){
+			DrawQuadTexRotate(type.textures[i], x, y, 64, 64, 0);
+		}
 	}
 
 	public void draw() {

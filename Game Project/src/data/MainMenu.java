@@ -4,7 +4,6 @@ import static helpers.Artist.DrawQuadTex;
 import static helpers.Artist.HEIGHT;
 import static helpers.Artist.QuickLoad;
 import static helpers.Artist.*;
-import static helpers.StateManager.mouseButton0;
 
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.opengl.Texture;
@@ -17,17 +16,19 @@ public class MainMenu {
 
 	private Texture background;
 	private UI menuUI;
+	private boolean mouseButton0;
 	
 	public MainMenu(){
-		background = QuickLoad("Ion_cannon_firing");
-		menuUI = new UI();
-		menuUI.addButton("Play", "playbutton", WIDTH / 2 - 128, (int) (HEIGHT * .6f));
-		menuUI.addButton("Editor", "editorbutton", WIDTH / 2 - 128, (int) (HEIGHT * .7f));
-		menuUI.addButton("Quit", "quitbutton", WIDTH / 2 - 128, (int) (HEIGHT * .8f));
+		this.mouseButton0 = false;
+		this.background = QuickLoad("Ion_cannon_firing");
+		this.menuUI = new UI();
+		this.menuUI.addButton("Play", "playbutton", WIDTH / 2 - 128, (int) (HEIGHT * .6f));
+		this.menuUI.addButton("Editor", "editorbutton", WIDTH / 2 - 128, (int) (HEIGHT * .7f));
+		this.menuUI.addButton("Quit", "quitbutton", WIDTH / 2 - 128, (int) (HEIGHT * .8f));
 	}
 	
 	private void UpdateButtons(){
-		if (Mouse.isButtonDown(0) && ! mouseButton0){
+		if (Mouse.isButtonDown(0) && !mouseButton0){
 			if (menuUI.isButtonClicked("Play")){
 				StateManager.setState(GameState.GAME);
 			}

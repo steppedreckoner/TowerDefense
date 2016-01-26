@@ -11,20 +11,19 @@ import UI.UI;
 import helpers.StateManager;
 import helpers.StateManager.GameState;
 
-import static helpers.StateManager.mouseButton0;
-
 public class GameOver {
 	
 	private UI gameOverUI;
 	private Texture background;
+	private boolean mouseButton0;
 	
 	public GameOver(){
-		this.gameOverUI = new UI();
+		this.mouseButton0 = false;
 		this.background = QuickLoad("gameover");
-		
-		gameOverUI.addButton("Reset", "resetbutton64", (WIDTH - 256) / 2, 500);
-		gameOverUI.addButton("Menu", "menubutton", (WIDTH - 256) / 2, 600);
-		gameOverUI.addButton("Quit", "quitbutton", (WIDTH - 256) / 2, 700);
+		this.gameOverUI = new UI();
+		this.gameOverUI.addButton("Reset", "resetbutton64", (WIDTH - 256) / 2, 500);
+		this.gameOverUI.addButton("Menu", "menubutton", (WIDTH - 256) / 2, 600);
+		this.gameOverUI.addButton("Quit", "quitbutton", (WIDTH - 256) / 2, 700);
 	}
 	
 	private void UpdateButtons(){

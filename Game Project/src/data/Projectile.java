@@ -59,12 +59,8 @@ public abstract class Projectile implements Entity{
 					target.getHeight())) {
 				doDamage();
 			}
-			this.Draw();
+			this.draw();
 		}
-	}
-
-	public void Draw() {
-		DrawQuadTex(texture, x, y, 32, 32);
 	}
 
 	public Enemy getTarget() {
@@ -117,7 +113,6 @@ public abstract class Projectile implements Entity{
 	}
 
 	public void draw() {
-		// TODO Auto-generated method stub
-		
+		DrawQuadTex(texture, x, y, 32, 32);
 	}
 }

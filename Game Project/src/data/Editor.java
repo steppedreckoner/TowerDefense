@@ -7,9 +7,6 @@ import static helpers.Leveler.SaveMap;
 import static data.TileGrid.*;
 import static data.Boot.SC;
 
-import static helpers.StateManager.mouseButton0;
-
-
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
@@ -22,16 +19,18 @@ public class Editor {
 	private boolean showMenu;
 	private TileType currentType;
 	
+	private boolean mouseButton0;
 	private UI editorUI;
 
 	public Editor() {
 		CreateMap();
-		currentType = TileType.Grass;
-		showMenu = false;
-		editorUI = new UI();
-		editorUI.addButton("Save", "savebutton", (WIDTH - 256) / 2, (int) (HEIGHT * .4f));
-		editorUI.addButton("Load", "loadbutton", (WIDTH - 256) / 2, (int) (HEIGHT * .5f));
-		editorUI.addButton("Menu", "menubutton", (WIDTH - 256) / 2, (int) (HEIGHT * .6f));
+		this.currentType = TileType.Grass;
+		this.showMenu = false;
+		this.mouseButton0 = false;
+		this.editorUI = new UI();
+		this.editorUI.addButton("Save", "savebutton", (WIDTH - 256) / 2, (int) (HEIGHT * .4f));
+		this.editorUI.addButton("Load", "loadbutton", (WIDTH - 256) / 2, (int) (HEIGHT * .5f));
+		this.editorUI.addButton("Menu", "menubutton", (WIDTH - 256) / 2, (int) (HEIGHT * .6f));
 		
 	}
 
@@ -75,7 +74,7 @@ public class Editor {
 	}
 	
 	private void UpdateButtons(){
-		if (Mouse.isButtonDown(0) && ! mouseButton0){
+		if (Mouse.isButtonDown(0) && !mouseButton0){
 			if (editorUI.isButtonClicked("Save")){
 				System.out.print("Enter File Name: ");
 				String mapName = SC.next();

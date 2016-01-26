@@ -37,7 +37,7 @@ public class Artist {
 	public static final int WIDTH = 1600, HEIGHT = 960, TILE_SIZE = 64;
 	
 	public static void BeginSession(){
-		Display.setTitle("TutorialGame");
+		Display.setTitle("TowerDefense");
 		try {
 			Display.setDisplayMode(new DisplayMode(WIDTH,HEIGHT));
 			Display.create();
