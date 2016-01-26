@@ -22,12 +22,12 @@ Instructions:
 
 PLAY: Begins a new game. Enemy type cannot currently be changed. Place towers with 'T'. You can change what
 get placed by pressing 1, 2 or 3. Towers can be deleted with 80% refund by hovering over a tower and pressing
-'D'. Time can be accelerated/decelerated with the right/left arrow key respectively (Note: fast forwarding may cause
-enemies to fly off the course. This will be addressed eventually).
+'D'. Time can be accelerated/decelerated with the right/left arrow key respectively (Note: fast forwarding may 
+cause enemies to fly off the course. This will be addressed eventually).
 
 EDITOR: Loads a map with all grass tiles. Tile type can be modified by clicking on a tile. Switch the type
-that clicking changes to by pressing the numbers 1-5 (1: Grass, 2: Dirt, 3: Water, 4: Start, 5: Goal). Press 'M'
-to access the editor menu. Both the save and load buttons require interaction with the console. 
+that clicking changes to by pressing the numbers 1-5 (1: Grass, 2: Dirt, 3: Water, 4: Start, 5: Goal). Press 
+'M' to access the editor menu. Both the save and load buttons require interaction with the console. 
 
 QUIT: Quits.
 
