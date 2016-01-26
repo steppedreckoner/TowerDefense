@@ -37,11 +37,18 @@ beginning a game.
 -Tower selection menu and tower placement with mouse.
 
 -More tower and projectile types, with unlock progression.
+--Rocket tower
+--Multi-Target tower
+--Railgun tower
+
+-Player controlled AOE actions (eg set all enemies on fire within radius x of mouse click)
 
 -Level up of towers.
 
 -One tower can shoot multiple types of projectiles. Perhaps "special shots" will be unlocked at a 
  certain level.
+ 
+-Manage deletion of "dead" projectiles (Use CopyOnWriteArrayList like with enemies)
 
 -(DONE) Towers can be removed by player, probably with partial refund.
 
