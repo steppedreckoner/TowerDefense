@@ -1,11 +1,11 @@
 package data;
 
-import org.newdawn.slick.opengl.Texture;
-import static helpers.Artist.*;
+import static helpers.Artist.DrawQuadTexRotate;
 import static helpers.Clock.Delta;
 
-import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import org.newdawn.slick.opengl.Texture;
 
 public abstract class Tower implements Entity {
 
@@ -14,12 +14,12 @@ public abstract class Tower implements Entity {
 	protected float timeSinceLastShot;
 	private float rateOfFire;
 	private float angle;
-	private int width, height, range;
+	private int width, height, range, cost;
 	protected Enemy target;
 	private Texture[] textures;
 	private Tile startTile;
 	protected CopyOnWriteArrayList<Enemy> enemies;
-	protected ArrayList<Projectile> projectiles;
+	protected CopyOnWriteArrayList<Projectile> projectiles;
 	protected boolean hasTarget;
 
 	public Tower(TowerType type, Tile startTile, CopyOnWriteArrayList<Enemy> enemies) {
@@ -34,8 +34,9 @@ public abstract class Tower implements Entity {
 		this.enemies = enemies;
 		this.hasTarget = false;
 		this.timeSinceLastShot = 0f;
-		this.projectiles = new ArrayList<Projectile>();
+		this.projectiles = new CopyOnWriteArrayList<Projectile>();
 		this.angle = 0f;
+		this.cost = type.getCost();
 	}
 
 	public void update() {
@@ -49,7 +50,12 @@ public abstract class Tower implements Entity {
 			}
 		}
 		for (Projectile p : projectiles) {
-			p.Update();
+			if (p.isAlive()){
+				p.Update();
+			}
+			else{
+				projectiles.remove(p);
+			}
 		}
 		this.draw();
 	}
@@ -90,6 +96,10 @@ public abstract class Tower implements Entity {
 
 	public void RefreshEnemies(CopyOnWriteArrayList<Enemy> newEnemies) {
 		enemies = newEnemies;
+	}
+	
+	public int getCost(){
+		return cost;
 	}
 
 	public float getX() {

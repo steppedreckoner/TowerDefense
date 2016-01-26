@@ -2,6 +2,7 @@ package data;
 
 import static data.TileGrid.CreateMap;
 import static helpers.StateManager.mouseButton0;
+import static helpers.Artist.*;
 
 import org.lwjgl.input.Mouse;
 
@@ -17,13 +18,15 @@ public class Game {
 	private UI gameUI;
 	
 	public Game(int[][] newMap){
+		//Note: When loading maps from file, ensure there's only one start and one goal tile.
 		CreateMap(newMap);	//Initializes the map (TileGrid Class)
+		
 		waveManager = new WaveManager();	//Deals with spawning enemies
 		player = new Player(waveManager);	//Allows for player interactions
 		player.setup();
 		
 		this.gameUI = new UI();
-		gameUI.addButton("Menu", "menubutton", 0, 0);
+		gameUI.addButton("Menu", "menubutton", (WIDTH - 256) / 2, (int) (HEIGHT * .5f));
 	}
 	
 	private void UpdateButtons(){
@@ -37,10 +40,15 @@ public class Game {
 	
 	public void Update(){
 		TileGrid.Draw();		//Draw the board
-		waveManager.update();	//Enemy Actions
 		player.update();		//Player Actions
-		gameUI.draw();
-		UpdateButtons();
+		if (player.showPauseMenu()){
+			waveManager.pauseDraw();
+			gameUI.draw();
+			UpdateButtons();
+		}
+		else{
+			waveManager.update();	//Enemy Actions (Don't do if game menu is up)
+		}
 	}
 	
 

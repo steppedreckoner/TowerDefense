@@ -25,6 +25,15 @@ public class Wave {
 
 		spawn(enemyType, level);
 	}
+	
+	//Draws but does not update enemies for use while paused
+	public void pauseDraw(){
+		for (Enemy e : enemyList){
+			if (e.isAlive()){
+				e.draw();
+			}
+		}
+	}
 
 	public void update() {
 		boolean allEnemiesDead = true;

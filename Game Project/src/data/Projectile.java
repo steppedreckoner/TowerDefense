@@ -106,6 +106,10 @@ public abstract class Projectile implements Entity{
 	public void setAlive(boolean isAlive){
 		alive = isAlive;
 	}
+	
+	public boolean isAlive(){
+		return alive;
+	}
 
 	public void update() {
 		// TODO Auto-generated method stub

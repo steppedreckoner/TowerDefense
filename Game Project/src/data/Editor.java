@@ -1,66 +1,106 @@
 package data;
 
-import static helpers.Artist.HEIGHT;
-import static helpers.Artist.TILE_SIZE;
+import static helpers.Artist.*;
 import static helpers.Leveler.LoadMap;
 import static helpers.Leveler.SaveMap;
+//import static helpers.Leveler.DrawMap;
 import static data.TileGrid.*;
+import static data.Boot.SC;
 
-import java.util.Scanner;
+import static helpers.StateManager.mouseButton0;
+
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
+import UI.UI;
+import helpers.StateManager;
+import helpers.StateManager.GameState;
+
 public class Editor {
 
-	private int index;
-	private TileType[] types;
+	private boolean showMenu;
+	private TileType currentType;
+	
+	private UI editorUI;
 
 	public Editor() {
 		CreateMap();
-		this.index = 0;		
-		this.types = new TileType[3];
-		this.types[0] = TileType.Grass;
-		this.types[1] = TileType.Dirt;
-		this.types[2] = TileType.Water;
+		currentType = TileType.Grass;
+		showMenu = false;
+		editorUI = new UI();
+		editorUI.addButton("Save", "savebutton", (WIDTH - 256) / 2, (int) (HEIGHT * .4f));
+		editorUI.addButton("Load", "loadbutton", (WIDTH - 256) / 2, (int) (HEIGHT * .5f));
+		editorUI.addButton("Menu", "menubutton", (WIDTH - 256) / 2, (int) (HEIGHT * .6f));
+		
 	}
 
 	public void Update() {
 		TileGrid.Draw();
+		if (showMenu){
+			showMenu();
+		}
 		
 		// Handle mouse input
-		if (Mouse.isButtonDown(0)) {
+		//Only change tiles if menu isn't up
+		if (Mouse.isButtonDown(0) && !showMenu) {
 			setTile();
 		}
 		// Handle keyboard input
 		while (Keyboard.next()) {
-			if (Keyboard.getEventKey() == Keyboard.KEY_RIGHT && Keyboard.getEventKeyState()) {
-				MoveIndex();
+			if (Keyboard.getEventKey() == Keyboard.KEY_1 && Keyboard.getEventKeyState()) {
+				currentType = TileType.Grass;
 			}
-			if (Keyboard.getEventKey() == Keyboard.KEY_S && Keyboard.getEventKeyState()) {
-				System.out.println("Enter File Name: ");
-				Scanner sc = new Scanner(System.in);
-				String mapName = sc.next();
-				sc.close();
-				SaveMap(mapName);
+			if (Keyboard.getEventKey() == Keyboard.KEY_2 && Keyboard.getEventKeyState()) {
+				currentType = TileType.Dirt;
 			}
-			if (Keyboard.getEventKey() == Keyboard.KEY_L && Keyboard.getEventKeyState()) {				
-				LoadMap("mapTest");
+			if (Keyboard.getEventKey() == Keyboard.KEY_3 && Keyboard.getEventKeyState()) {
+				currentType = TileType.Water;
+			}
+			if (Keyboard.getEventKey() == Keyboard.KEY_4 && Keyboard.getEventKeyState()) {
+				currentType = TileType.Start;
+			}
+			if (Keyboard.getEventKey() == Keyboard.KEY_5 && Keyboard.getEventKeyState()) {
+				currentType = TileType.Goal;
+			}
+			if (Keyboard.getEventKey() == Keyboard.KEY_M && Keyboard.getEventKeyState()) {
+				showMenu = !showMenu;
 			}
 		}
+	}
+	
+	private void showMenu(){
+		editorUI.draw();
+		UpdateButtons();
+	}
+	
+	private void UpdateButtons(){
+		if (Mouse.isButtonDown(0) && ! mouseButton0){
+			if (editorUI.isButtonClicked("Save")){
+				System.out.print("Enter File Name: ");
+				String mapName = SC.next();
+				System.out.println();
+				SaveMap(mapName);
+				System.out.println("Saving");
+			}
+			if (editorUI.isButtonClicked("Load")){
+				System.out.print("Enter File Name: ");
+				String mapName = SC.next();
+				System.out.println();
+				LoadMap(mapName);
+				System.out.println("Loading");
+			}
+			if (editorUI.isButtonClicked("Menu")){
+				StateManager.setState(GameState.MAINMENU);
+			}
+		}
+		mouseButton0 = Mouse.isButtonDown(0);
 	}
 
 	private void setTile() {
 		TileGrid.SetTile((int) Math.floor(Mouse.getX() / TILE_SIZE),
-				(int) Math.floor((HEIGHT - Mouse.getY() - 1) / TILE_SIZE), types[index]);
+				(int) Math.floor((HEIGHT - Mouse.getY() - 1) / TILE_SIZE), currentType);
 
 	}
 	
-	//Changes selected TileType
-	private void MoveIndex(){
-		index++;
-		if (index > types.length - 1){
-			index = 0;
-		}
-	}
 }

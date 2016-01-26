@@ -10,6 +10,7 @@ public class Tile {
 	private int width, height;
 	private Texture texture;
 	private TileType type;
+	private boolean hasTower;
 	
 	public Tile(float x, float y, int width, int height, TileType type){
 		this.x = x;
@@ -18,6 +19,7 @@ public class Tile {
 		this.height = height;
 		this.type = type;
 		this.texture = QuickLoad(type.textureName);
+		this.hasTower = false;
 	}
 	
 	public void draw(){
@@ -50,6 +52,10 @@ public class Tile {
 	
 	public boolean canFly(){
 		return this.type.canFly;
+	}
+	
+	public boolean canBuild(){
+		return this.type.canBuild;
 	}
 
 	public float getX() {
@@ -108,6 +114,12 @@ public class Tile {
 		this.type = type;
 	}
 
+	public boolean hasTower(){
+		return hasTower;
+	}
 	
+	public void setHasTower(boolean b){
+		hasTower = b;
+	}
 	
 }

@@ -46,6 +46,11 @@ public class WaveManager {
 		newWave(enemyType, enemiesPerWaveList.get(waveNumber),
 				timeBetweenEnemiesList.get(waveNumber), 1);
 	}
+	
+	//Draws but does not update enemies for use while paused
+	public void pauseDraw(){
+		currentWave.pauseDraw();
+	}
 
 	public void update() {
 		if (!gameComplete) {
