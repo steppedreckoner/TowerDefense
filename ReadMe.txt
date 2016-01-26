@@ -20,14 +20,14 @@ I have since diverged, including the following.
 
 Instructions:
 
-PLAY: Begins a new game. Enemy type cannot currently be changed. Place towers with "T". You can change what
+PLAY: Begins a new game. Enemy type cannot currently be changed. Place towers with 'T'. You can change what
 get placed by pressing 1, 2 or 3. Towers can be deleted with 80% refund by hovering over a tower and pressing
-"D". Time can be accelerated/decelerated witht he right/left arrow key resp (Note: fast forwarding may cause
+'D'. Time can be accelerated/decelerated with the right/left arrow key respectively (Note: fast forwarding may cause
 enemies to fly off the course. This will be addressed eventually).
 
-EDITOR: Loads a map with all grass tiles. Tile type can be modifed by clicking on a tile. Switch the type
-that clicking changes to by pressing the right arrow key (default is grass, so initially clicking will
-look like it's doing nothing). Save and Load features (S and L) are currently buggy, and probably won't work.
+EDITOR: Loads a map with all grass tiles. Tile type can be modified by clicking on a tile. Switch the type
+that clicking changes to by pressing the numbers 1-5 (1: Grass, 2: Dirt, 3: Water, 4: Start, 5: Goal). Press 'M'
+to access the editor menu. Both the save and load buttons require interaction with the console. 
 
 QUIT: Quits.
 
@@ -45,7 +45,9 @@ Most Recent Changes:
 
 To Do:
 
--(DONE) Add pause function
+-All file IO done through in game menus (no need for console interaction).
+
+-(DONE) Add pause function.
 
 -(PARTIAL) Improved saving and loading. Play button loads a map from a file, and new maps can be loaded after 
 beginning a game. 
@@ -55,7 +57,7 @@ beginning a game.
 -More tower and projectile types, with unlock progression.
 --Rocket tower
 --Multi-Target tower
---Railgun tower
+--Railgun/Laser tower
 
 -Player controlled AOE actions (eg set all enemies on fire within radius x of mouse click)
 
