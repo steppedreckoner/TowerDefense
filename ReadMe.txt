@@ -32,13 +32,15 @@ fly off the course. This will be addressed eventually).
 
 EDITOR: Loads a map with all grass tiles. Tile type can be modified by clicking on a tile. Switch the type
 that clicking changes to by pressing the numbers 1-5 (1: Grass, 2: Dirt, 3: Water, 4: Start, 5: Goal). Press 
-'M' to access the editor menu, which allows for saving and loading maps.
+'M' to access the editor menu, which allows for saving and loading maps. Note: If you're saving from the editor,
+make sure to include ".txt" file extension. It is currently not checked nor automatically added.
 
 QUIT: Quits.
 
 
 Most Recent Changes:
 -Use JFileChooser for all file IO
+-Added executable jar with some example maps.
 
 
 To Do:
