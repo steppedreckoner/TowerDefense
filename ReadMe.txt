@@ -1,4 +1,4 @@
-NOT A FINISHED PRODUCT - STILL IN ACTIVE DEVELOPMENT
+This game is still in development. Parts are blatantly unfinished, but it's getting closer!
 
 Note: If features aren't working as described, check the commit messages. I've started keeping commit
 messages in the readme, but some earlier changes weren't tracked.
@@ -23,9 +23,9 @@ Instructions:
 
 PLAY: Begins a new game. Player is prompted to choose a map. If you don't have any, one can easily and quickly
 be made in the editor. Alternatively, you can comment/uncomment lines 64 - 71 in the StateManager class to load
-the default map by canceling the file selection. Note that the map must have a path from start to end, otherwise
+the default map by canceling the file selection. Note the map must have a path from start to end, otherwise
 the game will crash. Enemy type cannot currently be changed. Select a tower type with either the tower menu 
-('T') or with the hotkeys (1, 2 or 3). Once a type is selected, place towers by left-clicking. Cancel a placement
+(T) or with the hotkeys (1, 2 or 3). Once a type is selected, place towers by left-clicking. Cancel a placement
 by right-clicking Towers can be deleted with 80% refund by hovering over a tower and pressing 'D'. Time can be 
 accelerated/decelerated with the right/left arrow key respectively (Note: fast forwarding may cause enemies to
 fly off the course. This will be addressed eventually).
