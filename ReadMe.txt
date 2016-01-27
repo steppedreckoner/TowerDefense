@@ -8,6 +8,7 @@ in conjunction with a tutorial (found at https://www.youtube.com/channel/UC0MHs8
 I have since diverged, including the following.
 
 -Loading maps from a file on beginning of a new game.
+-Loading and saving maps done with JFileChooser. No longer need to interact with console.
 -Toggleable menus for in game and editor.
 -Pathfinder class to handle enemy navigation. This will eventually allow for enemies to navigate around
  player placed obstacles.
@@ -20,30 +21,31 @@ I have since diverged, including the following.
 
 Instructions:
 
-PLAY: Begins a new game. Enemy type cannot currently be changed. Select a tower type with either the tower
-menu ('T') or with the hotkeys (1, 2 or 3). Once a type is selected, place towers by left-clicking. Cancel
-a placement by right-clicking Towers can be deleted with 80% refund by hovering over a tower and pressing
-'D'. Time can be accelerated/decelerated with the right/left arrow key respectively (Note: fast forwarding 
-may cause enemies to fly off the course. This will be addressed eventually).
+PLAY: Begins a new game. Player is prompted to choose a map. If you don't have any, one can easily and quickly
+be made in the editor. Alternatively, you can comment/uncomment lines 64 - 71 in the StateManager class to load
+the default map by canceling the file selection. Note that the map must have a path from start to end, otherwise
+the game will crash. Enemy type cannot currently be changed. Select a tower type with either the tower menu 
+('T') or with the hotkeys (1, 2 or 3). Once a type is selected, place towers by left-clicking. Cancel a placement
+by right-clicking Towers can be deleted with 80% refund by hovering over a tower and pressing 'D'. Time can be 
+accelerated/decelerated with the right/left arrow key respectively (Note: fast forwarding may cause enemies to
+fly off the course. This will be addressed eventually).
 
 EDITOR: Loads a map with all grass tiles. Tile type can be modified by clicking on a tile. Switch the type
 that clicking changes to by pressing the numbers 1-5 (1: Grass, 2: Dirt, 3: Water, 4: Start, 5: Goal). Press 
-'M' to access the editor menu. Both the save and load buttons require interaction with the console. 
+'M' to access the editor menu, which allows for saving and loading maps.
 
 QUIT: Quits.
 
 
 Most Recent Changes:
--Pausing reworked so that enemies, towers and projectiles are still drawn while game is paused.
--First version of tower menu added (Press 'T' and click on the base of the tower you want to place)
--Towers only placed when selected from tower menu or by hotkey
--Tower to be placed is drawn at mouse location until placed (left-click) or canceled (right click).
--Some code cleanup.
+-Use JFileChooser for all file IO
 
 
 To Do:
 
--All file IO done through in game menus (no need for console interaction).
+-New Game option in game menu.
+
+-(DONE) All file IO done through in game menus (no need for console interaction).
 
 -(DONE) Add pause function.
 
@@ -58,6 +60,8 @@ To Do:
 --Rocket tower
 --Multi-Target tower
 --Railgun/Laser tower
+
+-Projectiles originate from the end of the gun barrel (currently spawn at center of tower).
 
 -Player controlled AOE actions (eg set all enemies on fire within radius x of mouse click)
 
@@ -86,6 +90,12 @@ To Do:
 
 
 Old Changes:
+-Pausing reworked so that enemies, towers and projectiles are still drawn while game is paused.
+-First version of tower menu added (Press 'T' and click on the base of the tower you want to place)
+-Towers only placed when selected from tower menu or by hotkey
+-Tower to be placed is drawn at mouse location until placed (left-click) or canceled (right click).
+-Some code cleanup.
+
 -Dead projectiles now deleted from tower's projectile list.
 -Pressing 'M' while in editor shows editor menu. Allows for saving, loading and returning to the main menu.
 -TileType selection while in editor handled with number 1-5

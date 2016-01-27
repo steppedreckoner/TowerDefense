@@ -7,38 +7,26 @@ import static data.TileGrid.GetTilesWide;
 import static data.TileGrid.SetTile;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 
 import data.Tile;
 import data.TileType;
 
 public class Leveler {
 	
-	public static void SaveMap(String mapName){
-//		System.out.println("Enter File Name: ");
-//		Scanner sc = new Scanner(System.in);
-//		String mapName = sc.next();
-//		sc.close();
+	public static String GetMapString(){
 		String mapData = "";
 		for (int i = 0; i < GetTilesWide(); i++){
 			for (int j = 0; j < GetTilesHigh(); j++){
 				mapData += getTileID(GetTile(i, j));
 			}
 		}
-		
-		
-		try {
-			File file = new File(mapName);
-			BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-			bw.write(mapData);
-			bw.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		return mapData;
+	}
+	
+	public static void LoadMap(File mapName){
+		LoadMap(mapName.toString());
 	}
 	
 	public static void LoadMap(String mapName){
@@ -57,6 +45,10 @@ public class Leveler {
 		}
 	}
 	
+	public static int[][] GetMapArray(File mapName){
+		return GetMapArray(mapName.toString());
+	}
+	
 	public static int[][] GetMapArray(String mapName){
 		int[][] newMap = new int[GetTilesHigh()][GetTilesWide()];	//Maps taken as input for Game(map) have these dimensions
 		try {
@@ -65,9 +57,7 @@ public class Leveler {
 			br.close();
 			int index = 0;
 			for (int j = 0; j < GetTilesWide(); j++){	//Must be done in this order because of how TileGrid stores its map
-				System.out.println();
 				for (int i = 0; i < GetTilesHigh(); i++){
-					System.out.print(data.substring(index, index + 1));
 					newMap[i][j] = Integer.parseInt(data.substring(index, index + 1));
 					index++;
 				}

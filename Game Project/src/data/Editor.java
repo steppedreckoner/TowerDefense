@@ -1,16 +1,19 @@
 package data;
 
-import static helpers.Artist.*;
+import static data.TileGrid.CreateMap;
+import static helpers.Artist.HEIGHT;
+import static helpers.Artist.TILE_SIZE;
+import static helpers.Artist.WIDTH;
 import static helpers.Leveler.LoadMap;
-import static helpers.Leveler.SaveMap;
-//import static helpers.Leveler.DrawMap;
-import static data.TileGrid.*;
-import static data.Boot.SC;
+
+import java.io.File;
+import java.nio.file.Path;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 import UI.UI;
+import helpers.FileChooser;
 import helpers.StateManager;
 import helpers.StateManager.GameState;
 
@@ -76,18 +79,18 @@ public class Editor {
 	private void UpdateButtons(){
 		if (Mouse.isButtonDown(0) && !mouseButton0){
 			if (editorUI.isButtonClicked("Save")){
-				System.out.print("Enter File Name: ");
-				String mapName = SC.next();
-				System.out.println();
-				SaveMap(mapName);
-				System.out.println("Saving");
+				Path path = FileChooser.SaveFile();
+				System.out.println("Saving map " + path.toString());
 			}
 			if (editorUI.isButtonClicked("Load")){
-				System.out.print("Enter File Name: ");
-				String mapName = SC.next();
-				System.out.println();
-				LoadMap(mapName);
-				System.out.println("Loading");
+				File mapFile = FileChooser.ChooseFile();
+				if (mapFile != null){
+					LoadMap(mapFile);
+					System.out.println("Loading map " + mapFile.toString());
+				}
+				else{
+					System.out.println("Invalid File");
+				}
 			}
 			if (editorUI.isButtonClicked("Menu")){
 				StateManager.setState(GameState.MAINMENU);

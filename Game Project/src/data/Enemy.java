@@ -50,9 +50,9 @@ public abstract class Enemy implements Entity {
 		this.canFly = type.canFly;
 		this.pathfinder = new Pathfinder(canFly);
 		this.texture = type.texture;
-		this.healthBackground = QuickLoad("healthBackground");
-		this.healthForeground = QuickLoad("healthForeground");
-		this.healthBorder = QuickLoad("healthBorder");
+		this.healthBackground = QuickLoad("healthbackground");
+		this.healthForeground = QuickLoad("healthforeground");
+		this.healthBorder = QuickLoad("healthborder");
 		this.startTile = TileGrid.GetStartTile();
 		this.x = startTile.getX();
 		this.y = startTile.getY();

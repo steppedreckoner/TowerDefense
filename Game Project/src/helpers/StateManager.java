@@ -1,13 +1,13 @@
 package helpers;
 
-import static data.Boot.SC;
+import static helpers.Leveler.GetMapArray;
+
+import java.io.File;
 
 import data.Editor;
 import data.Game;
 import data.GameOver;
 import data.MainMenu;
-
-import static helpers.Leveler.GetMapArray;
 
 public class StateManager {
 
@@ -20,8 +20,9 @@ public class StateManager {
 	public static Game Game;
 	public static Editor Editor;
 	public static GameOver GameOver;
+	public static File mapFile;
 	
-	static int[][] map = {
+	static int[][] defaultMap = {
 			{3, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 			{1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 			{1, 1, 1, 0, 0, 1, 0, 1, 1, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -51,21 +52,24 @@ public class StateManager {
 		case GAME:
 			if (Game == null){
 				GameOver = null;
-				System.out.print("Enter Map Name: ");
-				String mapName = SC.next();
-				System.out.println();
-				
-				//Default case for users with no maps external maps
-				if (mapName.equalsIgnoreCase("default")){
-					Game = new Game(map);
+				//Attempt to set mapFile to user input and check if it worked
+				if ((mapFile = FileChooser.ChooseFile()) != null){
+					int[][] gameMap = GetMapArray(mapFile);
+					Game = new Game(gameMap);
+					System.out.println("New Game");
 				}
 				else{
-					int[][] gameMap = GetMapArray(mapName);
-					System.out.println(map[0].length + ", " + map.length);
-					System.out.println(gameMap[0].length + ", " + gameMap.length);
-					Game = new Game(gameMap);
+					//If loading a file was not successful, set gameState 
+					//back to MAINMENU and break to avoid updating a null game.
+					System.out.println("Invalid File Type");
+					gameState = GameState.MAINMENU;
+					break;
+					//Uncomment this section and comment out the above to have 
+					//default map loaded in case of file selection failure.
+//					Game = new Game(defaultMap);
+//					System.out.println("File selection unsuccessful. Beginning with default map");
+//					System.out.println("New Game");
 				}
-				System.out.println("New Game");
 			}
 			Game.Update();
 			break;
