@@ -1,7 +1,7 @@
 This game is still in development. Some core features are still missing, but it's getting closer!
 
 Note: If features aren't working as described, check the commit messages. I've started keeping commit
-messages in the readme, but some earlier changes weren't tracked.
+messages in the readme, but some earlier changes were only tracked in the commits.
 
 This project aims to both demonstrate and expand my programming ability. I initially began development 
 in conjunction with a tutorial (found at https://www.youtube.com/channel/UC0MHs87ehhLOtPQf_bAWDEA), but
@@ -9,7 +9,7 @@ I have since diverged, including the following.
 
 -Loading maps from a file on beginning of a new game.
 -Loading and saving maps done with JFileChooser. No longer need to interact with console.
--Area of Effect (AOE) actions that affect enemies/tower within a certain radius.
+-Area of Effect (AOE) actions that affect enemies/towers within a certain radius.
 -Toggleable menus for in game and editor.
 -Pathfinder class to handle enemy navigation. This will eventually allow for enemies to navigate around
  player placed obstacles.
@@ -65,9 +65,18 @@ To Do:
 
 -Lives, cash and wave have change animation (probably flashing).
 
+-Floating notification on lives/cash change (e.g. place a tower that costs 40, and a little "-$40" floats up
+ from where you placed the tower).
+
 -Difficulty selection.
 
 -Multiple map campaigns.
+
+-Player placeable obstacles that cost money.
+
+-Enemy pathfinding updated to account for path alterations.
+
+-Pathfinder class doesn't crash game if a path doesn't exist.
 
 -Allow enemies to move in any direction.
 
