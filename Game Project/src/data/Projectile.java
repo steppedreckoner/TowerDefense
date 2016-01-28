@@ -24,14 +24,14 @@ public abstract class Projectile implements Entity{
 		this.damage = type.damage;
 		this.target = target;
 		this.alive = true;
-//		this.targetSpeed = target.getSpeed();
-//		int[] directions = target.getDirections();
 		this.xVelocity = 0;
 		this.yVelocity = 0;
 		calculateVelocity();
 		// Target Prediction
-		// xVelocity += directions[0] * speed;
-		// yVelocity += directions[1] * speed;
+//		this.targetSpeed = target.getSpeed();
+//		int[] directions = target.getDirections();
+//		 xVelocity += directions[0] * speed;
+//		 yVelocity += directions[1] * speed;
 	}
 
 	private void calculateVelocity() {

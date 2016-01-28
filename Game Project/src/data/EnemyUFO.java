@@ -14,7 +14,7 @@ public class EnemyUFO extends Enemy {
 	@Override
 	public void die() {
 		alive = false;
-		Player.modifyCash(20);
+		Player.ModifyCash(20);
 	}
 	
 	

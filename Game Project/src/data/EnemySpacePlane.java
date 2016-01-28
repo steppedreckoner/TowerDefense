@@ -12,7 +12,7 @@ public class EnemySpacePlane extends Enemy {
 	@Override
 	public void die() {
 		alive = false;
-		Player.modifyCash(15);
+		Player.ModifyCash(15);
 	}
 
 	@Override

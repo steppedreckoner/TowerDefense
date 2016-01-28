@@ -1,4 +1,4 @@
-This game is still in development. Parts are blatantly unfinished, but it's getting closer!
+This game is still in development. Some core features are still missing, but it's getting closer!
 
 Note: If features aren't working as described, check the commit messages. I've started keeping commit
 messages in the readme, but some earlier changes weren't tracked.
@@ -39,15 +39,34 @@ QUIT: Quits.
 
 
 Most Recent Changes:
--Use JFileChooser for all file IO
--Added executable jar with some example maps.
+-Cash and lives now displayed on-screen.
+-Saved and loaded map names displayed in editor.
+-Ice tower slowing reworked. Now temporary.
+-Increased starting cash.
+-Updated JAR.
+-Included 3 more example maps.
+-Updated readme.
 
 
 To Do:
 
+-Allow enemies to move in any direction
+
+-Fix border on gameover reset button.
+
+-Change font of "Tower Defense" on main menu background.
+
+-Saving/loading games.
+
+-Wave information saved in map files.
+
 -New Game option in game menu.
 
 -(DONE) All file IO done through in game menus (no need for console interaction).
+
+-Maps automatically saved with correct extension. 
+
+-Change hardcoded constants to final variables.
 
 -(DONE) Add pause function.
 
@@ -78,13 +97,15 @@ To Do:
 
 -(PARTIAL) More enemy types with level progression for the same enemy type.
 
--Slowing of enemies is temporary.
+-(DONE) Slowing of enemies is temporary.
 
--Lives and money displayed on-screen.
+-(PARTIAL) Lives and money displayed on-screen (Works, but I might try and make it look better).
 
 -(DONE) Losing all lives causes a game over screen with an option to reset.
 
 -Checks made to see if enemy is on a certain square have tolerances that scale with time mult (currently static).
+
+-Sound
 
 -Balancing
 
@@ -92,6 +113,9 @@ To Do:
 
 
 Old Changes:
+-Use JFileChooser for all file IO
+-Added executable jar with some example maps.
+
 -Pausing reworked so that enemies, towers and projectiles are still drawn while game is paused.
 -First version of tower menu added (Press 'T' and click on the base of the tower you want to place)
 -Towers only placed when selected from tower menu or by hotkey

@@ -5,12 +5,15 @@ import static helpers.Artist.HEIGHT;
 import static helpers.Artist.TILE_SIZE;
 import static helpers.Artist.WIDTH;
 import static helpers.Leveler.LoadMap;
+import static helpers.Clock.*;
 
+import java.awt.Font;
 import java.io.File;
 import java.nio.file.Path;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.newdawn.slick.TrueTypeFont;
 
 import UI.UI;
 import helpers.FileChooser;
@@ -22,8 +25,15 @@ public class Editor {
 	private boolean showMenu;
 	private TileType currentType;
 	
-	private boolean mouseButton0;
+	private boolean mouseButton0, recentlySaved, recentlyLoaded;
 	private UI editorUI;
+	private float saveTime, loadTime;
+	
+	private String savePath, loadPath;
+	
+	private static TrueTypeFont EditorFont;
+	
+	private static final float RECENT_TIME = 5f;
 
 	public Editor() {
 		CreateMap();
@@ -34,7 +44,14 @@ public class Editor {
 		this.editorUI.addButton("Save", "savebutton", (WIDTH - 256) / 2, (int) (HEIGHT * .4f));
 		this.editorUI.addButton("Load", "loadbutton", (WIDTH - 256) / 2, (int) (HEIGHT * .5f));
 		this.editorUI.addButton("Menu", "menubutton", (WIDTH - 256) / 2, (int) (HEIGHT * .6f));
+		this.recentlySaved = false;
+		this.recentlyLoaded = false;
+		this.savePath = "";
+		this.loadPath = "";
+		this.saveTime = 0f;
+		this.loadTime = 0f;
 		
+		EditorFont = new TrueTypeFont( new Font("Tahoma", Font.BOLD, 24), false);
 	}
 
 	public void Update() {
@@ -42,7 +59,15 @@ public class Editor {
 		if (showMenu){
 			showMenu();
 		}
-		
+		//Display saved/loaded filenames for RECENT_TIME after saving/loading
+		if (recentlySaved && (saveTime < RECENT_TIME)){
+			EditorFont.drawString(16f, 8f, "Saving File: " + savePath);
+			saveTime += Delta();
+		}
+		if (recentlyLoaded && (loadTime < RECENT_TIME)){
+			EditorFont.drawString(16f, 36f, "Loading File: " + loadPath);
+			loadTime += Delta();
+		}
 		// Handle mouse input
 		//Only change tiles if menu isn't up
 		if (Mouse.isButtonDown(0) && !showMenu) {
@@ -80,15 +105,22 @@ public class Editor {
 		if (Mouse.isButtonDown(0) && !mouseButton0){
 			if (editorUI.isButtonClicked("Save")){
 				Path path = FileChooser.SaveFile();
-				System.out.println("Saving map " + path.toString());
+				recentlySaved = true;
+				saveTime = 0f;
+//				savePath = path.toString();
+				savePath = path.getFileName().toString();
 			}
 			if (editorUI.isButtonClicked("Load")){
 				File mapFile = FileChooser.ChooseFile();
 				if (mapFile != null){
 					LoadMap(mapFile);
-					System.out.println("Loading map " + mapFile.toString());
+					recentlyLoaded = true;
+					loadTime = 0f;
+//					loadPath = mapFile.toString();
+					loadPath = mapFile.getName();
 				}
 				else{
+					loadPath = "Invalid File";
 					System.out.println("Invalid File");
 				}
 			}

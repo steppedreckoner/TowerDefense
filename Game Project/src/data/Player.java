@@ -1,16 +1,20 @@
 package data;
 
+import static data.TileGrid.GetTile;
+import static helpers.Artist.HEIGHT;
+import static helpers.Artist.TILE_SIZE;
+import static helpers.Artist.WIDTH;
+
+import java.awt.Font;
+import java.util.ArrayList;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.newdawn.slick.TrueTypeFont;
 
 import UI.UI;
 import helpers.Clock;
 import helpers.StateManager;
-
-import static helpers.Artist.*;
-import static data.TileGrid.*;
-
-import java.util.ArrayList;
 
 public class Player {
 
@@ -19,9 +23,11 @@ public class Player {
 	private boolean showPauseMenu, showTowerMenu, placingTower, mouseButton0, mouseButton1, mouseWait;
 	private UI towerUI;
 	
+	private static TrueTypeFont GameFont;
+	
 	public static int Cash, Lives;
 	private static TowerType CurrentTowerType;
-	public static final int STARTING_CASH = 150, STARTING_LIVES = 10;
+	public static final int STARTING_CASH = 200, STARTING_LIVES = 5;
 
 	public Player(WaveManager waveManager) {
 		this.waveManager = waveManager;
@@ -33,7 +39,9 @@ public class Player {
 		this.mouseButton1 = false;
 		//Keeps track of if there was an interactive click this update cycle. If so
 		//other mouse actions are blocked until both mouse buttons are not clicked
-		this.mouseWait = true;	
+		this.mouseWait = true;
+		
+		GameFont = new TrueTypeFont( new Font("Tahoma", Font.BOLD, 24), false);
 		
 		//Setup towerUI
 		this.towerUI = new UI();
@@ -52,7 +60,7 @@ public class Player {
 		Lives = STARTING_LIVES;
 	}
 
-	public static boolean modifyCash(int amount) {
+	public static boolean ModifyCash(int amount) {
 		if (Cash + amount >= 0) {
 			Cash += amount;
 			System.out.println(Cash);
@@ -63,7 +71,7 @@ public class Player {
 	}
 
 	// Might want to add a life every x waves
-	public static void modifyLives(int amount) {
+	public static void ModifyLives(int amount) {
 		Lives += amount;
 		if (amount == -1) {
 			System.out.println("Ouch! Lost 1 Life! " + Lives + " remaining!");
@@ -71,6 +79,14 @@ public class Player {
 		if (Lives <= 0) {
 			StateManager.setState(StateManager.GameState.GAMEOVER);
 		}
+	}
+	
+	public static void DrawCash(){
+		GameFont.drawString(WIDTH * .9f, HEIGHT * .9f, "Lives: " + Integer.toString(Lives));
+	}
+	
+	public static void DrawLives(){
+		GameFont.drawString(WIDTH * .9f, HEIGHT * .95f, "Cash: " + Integer.toString(Cash));
 	}
 	
 	private void placeTower(Tower tower, Tile tile){
@@ -124,8 +140,9 @@ public class Player {
 			towerUI.draw();
 			UpdateButtons();
 		}
-		
 		updateTowers(showPauseMenu);
+		DrawCash();
+		DrawLives();
 		if (placingTower){
 			Tower.PlacementDraw(CurrentTowerType, Mouse.getX() - 32, (int) Math.floor(HEIGHT - Mouse.getY() - 1) - 32);
 		}
@@ -135,7 +152,7 @@ public class Player {
 		if (Mouse.isButtonDown(0) && placingTower && !mouseButton0 && !mouseWait){
 			Tile tile = GetTile((int) Math.floor(Mouse.getX() / TILE_SIZE), (int) Math.floor((HEIGHT - Mouse.getY() - 1) / TILE_SIZE));
 			if (tile.canBuild()) {
-				if (modifyCash(CurrentTowerType.getCost())) {
+				if (ModifyCash(CurrentTowerType.getCost())) {
 					placeTower(CurrentTowerType.makeTower(tile, waveManager.getCurrentWave().getEnemyList()), tile);
 				}
 				placingTower = false;	//If player doesn't have enough cash, cancel tower placement
@@ -185,7 +202,7 @@ public class Player {
 				// Get tile at mouse coordinates. Will try to place tower there.
 				Tile tile = GetTile((int) Math.floor(Mouse.getX() / TILE_SIZE), (int) Math.floor((HEIGHT - Mouse.getY() - 1) / TILE_SIZE));
 				if (tile.canBuild()) {
-					if (modifyCash(CurrentTowerType.getCost())) {
+					if (ModifyCash(CurrentTowerType.getCost())) {
 						placeTower(CurrentTowerType.makeTower(tile, waveManager.getCurrentWave().getEnemyList()), tile);
 					}
 					placingTower = false;
@@ -203,7 +220,7 @@ public class Player {
 					}
 				}
 				if (tower != null) {
-					modifyCash((int) (-tower.getCost() * .8f));
+					ModifyCash((int) (-tower.getCost() * .8f));
 					towerList.remove(tower);
 					tower.getStartTile().setHasTower(false);	//There might be a way to abuse this, but it should work for now.
 				}

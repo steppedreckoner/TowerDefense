@@ -14,7 +14,9 @@ public abstract class Enemy implements Entity {
 	private boolean first, canFly;
 	protected boolean alive;
 	private Pathfinder pathfinder;
-	public boolean isSlowed;
+	private boolean isSlowed;
+	private float slowDuration, slowTime;
+	private EnemyType type;
 
 	// Used in a constructor to automatically scale difficulty within a single
 	// enemy type
@@ -22,30 +24,33 @@ public abstract class Enemy implements Entity {
 
 	private int[] directions;
 
-	public Enemy(Texture texture, TileGrid grid, int width, int height, float health, float speed, boolean canFly) {
-		this.pathfinder = new Pathfinder(canFly);
-		this.texture = texture;
-		this.healthBackground = QuickLoad("healthbackground");
-		this.healthForeground = QuickLoad("healthforeground");
-		this.healthBorder = QuickLoad("healthborder");
-		this.startTile = TileGrid.GetStartTile();
-		this.x = startTile.getX();
-		this.y = startTile.getY();
-		this.width = width;
-		this.height = height;
-		this.health = health;
-		this.startHealth = health;
-		this.speed = speed;
-		this.canFly = canFly;
-		this.directions = new int[2];
-		this.directions[0] = 0; // X direction
-		this.directions[1] = 0; // Y direction
-		this.first = true;
-		this.alive = true;
-		this.isSlowed = false;
-	}
+//	public Enemy(Texture texture, TileGrid grid, int width, int height, float health, float speed, boolean canFly) {
+//		this.pathfinder = new Pathfinder(canFly);
+//		this.texture = texture;
+//		this.healthBackground = QuickLoad("healthbackground");
+//		this.healthForeground = QuickLoad("healthforeground");
+//		this.healthBorder = QuickLoad("healthborder");
+//		this.startTile = TileGrid.GetStartTile();
+//		this.x = startTile.getX();
+//		this.y = startTile.getY();
+//		this.width = width;
+//		this.height = height;
+//		this.health = health;
+//		this.startHealth = health;
+//		this.speed = speed;
+//		this.canFly = canFly;
+//		this.directions = new int[2];
+//		this.directions[0] = 0; // X direction
+//		this.directions[1] = 0; // Y direction
+//		this.first = true;
+//		this.alive = true;
+//		this.isSlowed = false;
+//		this.slowDuration = 0;
+//		this.slowTime = 0;
+//	}
 
 	public Enemy(EnemyType type, int level) {
+		this.type = type;
 		this.setLevel(level);
 		this.canFly = type.canFly;
 		this.pathfinder = new Pathfinder(canFly);
@@ -69,6 +74,13 @@ public abstract class Enemy implements Entity {
 	}
 
 	public void update() {
+		if (isSlowed && (slowTime >= slowDuration)){
+			isSlowed = false;
+			speed = type.speed * LevelMultipliers[level - 1];
+		}
+		else{
+			slowTime += Delta();
+		}
 		this.navigate();		
 	}
 	
@@ -97,7 +109,7 @@ public abstract class Enemy implements Entity {
 	// Alternate die method for when an enemy reaches the end of the maze
 	private void endReached() {
 		alive = false;
-		Player.modifyLives(-1);
+		Player.ModifyLives(-1);
 	}
 
 	public void draw() {
@@ -107,6 +119,22 @@ public abstract class Enemy implements Entity {
 		DrawQuadTex(healthBorder, x + 5, y - 16, width - 10, 8);
 	}
 
+	public boolean isSlowed(){
+		return isSlowed;
+	}
+	
+	public void slow(float mult){
+		if (!isSlowed){
+			speed = speed * mult;
+		}
+		isSlowed = true;
+		slowTime = 0f;
+	}
+	
+	public void setSlowDuration(float duration){
+		slowDuration = duration;
+	}
+	
 	public int getWidth() {
 		return width;
 	}

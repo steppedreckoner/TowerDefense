@@ -8,9 +8,9 @@ public class ProjectileIceBullet extends Projectile {
 
 	@Override
 	public void doDamage(){
-		super.getTarget().setSpeed(5f);
+		super.getTarget().setSlowDuration(3f);
 		super.doDamage();
-		this.getTarget().isSlowed = true;
+		this.getTarget().slow(.25f);
 	}
 	
 }

@@ -4,7 +4,7 @@ import org.lwjgl.Sys;
 
 public class Clock {
 
-	private static boolean paused = false;
+	private static boolean isPaused = false;
 	public static long lastFrame, totalTime;
 	public static float d = 0, multiplier = 1;
 	
@@ -24,7 +24,7 @@ public class Clock {
 	}
 	
 	public static float Delta(){
-		if (paused){
+		if (isPaused){
 			return 0;
 		}
 		else{
@@ -55,11 +55,11 @@ public class Clock {
 	}
 	
 	public static void Pause(){
-		if (paused){
-			paused = false;
+		if (isPaused){
+			isPaused = false;
 		}		
 		else{
-			paused = true;
+			isPaused = true;
 		}
 	}
 }
