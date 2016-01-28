@@ -22,7 +22,7 @@ public class FileChooser {
 	public static void Setup(){
 		Chooser = new JFileChooser();
 		TypeFilter = new FileNameExtensionFilter("Text File", "txt");
-		CurrentRelativePath = Paths.get("");
+		CurrentRelativePath = Paths.get("maps");
 		WorkingDirPath = CurrentRelativePath.toAbsolutePath();
 		IsSetup = true;
 	}

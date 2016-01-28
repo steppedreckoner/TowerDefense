@@ -39,13 +39,7 @@ QUIT: Quits.
 
 
 Most Recent Changes:
--Cash and lives now displayed on-screen.
--Saved and loaded map names displayed in editor.
--Ice tower slowing reworked. Now temporary.
--Increased starting cash.
--Updated JAR.
--Included 3 more example maps.
--Updated readme.
+-Maps now stored in maps folder
 
 
 To Do:
@@ -113,6 +107,14 @@ To Do:
 
 
 Old Changes:
+-Cash and lives now displayed on-screen.
+-Saved and loaded map names displayed in editor.
+-Ice tower slowing reworked. Now temporary.
+-Increased starting cash.
+-Updated JAR.
+-Included 3 more example maps.
+-Updated readme.
+
 -Use JFileChooser for all file IO
 -Added executable jar with some example maps.
 
