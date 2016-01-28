@@ -1,14 +1,12 @@
 package data;
 
-import org.newdawn.slick.opengl.Texture;
-
-import helpers.Artist;
-
 import static helpers.Artist.DrawQuadTex;
 import static helpers.Artist.DrawQuadTexAlpha;
 import static helpers.Artist.QuickLoad;
 
-import java.util.concurrent.CopyOnWriteArrayList;
+import org.newdawn.slick.opengl.Texture;
+
+import helpers.Artist;
 
 public enum AOEType {
 	
@@ -17,10 +15,15 @@ public enum AOEType {
 		private float cooldownTimer; 
 		
 		@Override
-		public AOE makeAOE(float x, float y, CopyOnWriteArrayList<Enemy> enemies) {
-			return new AOEFireStrike(x, y, enemies);
+		public AOE makeAOE(float x, float y) {
+			return new AOEFireStrike(x, y);
 		}
 
+		@Override
+		public int getListID(){
+			return Player.ENEMY_LIST_ID;
+		}
+		
 		@Override
 		public void PlacementDraw(float x, float y) {
 			DrawQuadTexAlpha(FireStrike.placingTex, x - (FireStrike.width / 2), y - (FireStrike.height / 2), FireStrike.width, FireStrike.height, 1 - cooldownPercent());			
@@ -44,7 +47,7 @@ public enum AOEType {
 		
 		@Override
 		public float cooldownPercent(){
-			if (cooldownTimer < 0){
+			if (cooldownTimer <= 0){
 				return 0f;
 			}
 			return (cooldownTimer / FireStrike.cooldown);
@@ -57,10 +60,110 @@ public enum AOEType {
 
 	},
 	
+	TowerBuff(QuickLoad("aoetowerbuff"), QuickLoad("aoetowerbuffoutline"), 5f, 3f * Artist.TILE_SIZE, 5f){
+		
+		private float cooldownTimer;
+
+		@Override
+		public AOE makeAOE(float x, float y) {
+			return new AOETowerBuff(x, y);
+		}
+
+		@Override
+		public int getListID(){
+			return Player.TOWER_LIST_ID;
+		}
+		
+		@Override
+		public void PlacementDraw(float x, float y) {
+			DrawQuadTexAlpha(TowerBuff.placingTex, x - (TowerBuff.width / 2), y - (TowerBuff.height / 2), TowerBuff.width, TowerBuff.height, 1 - cooldownPercent());			
+			DrawQuadTex(QuickLoad("cooldownbackground"), x - (64 / 2), y + 70, 64, 8);
+			DrawQuadTex(QuickLoad("cooldownforeground"), x - (64 / 2), y + 70, 64 * (1 - cooldownPercent()), 8);
+			DrawQuadTex(QuickLoad("cooldownborder"), x - (64 / 2), y + 70, 64, 8);
+		}
+		
+		@Override
+		public void resetCooldown() {
+			cooldownTimer = TowerBuff.cooldown;
+		}
+
+		@Override
+		public void incrementCooldown(float time) {
+			if (cooldownTimer <= 0){
+				cooldownTimer = 0;
+			}
+			cooldownTimer -= time;
+		}
+		
+		@Override
+		public float cooldownPercent(){
+			if (cooldownTimer <= 0){
+				return 0f;
+			}
+			return (cooldownTimer / TowerBuff.cooldown);
+		}
+		
+		@Override
+		public boolean cooldownComplete(){
+			return cooldownTimer <= 0;
+		}
+		
+	},
+	
+	Slow(QuickLoad("aoeslow"), QuickLoad("aoeslowoutline"), 10f, 2f * Artist.TILE_SIZE, 10f){
+		
+		private float cooldownTimer;
+
+		@Override
+		public AOE makeAOE(float x, float y) {
+			return new AOESlow(x, y);
+		}
+
+		@Override
+		public int getListID() {
+			return Player.ENEMY_LIST_ID;
+		}
+
+		@Override
+		public void PlacementDraw(float x, float y) {
+			DrawQuadTexAlpha(Slow.placingTex, x - (Slow.width / 2), y - (Slow.height / 2), Slow.width, Slow.height, 1 - cooldownPercent());			
+			DrawQuadTex(QuickLoad("cooldownbackground"), x - (64 / 2), y + 70, 64, 8);
+			DrawQuadTex(QuickLoad("cooldownforeground"), x - (64 / 2), y + 70, 64 * (1 - cooldownPercent()), 8);
+			DrawQuadTex(QuickLoad("cooldownborder"), x - (64 / 2), y + 70, 64, 8);
+		}
+		
+		@Override
+		public void resetCooldown() {
+			cooldownTimer = Slow.cooldown;
+		}
+
+		@Override
+		public void incrementCooldown(float time) {
+			if (cooldownTimer <= 0){
+				cooldownTimer = 0;
+			}
+			cooldownTimer -= time;
+		}
+		
+		@Override
+		public float cooldownPercent(){
+			if (cooldownTimer <= 0){
+				return 0f;
+			}
+			return (cooldownTimer / Slow.cooldown);
+		}
+		
+		@Override
+		public boolean cooldownComplete(){
+			return cooldownTimer <= 0;
+		}
+		
+	},
+	
 	NULL(QuickLoad("aoenull"), QuickLoad("aoenull"), 99999f, 0f, 0f){
 		
 		@Override
-		public AOE makeAOE(float x, float y, CopyOnWriteArrayList<Enemy> enemies){
+		public AOE makeAOE(float x, float y){
 			System.out.println("Tried AOENULL");
 			return null;
 		}
@@ -86,6 +189,11 @@ public enum AOEType {
 		public boolean cooldownComplete() {
 			return false;
 		}
+
+		@Override
+		public int getListID() {
+			return 0;
+		}
 		
 	};
 	
@@ -103,8 +211,9 @@ public enum AOEType {
 		this.height = activeTex.getImageHeight();
 	}
 	
-	public abstract AOE makeAOE(float x, float y, CopyOnWriteArrayList<Enemy> enemies);
+	public abstract AOE makeAOE(float x, float y);
 	
+	public abstract int getListID();
 	public abstract void PlacementDraw(float x, float y);
 	public abstract void resetCooldown();
 	public abstract void incrementCooldown(float time);

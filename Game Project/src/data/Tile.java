@@ -61,6 +61,10 @@ public class Tile {
 	public float getX() {
 		return x;
 	}
+	
+	public float getCenterX(){
+		return x + TILE_SIZE / 2;
+	}
 
 	public void setX(float x) {
 		this.x = x;
@@ -68,6 +72,10 @@ public class Tile {
 
 	public float getY() {
 		return y;
+	}
+	
+	public float getCenterY(){
+		return y + TILE_SIZE / 2;
 	}
 
 	public void setY(float y) {

@@ -9,6 +9,7 @@ I have since diverged, including the following.
 
 -Loading maps from a file on beginning of a new game.
 -Loading and saving maps done with JFileChooser. No longer need to interact with console.
+-Area of Effect (AOE) actions that affect enemies/tower within a certain radius.
 -Toggleable menus for in game and editor.
 -Pathfinder class to handle enemy navigation. This will eventually allow for enemies to navigate around
  player placed obstacles.
@@ -16,7 +17,7 @@ I have since diverged, including the following.
 -Navigation done with Dijkstra's algorithm. Allows for reliable navigation of maps with 
  tracks wider than 1 tile.
 -Reworked the game map to be static.
--Enums for easier selection of enemies and projectiles.
+-Enums for easier selection of AOEs, enemies and projectiles.
 
 
 Instructions:
@@ -29,7 +30,9 @@ the game will crash. Enemy type cannot currently be changed. Select a tower type
 by right-clicking Towers can be deleted with 80% refund by hovering over a tower and pressing 'D'. Time can be 
 accelerated/decelerated with the right/left arrow key respectively (Note: fast forwarding may cause enemies to
 fly off the course. This will be addressed eventually).	Access AOE Fire Strike by pressing 'Q' and clicking on
-the map. Fire Strike has a 4 second duration and a 10 second cooldown.
+the map. Fire Strike has a 4 second duration and has a 10 second cooldown. Get AOE Tower Buff by pressing 'W'.
+This will increase the rate of fire for all towers in its range. Get Slow AOE by pressing 'E'. This will slow
+down in-range enemies.
 
 EDITOR: Loads a map with all grass tiles. Tile type can be modified by clicking on a tile. Switch the type
 that clicking changes to by pressing the numbers 1-5 (1: Grass, 2: Dirt, 3: Water, 4: Start, 5: Goal). Press 
@@ -40,15 +43,15 @@ QUIT: Quits.
 
 
 Most Recent Changes:
--Implemented AOE player action.
---Dynamic cooldown and placement drawing.
--Pausing now done through helpers.Clock (set Delta to 0 for everything).
--Fixed bug when trying to place a tower on an occupied tile (would charge money but not place tower).
--Changed Artist.DrawQuadTex* methods to explicitly draw on a white tile.
--Player info (lives, cash, wave#) now in color!
-
+-Added TowerBuff AOE.
+-Added Slow AOE.
+-Updated main menu.
+-Fixed border on reset button.
+-Fixed pause glitch. 
 
 To Do:
+
+-Clean up isInRange methods.
 
 -(DONE) Use helper class Clock to handle pausing more elegantly.
 
@@ -68,9 +71,9 @@ To Do:
 
 -Allow enemies to move in any direction.
 
--Fix border on Game Over reset button.
+-(DONE) Fix border on Game Over reset button.
 
--Change font of "Tower Defense" on main menu background.
+-(DONE) Change font of "Tower Defense" on main menu background.
 
 -Saving/loading games.
 
@@ -100,10 +103,10 @@ To Do:
 
 -Projectiles originate from the end of the gun barrel (currently spawn at center of tower).
 
--Player controlled AOE actions (eg set all enemies on fire within radius x of mouse click)
---Fire
---Slow
---Tower buffs
+-(DONE) Player controlled AOE actions (eg set all enemies on fire within radius x of mouse click)
+--(DONE) Fire
+--(DONE) Slow
+--(DONE) Tower buffs
 
 -Level up of towers.
 
@@ -132,6 +135,13 @@ To Do:
 
 
 Old Changes:
+-Implemented AOE player action.
+--Dynamic cooldown and placement drawing.
+-Pausing now done through helpers.Clock (set Delta to 0 for everything).
+-Fixed bug when trying to place a tower on an occupied tile (would charge money but not place tower).
+-Changed Artist.DrawQuadTex* methods to explicitly draw on a white tile.
+-Player info (lives, cash, wave#) now in color!
+
 -Maps now stored in maps folder
 
 -Cash and lives now displayed on-screen.

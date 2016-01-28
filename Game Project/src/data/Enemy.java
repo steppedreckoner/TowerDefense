@@ -101,8 +101,8 @@ public abstract class Enemy implements Entity {
 	public void slow(float mult){
 		if (!isSlowed){
 			speed = speed * mult;
+			isSlowed = true;
 		}
-		isSlowed = true;
 		slowTime = 0f;
 	}
 	

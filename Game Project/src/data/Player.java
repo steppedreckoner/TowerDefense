@@ -32,6 +32,7 @@ public class Player {
 	
 	public static int Cash, Lives;
 	public static final int STARTING_CASH = 200, STARTING_LIVES = 5;
+	public static final int TOWER_LIST_ID = 703, ENEMY_LIST_ID = 333;
 
 	public Player(WaveManager waveManager) {
 		this.waveManager = waveManager;
@@ -139,8 +140,14 @@ public class Player {
 		}
 	}
 	
-	private void placeAOE(AOE a){
+	private void placeAOE(AOE a, int listID){
 		AOEList.add(a);
+		if (listID == ENEMY_LIST_ID){
+			a.setEnemyList(waveManager.getCurrentWave().getEnemyList());
+		}
+		else if (listID == TOWER_LIST_ID){
+			a.setTowerList(towerList);
+		}
 	}
 	
 	public void updateAOE(){
@@ -185,9 +192,10 @@ public class Player {
 				}
 			}
 			if (placingAOE && CurrentAOEType.cooldownComplete()){
-				placeAOE(CurrentAOEType.makeAOE(Mouse.getX(), (int) Math.floor(HEIGHT - Mouse.getY() - 1), waveManager.getCurrentWave().getEnemyList()));
-				CurrentAOEType.resetCooldown();
-				placingAOE = false;
+					//Use placeAOE method to ensure AOEs aren't placed without fetching the appropriate list
+					placeAOE(CurrentAOEType.makeAOE(Mouse.getX(), (int) Math.floor(HEIGHT - Mouse.getY() - 1)), CurrentAOEType.getListID());
+					CurrentAOEType.resetCooldown();
+					placingAOE = false;
 			}
 		}
 		//Cancel tower or AOE placement by pressing right mouse
@@ -241,6 +249,16 @@ public class Player {
 			
 			if (Keyboard.getEventKey() == Keyboard.KEY_Q && Keyboard.getEventKeyState()) {
 				CurrentAOEType = AOEType.FireStrike;
+				placingAOE = true;
+				placingTower = false;
+			}
+			if (Keyboard.getEventKey() == Keyboard.KEY_W && Keyboard.getEventKeyState()) {
+				CurrentAOEType = AOEType.TowerBuff;
+				placingAOE = true;
+				placingTower = false;
+			}
+			if (Keyboard.getEventKey() == Keyboard.KEY_E && Keyboard.getEventKeyState()) {
+				CurrentAOEType = AOEType.Slow;
 				placingAOE = true;
 				placingTower = false;
 			}

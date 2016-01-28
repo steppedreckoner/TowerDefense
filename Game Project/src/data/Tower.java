@@ -7,6 +7,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.newdawn.slick.opengl.Texture;
 
+import helpers.Artist;
+
 public abstract class Tower implements Entity {
 
 	protected float x, y;
@@ -19,7 +21,8 @@ public abstract class Tower implements Entity {
 	private Tile startTile;
 	protected CopyOnWriteArrayList<Enemy> enemies;
 	protected CopyOnWriteArrayList<Projectile> projectiles;
-	protected boolean hasTarget;
+	protected boolean hasTarget, isBuffed;
+	private TowerType type;
 
 	public Tower(TowerType type, Tile startTile, CopyOnWriteArrayList<Enemy> enemies) {
 		this.textures = type.textures;
@@ -32,10 +35,12 @@ public abstract class Tower implements Entity {
 		this.height = startTile.getHeight();
 		this.enemies = enemies;
 		this.hasTarget = false;
+		this.isBuffed = false;
 		this.timeSinceLastShot = this.rateOfFire;
 		this.projectiles = new CopyOnWriteArrayList<Projectile>();
 		this.angle = 0f;
 		this.cost = type.getCost();
+		this.type = type;
 	}
 
 	public void update() {
@@ -104,6 +109,28 @@ public abstract class Tower implements Entity {
 		enemies = newEnemies;
 	}
 	
+	public void rateOfFireMultiplier(float mult){
+		rateOfFire = rateOfFire / mult;
+		buff();
+	}
+	
+	public void resetRateOfFire(){
+		rateOfFire = type.rateOfFire;
+	}
+	
+	public boolean isBuffed(){
+		return isBuffed;
+	}
+	
+	public void buff(){
+		isBuffed = true;
+	}
+	
+	public void debuff(){
+		resetRateOfFire();
+		isBuffed = false;
+	}
+	
 	public int getCost(){
 		return cost;
 	}
@@ -114,6 +141,14 @@ public abstract class Tower implements Entity {
 
 	public float getY() {
 		return y;
+	}
+	
+	public float getCenterX(){
+		return x + Artist.TILE_SIZE / 2;
+	}
+	
+	public float getCenterY(){
+		return y + Artist.TILE_SIZE / 2;
 	}
 
 	public int getWidth() {

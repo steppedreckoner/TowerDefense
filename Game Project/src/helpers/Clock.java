@@ -57,4 +57,8 @@ public class Clock {
 	public static void Pause(){
 		isPaused = !isPaused;
 	}
+	
+	public static boolean IsPaused(){
+		return isPaused;
+	}
 }

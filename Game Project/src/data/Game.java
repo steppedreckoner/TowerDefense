@@ -2,6 +2,7 @@ package data;
 
 import static data.TileGrid.CreateMap;
 import static helpers.Artist.*;
+import static helpers.Clock.*;
 
 import java.awt.Font;
 
@@ -35,6 +36,10 @@ public class Game {
 		gameUI.addButton("Menu", "menubutton", (WIDTH - 256) / 2, (int) (HEIGHT * .5f));
 		
 		GameFont = new TrueTypeFont( new Font("Tahoma", Font.BOLD, 24), false);
+		
+		if (IsPaused()){
+			Pause();
+		}
 	}
 	
 	private void UpdateButtons(){
