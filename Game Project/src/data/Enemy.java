@@ -24,31 +24,6 @@ public abstract class Enemy implements Entity {
 
 	private int[] directions;
 
-//	public Enemy(Texture texture, TileGrid grid, int width, int height, float health, float speed, boolean canFly) {
-//		this.pathfinder = new Pathfinder(canFly);
-//		this.texture = texture;
-//		this.healthBackground = QuickLoad("healthbackground");
-//		this.healthForeground = QuickLoad("healthforeground");
-//		this.healthBorder = QuickLoad("healthborder");
-//		this.startTile = TileGrid.GetStartTile();
-//		this.x = startTile.getX();
-//		this.y = startTile.getY();
-//		this.width = width;
-//		this.height = height;
-//		this.health = health;
-//		this.startHealth = health;
-//		this.speed = speed;
-//		this.canFly = canFly;
-//		this.directions = new int[2];
-//		this.directions[0] = 0; // X direction
-//		this.directions[1] = 0; // Y direction
-//		this.first = true;
-//		this.alive = true;
-//		this.isSlowed = false;
-//		this.slowDuration = 0;
-//		this.slowTime = 0;
-//	}
-
 	public Enemy(EnemyType type, int level) {
 		this.type = type;
 		this.setLevel(level);
@@ -95,8 +70,8 @@ public abstract class Enemy implements Entity {
 		}
 	}
 
-	public void decreaseHealth(int damage) {
-		this.health -= damage;
+	public void decreaseHealth(float f) {
+		this.health -= f;
 		// Sees if health is below 0, and ensures an enemy can only be killed once
 		if (this.health <= 0 && this.isAlive()) {
 			this.die();
@@ -157,6 +132,14 @@ public abstract class Enemy implements Entity {
 
 	public void setHealth(float health) {
 		this.health = health;
+	}
+	
+	public float getCenterX(){
+		return x + (width / 2);
+	}
+	
+	public float getCenterY(){
+		return y + (height / 2);
 	}
 
 	public float getX() {

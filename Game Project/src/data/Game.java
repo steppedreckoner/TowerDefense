@@ -3,7 +3,10 @@ package data;
 import static data.TileGrid.CreateMap;
 import static helpers.Artist.*;
 
+import java.awt.Font;
+
 import org.lwjgl.input.Mouse;
+import org.newdawn.slick.TrueTypeFont;
 
 import UI.UI;
 import helpers.StateManager;
@@ -14,6 +17,8 @@ public class Game {
 	private Player player;
 	private WaveManager waveManager;
 	private boolean mouseButton0;
+	
+	public static TrueTypeFont GameFont;
 	
 	private UI gameUI;
 	
@@ -28,6 +33,8 @@ public class Game {
 		this.mouseButton0 = false;
 		this.gameUI = new UI();
 		gameUI.addButton("Menu", "menubutton", (WIDTH - 256) / 2, (int) (HEIGHT * .5f));
+		
+		GameFont = new TrueTypeFont( new Font("Tahoma", Font.BOLD, 24), false);
 	}
 	
 	private void UpdateButtons(){
@@ -39,17 +46,21 @@ public class Game {
 		mouseButton0 = Mouse.isButtonDown(0);
 	}
 	
+	private void drawGameInfo(){
+		Player.DrawCash();
+		waveManager.drawWaveNumber();
+		Player.DrawLives();
+	}
+	
 	public void Update(){
-		TileGrid.Draw();		//Draw the board
-		player.update();
+		TileGrid.Draw();		//Draw the board	
 		if (player.showPauseMenu()){
-			waveManager.pauseDraw();
 			gameUI.draw();
 			UpdateButtons();
 		}
-		else{
-			waveManager.update();	//Enemy Actions (Don't do if game menu is up)
-		}
+		waveManager.update();	//Enemy Actions
+		player.update();		//Player Actions
+		drawGameInfo();
 	}
 	
 

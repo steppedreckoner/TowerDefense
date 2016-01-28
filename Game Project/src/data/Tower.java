@@ -9,8 +9,7 @@ import org.newdawn.slick.opengl.Texture;
 
 public abstract class Tower implements Entity {
 
-	protected float x;
-	protected float y;
+	protected float x, y;
 	protected float timeSinceLastShot;
 	private float rateOfFire;
 	private float angle;
@@ -33,17 +32,10 @@ public abstract class Tower implements Entity {
 		this.height = startTile.getHeight();
 		this.enemies = enemies;
 		this.hasTarget = false;
-		this.timeSinceLastShot = 0f;
+		this.timeSinceLastShot = this.rateOfFire;
 		this.projectiles = new CopyOnWriteArrayList<Projectile>();
 		this.angle = 0f;
 		this.cost = type.getCost();
-	}
-	
-	public void pauseUpdate(){
-		for (Projectile p : projectiles){
-			p.draw();
-		}
-		this.draw();
 	}
 
 	public void update() {
@@ -98,8 +90,8 @@ public abstract class Tower implements Entity {
 	}
 
 	protected float findDistance(Enemy e) {
-		float xDist = e.getX() - x;
-		float yDist = e.getY() - y;
+		float xDist = e.getCenterX() - x;
+		float yDist = e.getCenterY() - y;
 		return (float) Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
 	}
 
@@ -108,7 +100,7 @@ public abstract class Tower implements Entity {
 		return (float) Math.toDegrees(angleTemp) - 90;
 	}
 
-	public void RefreshEnemies(CopyOnWriteArrayList<Enemy> newEnemies) {
+	public void refreshEnemies(CopyOnWriteArrayList<Enemy> newEnemies) {
 		enemies = newEnemies;
 	}
 	

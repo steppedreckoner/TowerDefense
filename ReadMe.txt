@@ -28,7 +28,8 @@ the game will crash. Enemy type cannot currently be changed. Select a tower type
 (T) or with the hotkeys (1, 2 or 3). Once a type is selected, place towers by left-clicking. Cancel a placement
 by right-clicking Towers can be deleted with 80% refund by hovering over a tower and pressing 'D'. Time can be 
 accelerated/decelerated with the right/left arrow key respectively (Note: fast forwarding may cause enemies to
-fly off the course. This will be addressed eventually).
+fly off the course. This will be addressed eventually).	Access AOE Fire Strike by pressing 'Q' and clicking on
+the map. Fire Strike has a 4 second duration and a 10 second cooldown.
 
 EDITOR: Loads a map with all grass tiles. Tile type can be modified by clicking on a tile. Switch the type
 that clicking changes to by pressing the numbers 1-5 (1: Grass, 2: Dirt, 3: Water, 4: Start, 5: Goal). Press 
@@ -39,14 +40,35 @@ QUIT: Quits.
 
 
 Most Recent Changes:
--Maps now stored in maps folder
+-Implemented AOE player action.
+--Dynamic cooldown and placement drawing.
+-Pausing now done through helpers.Clock (set Delta to 0 for everything).
+-Fixed bug when trying to place a tower on an occupied tile (would charge money but not place tower).
+-Changed Artist.DrawQuadTex* methods to explicitly draw on a white tile.
+-Player info (lives, cash, wave#) now in color!
 
 
 To Do:
 
--Allow enemies to move in any direction
+-(DONE) Use helper class Clock to handle pausing more elegantly.
 
--Fix border on gameover reset button.
+-Player levels
+--Exp bar to show progress to next level
+--Unlock different towers, projectiles and AOE
+--Unlock different tower, projectile and AOE upgrades
+--Unlock player buffs (e.g. increase starting cash)
+--Different maps have different difficulty (harder maps require higher player level)
+--Player profiles can be saved and loaded
+
+-Lives, cash and wave have change animation (probably flashing).
+
+-Difficulty selection.
+
+-Multiple map campaigns.
+
+-Allow enemies to move in any direction.
+
+-Fix border on Game Over reset button.
 
 -Change font of "Tower Defense" on main menu background.
 
@@ -79,6 +101,9 @@ To Do:
 -Projectiles originate from the end of the gun barrel (currently spawn at center of tower).
 
 -Player controlled AOE actions (eg set all enemies on fire within radius x of mouse click)
+--Fire
+--Slow
+--Tower buffs
 
 -Level up of towers.
 
@@ -107,6 +132,8 @@ To Do:
 
 
 Old Changes:
+-Maps now stored in maps folder
+
 -Cash and lives now displayed on-screen.
 -Saved and loaded map names displayed in editor.
 -Ice tower slowing reworked. Now temporary.

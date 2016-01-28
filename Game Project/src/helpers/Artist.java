@@ -21,6 +21,7 @@ import static org.lwjgl.opengl.GL11.glRotatef;
 import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glTranslatef;
 import static org.lwjgl.opengl.GL11.glVertex2f;
+import static org.lwjgl.opengl.GL11.glColor4f;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -69,6 +70,7 @@ public class Artist {
 	
 	public static void DrawQuad(float x, float y, float width, float height){
 		glBegin(GL_QUADS);
+		glColor4f(0f, 0f, 0f, 1f);
 		glVertex2f(x,y);
 		glVertex2f(x + width,y);
 		glVertex2f(x + width,y + height);
@@ -78,6 +80,7 @@ public class Artist {
 	
 
 	public static void DrawQuadTex(Texture tex, float x, float y, float width, float height){
+		glColor4f(1f, 1f, 1f, 1f);	//Draw on solid white background
 		tex.bind();
 		glTranslatef(x, y, 0);
 		glBegin(GL_QUADS);
@@ -95,9 +98,27 @@ public class Artist {
 	
 	public static void DrawQuadTexRotate(Texture tex, float x, float y, float width, float height, float angle){
 		tex.bind();
+		glColor4f(1f, 1f, 1f, 1f);
 		glTranslatef(x + width / 2, y + height / 2, 0);
 		glRotatef(angle, 0, 0, 1);
 		glTranslatef(-width / 2, - height / 2, 0);
+		glBegin(GL_QUADS);
+		glTexCoord2f(0,0);
+		glVertex2f(0,0);
+		glTexCoord2f(1,0);
+		glVertex2f(width,0);
+		glTexCoord2f(1,1);
+		glVertex2f(width, height);
+		glTexCoord2f(0,1);
+		glVertex2f(0,height);
+		glEnd();
+		glLoadIdentity();
+	}
+	
+	public static void DrawQuadTexAlpha(Texture tex, float x, float y, float width, float height, float alpha){
+		tex.bind();
+		glColor4f(1f, 1f, 1f, alpha);
+		glTranslatef(x, y, 0);
 		glBegin(GL_QUADS);
 		glTexCoord2f(0,0);
 		glVertex2f(0,0);

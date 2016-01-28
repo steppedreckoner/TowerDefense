@@ -1,5 +1,8 @@
 package data;
 
+import static helpers.Artist.HEIGHT;
+import static helpers.Artist.WIDTH;
+
 import java.util.ArrayList;
 
 public class WaveManager {
@@ -46,10 +49,9 @@ public class WaveManager {
 		newWave(enemyType, enemiesPerWaveList.get(waveNumber),
 				timeBetweenEnemiesList.get(waveNumber), 1);
 	}
-	
-	//Draws but does not update enemies for use while paused
-	public void pauseDraw(){
-		currentWave.pauseDraw();
+
+	public void drawWaveNumber(){
+		Game.GameFont.drawString(WIDTH * .9f, HEIGHT * .89f, "Wave: " + Integer.toString(waveNumber));
 	}
 
 	public void update() {
