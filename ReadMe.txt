@@ -9,13 +9,11 @@ This game is still in development. Some core features are still missing, but it'
 To prospective employers,
 
 This project aims to both demonstrate and expand my programming ability. I initially began development in
-conjunction with a tutorial (found at https://www.youtube.com/channel/UC0MHs87ehhLOtPQf_bAWDEA), but]I have
+conjunction with a tutorial (found at https://www.youtube.com/channel/UC0MHs87ehhLOtPQf_bAWDEA), but I have
 since diverged heavily. Just about every part of the game has been customized or modified in some way. 
 
 I know that this ReadMe is not managed perfectly. While I am certainly striving make it useful, I really want 
-to demonstrate that I take documentation seriously. I fully understand that your organization will probably 
-have different practices, and I will have no problem adhering to them. The same goes for coding style. For the
-most part, I am sticking to how I was taught. However, I am very willing to adapt.
+to demonstrate that I take documentation seriously. 
 
 I appreciate you taking the time to look at this!
 
