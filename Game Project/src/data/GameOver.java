@@ -21,9 +21,11 @@ public class GameOver {
 		this.mouseButton0 = false;
 		this.background = QuickLoad("gameover");
 		this.gameOverUI = new UI();
-		this.gameOverUI.addButton("Reset", "resetbutton64", (WIDTH - 256) / 2, 500);
+		this.gameOverUI.addButton("Reset", "resetbutton", (WIDTH - 256) / 2, 500);
 		this.gameOverUI.addButton("Menu", "menubutton", (WIDTH - 256) / 2, 600);
 		this.gameOverUI.addButton("Quit", "quitbutton", (WIDTH - 256) / 2, 700);
+		
+		System.out.println("GameOver");
 	}
 	
 	private void UpdateButtons(){

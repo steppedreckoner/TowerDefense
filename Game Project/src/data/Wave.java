@@ -29,6 +29,7 @@ public class Wave {
 	public void update() {
 		boolean allEnemiesDead = true;
 		if (enemiesSpawned < enemiesPerWave) {
+			allEnemiesDead = false;
 			timeSinceLastSpawn += Delta();
 			if (timeSinceLastSpawn > spawnTime) {
 				spawn(enemyType, level);

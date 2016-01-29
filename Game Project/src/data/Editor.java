@@ -17,6 +17,7 @@ import org.newdawn.slick.TrueTypeFont;
 
 import UI.UI;
 import helpers.FileChooser;
+import helpers.Leveler;
 import helpers.StateManager;
 import helpers.StateManager.GameState;
 
@@ -104,14 +105,14 @@ public class Editor {
 	private void UpdateButtons(){
 		if (Mouse.isButtonDown(0) && !mouseButton0){
 			if (editorUI.isButtonClicked("Save")){
-				Path path = FileChooser.SaveFile();
+				Path path = FileChooser.SaveFile(Leveler.GetMapString(), FileChooser.MAP_FILE);
 				recentlySaved = true;
 				saveTime = 0f;
 //				savePath = path.toString();
 				savePath = path.getFileName().toString();
 			}
 			if (editorUI.isButtonClicked("Load")){
-				File mapFile = FileChooser.ChooseFile();
+				File mapFile = FileChooser.ChooseFile(FileChooser.MAP_FILE);
 				if (mapFile != null){
 					LoadMap(mapFile);
 					recentlyLoaded = true;

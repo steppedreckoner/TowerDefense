@@ -39,12 +39,16 @@ public class WaveManager {
 
 		this.currentWave = null;
 
-		for (int i = 1; i <= 4; i++) {
+		for (int i = 1; i <= 10; i++) {
 //			Enemy enemy = new Enemy(QuickLoad("UFO"), grid.getTile(5, 7), grid, TILE_SIZE, TILE_SIZE, 50, 50 + 25 * i);	//Makes a different enemy type for each wave
 //			enemyTypeList.add(enemy);	
 			enemiesPerWaveList.add(i + 1);
-			timeBetweenEnemiesList.add((float) (3 - i * .5));
+			timeBetweenEnemiesList.add((float) (3 - i * .15));
 		}
+		enemiesPerWaveList.add(100);
+		enemiesPerWaveList.add(1000);
+		timeBetweenEnemiesList.add(1f);
+		timeBetweenEnemiesList.add(.5f);
 
 		newWave(enemyType, enemiesPerWaveList.get(waveNumber),
 				timeBetweenEnemiesList.get(waveNumber), 1);
@@ -77,11 +81,11 @@ public class WaveManager {
 	}
 	
 	private void newWave(int enemiesPerWave, float timeBetweenEnemies){
-		int level = 1;
-		if (waveNumber + 1 > 2){	//Add one because waveNumber isn't updated until after this evaluation
-			level = 2;
-			System.out.println(level);
-		}
+//		int level = 1;
+//		if (waveNumber + 1 > 2){	//Add one because waveNumber isn't updated until after this evaluation
+//			level = 2;
+//		}
+		int level = Math.floorDiv(waveNumber, 2) + 1;
 		newWave(EnemyType.EnemyUFO, enemiesPerWave, timeBetweenEnemies, level);
 	}
 	

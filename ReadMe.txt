@@ -1,14 +1,33 @@
+TOWER DEFENSE
+
+
 This game is still in development. Some core features are still missing, but it's getting closer!
 
-Note: If features aren't working as described, check the commit messages. I've started keeping commit
-messages in the readme, but some earlier changes were only tracked in the commits.
 
-This project aims to both demonstrate and expand my programming ability. I initially began development 
-in conjunction with a tutorial (found at https://www.youtube.com/channel/UC0MHs87ehhLOtPQf_bAWDEA), but
-I have since diverged, including the following.
 
+
+To prospective employers,
+
+This project aims to both demonstrate and expand my programming ability. I initially began development in
+conjunction with a tutorial (found at https://www.youtube.com/channel/UC0MHs87ehhLOtPQf_bAWDEA), but]I have
+since diverged heavily. Just about every part of the game has been customized or modified in some way. 
+
+I know that this ReadMe is not managed perfectly. While I am certainly striving make it useful, I really want 
+to demonstrate that I take documentation seriously. I fully understand that your organization will probably 
+have different practices, and I will have no problem adhering to them. The same goes for coding style. For the
+most part, I am sticking to how I was taught. However, I am very willing to adapt.
+
+I appreciate you taking the time to look at this!
+
+Greg Cousins
+
+
+
+A few of my own major implementations
 -Loading maps from a file on beginning of a new game.
 -Loading and saving maps done with JFileChooser. No longer need to interact with console.
+-Player leveling and unlocks.
+-Enemy leveling.
 -Area of Effect (AOE) actions that affect enemies/towers within a certain radius.
 -Toggleable menus for in game and editor.
 -Pathfinder class to handle enemy navigation. This will eventually allow for enemies to navigate around
@@ -16,8 +35,13 @@ I have since diverged, including the following.
 -Start and end tiles determined on loading map, no longer have to be hardcoded.
 -Navigation done with Dijkstra's algorithm. Allows for reliable navigation of maps with 
  tracks wider than 1 tile.
--Reworked the game map to be static.
+-Static game map allows for easier navigation
 -Enums for easier selection of AOEs, enemies and projectiles.
+-Everything in the "Old Changes" section.
+
+
+Note: If features aren't working as described, check the commit messages. I've started keeping commit
+messages in the readme, but some earlier changes were only tracked in the commits.
 
 
 Instructions:
@@ -29,10 +53,12 @@ the game will crash. Enemy type cannot currently be changed. Select a tower type
 (T) or with the hotkeys (1, 2 or 3). Once a type is selected, place towers by left-clicking. Cancel a placement
 by right-clicking Towers can be deleted with 80% refund by hovering over a tower and pressing 'D'. Time can be 
 accelerated/decelerated with the right/left arrow key respectively (Note: fast forwarding may cause enemies to
-fly off the course. This will be addressed eventually).	Access AOE Fire Strike by pressing 'Q' and clicking on
-the map. Fire Strike has a 4 second duration and has a 10 second cooldown. Get AOE Tower Buff by pressing 'W'.
-This will increase the rate of fire for all towers in its range. Get Slow AOE by pressing 'E'. This will slow
-down in-range enemies.
+fly off the course. This will be addressed eventually).	Reset the time multiplier with the up arrow. Access AOE
+Fire Strike by pressing 'Q' and clicking on the map. Fire Strike has a 4 second duration and has a 10 second 
+cooldown. Get AOE Tower Buff by pressing 'W'. This will increase the rate of fire for all towers in its range.
+Get Slow AOE by pressing 'E'. This will slow in-range enemies. With the addition of player levels, certain
+towers and AOEs are locked until you reach a high enough player level. So, if you can't place a tower/AOE, 
+that's (hopefully) why!
 
 EDITOR: Loads a map with all grass tiles. Tile type can be modified by clicking on a tile. Switch the type
 that clicking changes to by pressing the numbers 1-5 (1: Grass, 2: Dirt, 3: Water, 4: Start, 5: Goal). Press 
@@ -43,13 +69,32 @@ QUIT: Quits.
 
 
 Most Recent Changes:
--Added TowerBuff AOE.
--Added Slow AOE.
--Updated main menu.
--Fixed border on reset button.
--Fixed pause glitch. 
+-Added player levels with some basic unlocks.
+-Reworked Enemy classes so that leveling up of enemies is handled more easily.
+-Added more UFO levels (now 1-5).
+-Added more enemy waves (now 12, 2 per UFO level + 2 super waves!)
+-FileChooser class will now work with player profiles once they're implemented (game saves).
+
+
+TowerDefense Tropes:
+-Space
+-Medieval/Castles
+-Bloons
+-Fantasy
+-Minimalist
+-Scary Monsters
+
+
+Known Issues:
+-Loading invalid maps crashes the game.
+-Map files won't save unless ".txt" is manually entered. 
+
 
 To Do:
+
+-Rework Game update mathod so that enemies are drawn above towers, but AOEs are still above enemies.
+
+-Clean up update method in Player class.
 
 -Clean up isInRange methods.
 
@@ -63,9 +108,13 @@ To Do:
 --Different maps have different difficulty (harder maps require higher player level)
 --Player profiles can be saved and loaded
 
+-Resizable Window.
+
 -Lives, cash and wave have change animation (probably flashing).
 
--Floating notification on lives/cash change (e.g. place a tower that costs 40, and a little "-$40" floats up
+-Buttons change color when hovered over/pressed.
+
+-Floating notification on lives/cash change (e.g. place a tower that costs $40, and a little "-$40" floats up
  from where you placed the tower).
 
 -Difficulty selection.
@@ -144,6 +193,12 @@ To Do:
 
 
 Old Changes:
+-Added TowerBuff AOE.
+-Added Slow AOE.
+-Updated main menu.
+-Fixed border on reset button.
+-Fixed pause glitch.
+
 -Implemented AOE player action.
 --Dynamic cooldown and placement drawing.
 -Pausing now done through helpers.Clock (set Delta to 0 for everything).

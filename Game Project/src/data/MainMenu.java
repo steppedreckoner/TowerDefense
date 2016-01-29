@@ -3,9 +3,14 @@ package data;
 import static helpers.Artist.DrawQuadTex;
 import static helpers.Artist.HEIGHT;
 import static helpers.Artist.QuickLoad;
+
+import java.awt.Font;
+
 import static helpers.Artist.*;
 
 import org.lwjgl.input.Mouse;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.opengl.Texture;
 
 import UI.UI;
@@ -17,6 +22,7 @@ public class MainMenu {
 	private Texture background;
 	private UI menuUI;
 	private boolean mouseButton0;
+	private TrueTypeFont imageCreditFont;
 	
 	public MainMenu(){
 		this.mouseButton0 = false;
@@ -25,6 +31,8 @@ public class MainMenu {
 		this.menuUI.addButton("Play", "playbutton", WIDTH / 2 - 128, (int) (HEIGHT * .6f));
 		this.menuUI.addButton("Editor", "editorbutton", WIDTH / 2 - 128, (int) (HEIGHT * .7f));
 		this.menuUI.addButton("Quit", "quitbutton", WIDTH / 2 - 128, (int) (HEIGHT * .8f));
+		
+		imageCreditFont = new TrueTypeFont( new Font("Arial", Font.PLAIN, 18), false);
 	}
 	
 	private void UpdateButtons(){
@@ -45,6 +53,7 @@ public class MainMenu {
 	public void Update(){
 		ClearDisplay();
 		DrawQuadTex(background, (WIDTH - background.getImageWidth()) / 2, (HEIGHT - background.getImageHeight()) / 2, 2048, 1024);	//background tex is 1600 x 891
+		imageCreditFont.drawString(WIDTH - 150, HEIGHT - 100, "Image Credit", Color.gray);
 		menuUI.draw();
 		UpdateButtons();
 	}

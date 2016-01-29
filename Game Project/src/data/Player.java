@@ -31,10 +31,17 @@ public class Player {
 	private boolean placingTower, placingAOE;
 	
 	public static int Cash, Lives;
+	private static int PlayerLevel, CurrentExp;
+	
 	public static final int STARTING_CASH = 200, STARTING_LIVES = 5;
 	public static final int TOWER_LIST_ID = 703, ENEMY_LIST_ID = 333;
+	
+	private static final int[] EXP_LIST = {0, 100, 220, 370, 550, 770, 1030};
+	public static final int MAX_LEVEL = EXP_LIST.length - 1;
 
 	public Player(WaveManager waveManager) {
+		PlayerLevel = 1;
+		CurrentExp = 0;
 		this.waveManager = waveManager;
 		this.showPauseMenu = false;
 		this.showTowerMenu = false;
@@ -65,9 +72,18 @@ public class Player {
 		Lives = 0;
 	}
 
-	public void setup() {
+	public static void Setup() {
 		Cash = STARTING_CASH;
 		Lives = STARTING_LIVES;
+		PlayerLevel = 1;
+		CurrentExp = 0;
+	}
+	
+	public static void Setup(int newCash, int newLives, int newPlayerLevel, int newCurrentExp){
+		Cash = newCash;
+		Lives = newLives;
+		PlayerLevel = newPlayerLevel;
+		CurrentExp = newCurrentExp;
 	}
 
 	public static boolean ModifyCash(int amount) {
@@ -88,6 +104,17 @@ public class Player {
 		}
 		if (Lives <= 0) {
 			StateManager.setState(StateManager.GameState.GAMEOVER);
+		}
+	}
+	
+	public static void ModifyExp(int amount){
+		CurrentExp += amount;
+		System.out.println("Gained " + amount + " experience!");
+		if (PlayerLevel < MAX_LEVEL){
+			if (CurrentExp >= EXP_LIST[PlayerLevel]){
+				PlayerLevel++;
+				System.out.println("Advanced Player to Level " + PlayerLevel + "!");
+			}
 		}
 	}
 	
@@ -118,13 +145,13 @@ public class Player {
 				placingAOE = false;
 				mouseWait = true;
 			}
-			if (towerUI.isButtonClicked("Towercannonred")){
+			if (towerUI.isButtonClicked("Towercannonred") && PlayerLevel >= 2){
 				CurrentTowerType = TowerType.CannonRed;
 				placingTower = true;
 				placingAOE = false;
 				mouseWait = true;
 			}
-			if (towerUI.isButtonClicked("Towerice")){
+			if (towerUI.isButtonClicked("Towerice") && PlayerLevel >= 3){
 				CurrentTowerType = TowerType.IceTower;
 				placingTower = true;
 				placingAOE = false;
@@ -221,6 +248,9 @@ public class Player {
 			if (Keyboard.getEventKey() == Keyboard.KEY_LEFT && Keyboard.getEventKeyState()) {
 				Clock.ChangeMultiplier(-0.2f);
 			}
+			if (Keyboard.getEventKey() == Keyboard.KEY_UP && Keyboard.getEventKeyState()) {
+				Clock.ResetMultiplier();
+			}
 			
 			//Select and and begin placing towers
 			
@@ -234,12 +264,12 @@ public class Player {
 				placingTower = true;
 				placingAOE = false;
 			}
-			if (Keyboard.getEventKey() == Keyboard.KEY_2 && Keyboard.getEventKeyState()) {
+			if (Keyboard.getEventKey() == Keyboard.KEY_2 && Keyboard.getEventKeyState() && PlayerLevel >= 2) {
 				CurrentTowerType = TowerType.CannonRed;
 				placingTower = true;
 				placingAOE = false;
 			}
-			if (Keyboard.getEventKey() == Keyboard.KEY_3 && Keyboard.getEventKeyState()) {
+			if (Keyboard.getEventKey() == Keyboard.KEY_3 && Keyboard.getEventKeyState() && PlayerLevel >= 3) {
 				CurrentTowerType = TowerType.IceTower;
 				placingTower = true;
 				placingAOE = false;
@@ -247,17 +277,17 @@ public class Player {
 			
 			//Select and begin placing AOE
 			
-			if (Keyboard.getEventKey() == Keyboard.KEY_Q && Keyboard.getEventKeyState()) {
+			if (Keyboard.getEventKey() == Keyboard.KEY_Q && Keyboard.getEventKeyState() && PlayerLevel >= 2) {
 				CurrentAOEType = AOEType.FireStrike;
 				placingAOE = true;
 				placingTower = false;
 			}
-			if (Keyboard.getEventKey() == Keyboard.KEY_W && Keyboard.getEventKeyState()) {
+			if (Keyboard.getEventKey() == Keyboard.KEY_W && Keyboard.getEventKeyState() && PlayerLevel >= 3) {
 				CurrentAOEType = AOEType.TowerBuff;
 				placingAOE = true;
 				placingTower = false;
 			}
-			if (Keyboard.getEventKey() == Keyboard.KEY_E && Keyboard.getEventKeyState()) {
+			if (Keyboard.getEventKey() == Keyboard.KEY_E && Keyboard.getEventKeyState() && PlayerLevel >= 4) {
 				CurrentAOEType = AOEType.Slow;
 				placingAOE = true;
 				placingTower = false;

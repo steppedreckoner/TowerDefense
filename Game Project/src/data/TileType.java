@@ -7,7 +7,7 @@ public enum TileType {
 	Water("water", false, false, true),
 	Start("start", false, true, true),
 	Goal("goal", false, true, true),
-	NULL("UFO", false, false, false);
+	NULL("UFO1", false, false, false);
 
 	String textureName;
 	boolean canBuild, canGround, canFly;	//Can you build a tower, can ground troops pass and can flying troops pass resp.

@@ -29,7 +29,11 @@ public abstract class Enemy implements Entity {
 		this.setLevel(level);
 		this.canFly = type.canFly;
 		this.pathfinder = new Pathfinder(canFly);
-		this.texture = type.texture;
+		if (level >= type.textures.length){
+			this.texture = type.textures[type.textures.length - 1];
+		} else {
+			this.texture = type.textures[level - 1];
+		}
 		this.healthBackground = QuickLoad("healthbackground");
 		this.healthForeground = QuickLoad("healthforeground");
 		this.healthBorder = QuickLoad("healthborder");
@@ -80,7 +84,7 @@ public abstract class Enemy implements Entity {
 
 	// Different enemies give different bonuses
 	protected abstract void die();
-
+	
 	// Alternate die method for when an enemy reaches the end of the maze
 	private void endReached() {
 		alive = false;

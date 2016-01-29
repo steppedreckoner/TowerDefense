@@ -53,9 +53,9 @@ public class StateManager {
 			if (Game == null){
 				GameOver = null;
 				//Attempt to set mapFile to user input and check if it worked
-				if ((mapFile = FileChooser.ChooseFile()) != null){
+				if ((mapFile = FileChooser.ChooseFile(FileChooser.MAP_FILE)) != null){
 					int[][] gameMap = GetMapArray(mapFile);
-					Game = new Game(gameMap);
+					Game = new Game(gameMap, true);
 					System.out.println("New Game");
 				}
 				else{
@@ -84,7 +84,6 @@ public class StateManager {
 			if (GameOver == null){
 				Game = null;
 				GameOver = new GameOver();
-				System.out.println("New GameOver");
 			}
 			GameOver.Update();
 			break;

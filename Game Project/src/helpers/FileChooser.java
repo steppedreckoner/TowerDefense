@@ -19,18 +19,26 @@ public class FileChooser {
 	private static Path WorkingDirPath;
 	private static boolean IsSetup = false;
 	
-	public static void Setup(){
+	public static final String MAP_FILE = "maps", PLAYER_FILE = "profiles", NEW = "new";
+	
+	public static void Setup(String type){
+		if (type.startsWith(NEW)){
+			type = type.substring(3);
+		} else {
+			CurrentRelativePath = CurrentRelativePath.getParent();
+		}
+		CurrentRelativePath = Paths.get(type);
 		Chooser = new JFileChooser();
 		TypeFilter = new FileNameExtensionFilter("Text File", "txt");
-		CurrentRelativePath = Paths.get("maps");
 		WorkingDirPath = CurrentRelativePath.toAbsolutePath();
 		IsSetup = true;
 	}
 	
-	public static File ChooseFile(){
+	public static File ChooseFile(String type){
 		if (!IsSetup){
-			Setup();
+			Setup(NEW + type);
 		}
+		
 		File returnFile = null;
 		Chooser.setCurrentDirectory(WorkingDirPath.toFile());
 		Chooser.setFileFilter(TypeFilter);
@@ -43,13 +51,9 @@ public class FileChooser {
 		return null;
 	}
 	
-	public static Path SaveFile(){
-		return SaveFile(Leveler.GetMapString());
-	}
-	
-	public static Path SaveFile(String mapData){
+	public static Path SaveFile(String data, String type){
 		if (!IsSetup){
-			Setup();
+			Setup(NEW + type);
 		}
 		Chooser.setCurrentDirectory(WorkingDirPath.toFile());
 		Chooser.setFileFilter(TypeFilter);
@@ -59,7 +63,7 @@ public class FileChooser {
 		if (chooserStatus == JFileChooser.APPROVE_OPTION && accepted){
 			try {
 				BufferedWriter bw = new BufferedWriter(new FileWriter(saveFile));
-				bw.write(mapData);
+				bw.write(data);
 				bw.close();
 			} catch (IOException e) {
 				e.printStackTrace();

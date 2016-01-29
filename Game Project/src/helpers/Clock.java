@@ -45,6 +45,10 @@ public class Clock {
 		totalTime += d;
 	}
 	
+	public static void ResetMultiplier(){
+		multiplier = 1;
+	}
+	
 	public static void ChangeMultiplier(float change){
 		if (multiplier + change < -1 || multiplier + change > 7){
 			

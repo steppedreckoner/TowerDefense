@@ -23,14 +23,18 @@ public class Game {
 	
 	private UI gameUI;
 	
-	public Game(int[][] newMap){
+	public Game(int[][] newMap, boolean newGame){
 		//Note: When loading maps from file, ensure there's only one start and one goal tile.
 		CreateMap(newMap);	//Initializes the map (TileGrid Class)
 		
 		waveManager = new WaveManager();	//Deals with spawning enemies
 		player = new Player(waveManager);	//Allows for player interactions
-		player.setup();
-		
+		if (newGame){
+			Player.Setup();
+		}
+		else {
+			
+		}
 		this.mouseButton0 = false;
 		this.gameUI = new UI();
 		gameUI.addButton("Menu", "menubutton", (WIDTH - 256) / 2, (int) (HEIGHT * .5f));

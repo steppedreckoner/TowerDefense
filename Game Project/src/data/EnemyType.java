@@ -6,35 +6,41 @@ import java.util.Random;
 
 public enum EnemyType {
 	
-	EnemyUFO(QuickLoad("UFO"), 100, 60, TILE_SIZE, TILE_SIZE, false){
+	EnemyUFO(new Texture[] 
+			{QuickLoad("UFO1"),
+			QuickLoad("UFO2"),
+			QuickLoad("UFO3"),
+			QuickLoad("UFO4"),
+			QuickLoad("UFO5")}, 
+			100, 60, TILE_SIZE, TILE_SIZE, false){
 		@Override
 		public EnemyUFO makeEnemy(int level){
 			return new EnemyUFO(level);
 		}
 	},
 	
-	EnemySpacePlane(QuickLoad("starfighter64"), 20, 100, TILE_SIZE, TILE_SIZE, true){
+	EnemySpacePlane(new Texture[] {QuickLoad("starfighter64")}, 20, 100, TILE_SIZE, TILE_SIZE, true){
 		@Override
 		public EnemySpacePlane makeEnemy(int level){
 			return new EnemySpacePlane(level);
 		}
 	},
 	
-	EnemyNuke(QuickLoad("nuke"), 500, 10, TILE_SIZE, TILE_SIZE, false){
+	EnemyNuke(new Texture[] {QuickLoad("nuke")}, 500, 10, TILE_SIZE, TILE_SIZE, false){
 		@Override
 		public EnemyNuke makeEnemy(int level){
 			return new EnemyNuke(level);
 		}
 	};
 	
-	Texture texture;
+	Texture[] textures;
 	int startHealth, speed, width, height;
 	boolean canFly;
 	private static final int TOTAL_ENEMIES = values().length;
 	private static Random Random = new Random();
 	
-	EnemyType(Texture texture, int startHealth, int speed, int width, int height, boolean canFly){
-		this.texture = texture;
+	EnemyType(Texture[] textures, int startHealth, int speed, int width, int height, boolean canFly){
+		this.textures = textures;
 		this.startHealth = startHealth;
 		this.speed = speed;
 		this.width = width;
