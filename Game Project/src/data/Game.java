@@ -63,13 +63,14 @@ public class Game {
 	
 	public void Update(){
 		TileGrid.Draw();		//Draw the board	
+		waveManager.update();	//Enemy Actions
+		player.update();		//Player Actions
+		drawGameInfo();
 		if (player.showPauseMenu()){
 			gameUI.draw();
 			UpdateButtons();
 		}
-		waveManager.update();	//Enemy Actions
-		player.update();		//Player Actions
-		drawGameInfo();
+		
 	}
 	
 
