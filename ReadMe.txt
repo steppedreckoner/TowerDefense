@@ -67,11 +67,8 @@ QUIT: Quits.
 
 
 Most Recent Changes:
--Added player levels with some basic unlocks.
--Reworked Enemy classes so that leveling up of enemies is handled more easily.
--Added more UFO levels (now 1-5).
--Added more enemy waves (now 12, 2 per UFO level + 2 super waves!)
--FileChooser class will now work with player profiles once they're implemented (game saves).
+-Fixed game pause menu bug (menu drawn behind enemies)
+
 
 
 TowerDefense Tropes:
@@ -85,12 +82,15 @@ TowerDefense Tropes:
 
 Known Issues:
 -Loading invalid maps crashes the game.
--Map files won't save unless ".txt" is manually entered. 
+-Map files won't save unless ".txt" is manually entered.
+-Items are drawn over game pause menu.
 
 
 To Do:
 
--Rework Game update mathod so that enemies are drawn above towers, but AOEs are still above enemies.
+-Game pause menu is not clickable if a tower or AOE is selected.
+
+-Rework Game update method so that enemies are drawn above towers, but AOEs are still above enemies.
 
 -Clean up update method in Player class.
 
@@ -191,6 +191,12 @@ To Do:
 
 
 Old Changes:
+-Added player levels with some basic unlocks.
+-Reworked Enemy classes so that leveling up of enemies is handled more easily.
+-Added more UFO levels (now 1-5).
+-Added more enemy waves (now 12, 2 per UFO level + 2 super waves!)
+-FileChooser class will now work with player profiles once they're implemented (game saves).
+
 -Added TowerBuff AOE.
 -Added Slow AOE.
 -Updated main menu.
