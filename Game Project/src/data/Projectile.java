@@ -7,10 +7,12 @@ import static helpers.Artist.*;
 
 public abstract class Projectile implements Entity{
 
-	private Texture texture;
-	private float x, y, speed, xVelocity, yVelocity;
+	protected Texture texture;
+	protected float x, y;
+	protected float xVelocity, yVelocity;
+	private float speed;
 	private int damage, width, height;
-	private Enemy target;
+	protected Enemy target;
 //	private float targetSpeed;
 	private boolean alive;
 
@@ -34,7 +36,7 @@ public abstract class Projectile implements Entity{
 //		 yVelocity += directions[1] * speed;
 	}
 
-	private void calculateVelocity() {
+	protected void calculateVelocity() {
 		float xDistanceFromTarget = target.getX() - x + TILE_SIZE / 4;
 		float yDistanceFromTarget = target.getY() - y + TILE_SIZE / 4;
 		float normalizingFactor = (float) Math
@@ -47,14 +49,19 @@ public abstract class Projectile implements Entity{
 		target.decreaseHealth(damage);
 		this.alive = false;
 	}
+	
+	public void draw() {
+		DrawQuadTex(texture, x, y, 32, 32);
+	}
 
-	public void Update() {
+	public void update() {
 		if (alive) {
 			calculateVelocity(); // This allows for homing
 
 			x += Delta() * xVelocity; // "Dumb" Shooting
 			y += Delta() * yVelocity;
-
+			
+			//Make new variable "effectiveWidth/Height" to use for collision checks
 			if (CheckCollision(x, y, width, height, target.getX(), target.getY(), target.getWidth(),
 					target.getHeight())) {
 				doDamage();
@@ -107,12 +114,5 @@ public abstract class Projectile implements Entity{
 		return alive;
 	}
 
-	public void update() {
-		// TODO Auto-generated method stub
-		
-	}
 
-	public void draw() {
-		DrawQuadTex(texture, x, y, 32, 32);
-	}
 }

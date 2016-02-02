@@ -24,6 +24,13 @@ public enum TowerType {
 		public Tower makeTower(Tile startTile, CopyOnWriteArrayList<Enemy> enemies) {
 			return new TowerIce(startTile, enemies);
 		}
+	},
+	
+	RocketTower(new Texture[]{QuickLoad("rockettowerbase"), QuickLoad("rockettowerbarrel")}, 600, 2.5f, -150) {
+		@Override
+		public Tower makeTower(Tile startTile, CopyOnWriteArrayList<Enemy> enemies) {
+			return new TowerRocketLauncher(startTile, enemies);
+		}
 	};
 	
 	Texture[] textures;

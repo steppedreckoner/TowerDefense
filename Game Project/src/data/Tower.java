@@ -55,7 +55,7 @@ public abstract class Tower implements Entity {
 		}
 		for (Projectile p : projectiles) {
 			if (p.isAlive()){
-				p.Update();
+				p.update();
 			}
 			else{
 				projectiles.remove(p);

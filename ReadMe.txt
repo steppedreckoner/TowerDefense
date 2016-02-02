@@ -48,7 +48,7 @@ PLAY: Begins a new game. Player is prompted to choose a map. If you don't have a
 be made in the editor. Alternatively, you can comment/uncomment lines 64 - 71 in the StateManager class to load
 the default map by canceling the file selection. Note the map must have a path from start to end, otherwise
 the game will crash. Enemy type cannot currently be changed. Select a tower type with either the tower menu 
-(T) or with the hotkeys (1, 2 or 3). Once a type is selected, place towers by left-clicking. Cancel a placement
+(T) or with the hotkeys (1 - 4). Once a type is selected, place towers by left-clicking. Cancel a placement
 by right-clicking Towers can be deleted with 80% refund by hovering over a tower and pressing 'D'. Time can be 
 accelerated/decelerated with the right/left arrow key respectively (Note: fast forwarding may cause enemies to
 fly off the course. This will be addressed eventually).	Reset the time multiplier with the up arrow. Access AOE
@@ -67,7 +67,13 @@ QUIT: Quits.
 
 
 Most Recent Changes:
--Added game instructions (accessible at main menu or in game pause menu).
+-Added new tower Rocket Launcher.
+-Added new projectile Rocket.
+--Does splash damage.
+--Reacquires target if current target dies.
+--Homing.
+--Limited acceleration.
+
 
 
 TowerDefense Tropes:
@@ -81,6 +87,7 @@ TowerDefense Tropes:
 
 
 Known Issues:
+-Deleting a tower deletes all active projectiles fired by that tower.
 -Slow AOE continues to affect enemies that have moved out of range.
 -Loading invalid maps crashes the game.
 -Map files won't save unless ".txt" is manually entered.
@@ -89,9 +96,11 @@ Known Issues:
 
 To Do:
 
+-Clean up projectile collision. Make sure they're hitting the ~center of the target before doing damage. 
+
 -Ensure setting of Game States to null is done efficiently/correctly.
 
--In game instructions.
+-(DONE) In game instructions.
 
 -Game pause menu is not clickable if a tower or AOE is selected.
 
@@ -103,9 +112,9 @@ To Do:
 
 -(DONE) Use helper class Clock to handle pausing more elegantly.
 
--Player levels
---Exp bar to show progress to next level
---Unlock different towers, projectiles and AOE
+-(PARTIAL) Player levels
+--(DONE) Exp bar to show progress to next level
+--(PARTIAL) Unlock different towers, projectiles and AOE
 --Unlock different tower, projectile and AOE upgrades
 --Unlock player buffs (e.g. increase starting cash)
 --Different maps have different difficulty (harder maps require higher player level)
@@ -157,12 +166,12 @@ To Do:
 
 -(DONE) Tower about to be placed shown at mouse cursor.
 
--More tower and projectile types, with unlock progression.
---Rocket tower
---Multi-Target tower
---Railgun/Laser tower
+-(PARTIAL) More tower and projectile types, with unlock progression.
+--(DONE) Rocket tower (Homing with splash damage)
+--Multi-Target tower (archer tower? upgrade increases number of targets. store targets in array. on upgrade, replace array with one of bigger size).
+--Railgun/Laser tower (Hits all targets in its path)
 
--Projectiles originate from the end of the gun barrel (currently spawn at center of tower).
+-Projectiles originate from the end of the gun barrel (currently spawn not quite at center of tower).
 
 -(DONE) Player controlled AOE actions (eg set all enemies on fire within radius x of mouse click)
 --(DONE) Fire
@@ -196,6 +205,8 @@ To Do:
 
 
 Old Changes:
+-Added game instructions (accessible at main menu or in game pause menu).
+
 -Player level now written to screen.
 -Player level exp bar shows progress towards next level.
 -Player now gains +1 life upon leveling up.

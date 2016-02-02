@@ -46,7 +46,8 @@ public class Player {
 	public static final int TOWER_LIST_ID = 703, ENEMY_LIST_ID = 333;
 	
 	private static final int TOWER_CANNONRED_UNLOCK = 2,
-			TOWER_CANNONICE_UNLOCK = 4,
+			TOWER_ICE_UNLOCK = 3,
+			TOWER_ROCKET_UNLOCK = 4,
 			AOE_FIRESTRIKE_UNLOCK = 3,
 			AOE_TOWERBUFF_UNLOCK = 4,
 			AOE_SLOW_UNLOCK = 5;
@@ -68,8 +69,8 @@ public class Player {
 		
 		//Setup towerUI
 		TowerUI = new UI();
-		TowerUI.addButton("Towermenutitle", "towerselectbutton", (int) (WIDTH * .175f - 256), (int) (HEIGHT * .8f));	//Title bar, no functionality
-		TowerUI.addButton("Towercannonblue", "cannonbaseblue", (int) (WIDTH * .075f - 32), (int) (HEIGHT * .9f));
+		TowerUI.addButton("Towermenutitle", "towerselectbutton", TILE_SIZE, TILE_SIZE * 12);	//Title bar, no functionality
+		TowerUI.addButton("Towercannonblue", "cannonbaseblue", TILE_SIZE * 1, TILE_SIZE * 13);
 		
 		
 		this.towerList = new ArrayList<Tower>();
@@ -88,8 +89,9 @@ public class Player {
 	public static void Setup() {
 		Cash = STARTING_CASH;
 		Lives = STARTING_LIVES;
-		PlayerLevel = 1;
+		PlayerLevel = 5;
 		CurrentExp = 0;
+		UnlockTowers();
 	}
 	
 	//To be used with persistent player profiles. Parameters should be read in from a file.
@@ -136,11 +138,14 @@ public class Player {
 	}
 	
 	private static void UnlockTowers(){
-		if (PlayerLevel ==  TOWER_CANNONRED_UNLOCK){
-			TowerUI.addButton("Towercannonred", "cannonbase", (int) (WIDTH * .175f - 32), (int) (HEIGHT * .9f));
+		if (PlayerLevel >=  TOWER_CANNONRED_UNLOCK){
+			TowerUI.addButton("Towercannonred", "cannonbase", TILE_SIZE * 2, TILE_SIZE * 13);
 		}
-		if (PlayerLevel ==  TOWER_CANNONICE_UNLOCK){
-			TowerUI.addButton("Towerice", "icetowerbase2", (int) (WIDTH * .275f - 32), (int) (HEIGHT * .9f));
+		if (PlayerLevel >=  TOWER_ICE_UNLOCK){
+			TowerUI.addButton("Towerice", "icetowerbase2", TILE_SIZE * 3, TILE_SIZE * 13);
+		}
+		if (PlayerLevel >=  TOWER_ROCKET_UNLOCK){
+			TowerUI.addButton("Towerrocket", "rockettowerbase", TILE_SIZE * 4, TILE_SIZE * 13);
 		}
 	}
 	
@@ -196,14 +201,20 @@ public class Player {
 				placingAOE = false;
 				mouseWait = true;
 			}
-			if (TowerUI.isButtonClicked("Towercannonred") && PlayerLevel >= 2){
+			if (TowerUI.isButtonClicked("Towercannonred") && PlayerLevel >= TOWER_CANNONRED_UNLOCK){
 				CurrentTowerType = TowerType.CannonRed;
 				placingTower = true;
 				placingAOE = false;
 				mouseWait = true;
 			}
-			if (TowerUI.isButtonClicked("Towerice") && PlayerLevel >= 3){
+			if (TowerUI.isButtonClicked("Towerice") && PlayerLevel >= TOWER_ICE_UNLOCK){
 				CurrentTowerType = TowerType.IceTower;
+				placingTower = true;
+				placingAOE = false;
+				mouseWait = true;
+			}
+			if (TowerUI.isButtonClicked("Towerrocket") && PlayerLevel >= TOWER_ROCKET_UNLOCK){
+				CurrentTowerType = TowerType.RocketTower;
 				placingTower = true;
 				placingAOE = false;
 				mouseWait = true;
@@ -315,30 +326,35 @@ public class Player {
 				placingTower = true;
 				placingAOE = false;
 			}
-			if (Keyboard.getEventKey() == Keyboard.KEY_2 && Keyboard.getEventKeyState() && PlayerLevel >= 2) {
+			if (Keyboard.getEventKey() == Keyboard.KEY_2 && Keyboard.getEventKeyState() && PlayerLevel >= TOWER_CANNONRED_UNLOCK) {
 				CurrentTowerType = TowerType.CannonRed;
 				placingTower = true;
 				placingAOE = false;
 			}
-			if (Keyboard.getEventKey() == Keyboard.KEY_3 && Keyboard.getEventKeyState() && PlayerLevel >= 3) {
+			if (Keyboard.getEventKey() == Keyboard.KEY_3 && Keyboard.getEventKeyState() && PlayerLevel >= TOWER_ICE_UNLOCK) {
 				CurrentTowerType = TowerType.IceTower;
+				placingTower = true;
+				placingAOE = false;
+			}
+			if (Keyboard.getEventKey() == Keyboard.KEY_4 && Keyboard.getEventKeyState() && PlayerLevel >= TOWER_ROCKET_UNLOCK) {
+				CurrentTowerType = TowerType.RocketTower;
 				placingTower = true;
 				placingAOE = false;
 			}
 			
 			//Select and begin placing AOE
 			
-			if (Keyboard.getEventKey() == Keyboard.KEY_Q && Keyboard.getEventKeyState() && PlayerLevel >= 2) {
+			if (Keyboard.getEventKey() == Keyboard.KEY_Q && Keyboard.getEventKeyState() && PlayerLevel >= AOE_FIRESTRIKE_UNLOCK) {
 				CurrentAOEType = AOEType.FireStrike;
 				placingAOE = true;
 				placingTower = false;
 			}
-			if (Keyboard.getEventKey() == Keyboard.KEY_W && Keyboard.getEventKeyState() && PlayerLevel >= 3) {
+			if (Keyboard.getEventKey() == Keyboard.KEY_W && Keyboard.getEventKeyState() && PlayerLevel >= AOE_TOWERBUFF_UNLOCK) {
 				CurrentAOEType = AOEType.TowerBuff;
 				placingAOE = true;
 				placingTower = false;
 			}
-			if (Keyboard.getEventKey() == Keyboard.KEY_E && Keyboard.getEventKeyState() && PlayerLevel >= 4) {
+			if (Keyboard.getEventKey() == Keyboard.KEY_E && Keyboard.getEventKeyState() && PlayerLevel >= AOE_SLOW_UNLOCK) {
 				CurrentAOEType = AOEType.Slow;
 				placingAOE = true;
 				placingTower = false;

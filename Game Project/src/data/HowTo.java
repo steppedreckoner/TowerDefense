@@ -38,10 +38,10 @@ public class HowTo {
 	public static void Update() {
 		DrawQuadTex(background, 0, (HEIGHT - background.getImageHeight()) / 2, 2048, 1024);
 		
-		HowToFont.drawString(10, 40, "PLACING TOWERS:");
-		HowToFont.drawString(10, 60, "Towers can be selected with either the Tower Menu (T) or with their hotkeys (1-3).");
-		HowToFont.drawString(10, 78, "Place towers by left clicking on an unoccupied grass tile. You can cancel the");
-		HowToFont.drawString(10, 96, "current placement by right clicking. If you don't have enough money, you will");
+		HowToFont.drawString(10,  40, "PLACING TOWERS:");
+		HowToFont.drawString(10,  60, "Towers can be selected with either the Tower Menu (T) or with their hotkeys (1-4).");
+		HowToFont.drawString(10,  78, "Place towers by left clicking on an unoccupied grass tile. You can cancel the");
+		HowToFont.drawString(10,  96, "current placement by right clicking. If you don't have enough money, you will");
 		HowToFont.drawString(10, 114, "not be able to place the selected tower.");
 		
 		HowToFont.drawString(10, 140, "USING AOE:");

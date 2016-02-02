@@ -17,14 +17,14 @@ public class TowerCannonBlue extends Tower {
 	@Override
 	protected Enemy acquireTarget() {
 		hasTarget = false;
-		Enemy closest = null;
+		Enemy target = null;
 		for (int i = 0; i < this.enemies.size(); i++){
 			if (this.isInRange(this.enemies.get(i))){
 				hasTarget = true;
 				return this.enemies.get(i);
 			}
 		}
-		return closest;
+		return target;
 	}
 
 }
