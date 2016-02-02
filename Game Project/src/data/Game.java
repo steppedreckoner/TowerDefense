@@ -59,6 +59,8 @@ public class Game {
 		Player.DrawCash();
 		waveManager.drawWaveNumber();
 		Player.DrawLives();
+		Player.DrawExp();
+		Player.DrawLevel();
 	}
 	
 	public void Update(){

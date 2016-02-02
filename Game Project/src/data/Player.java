@@ -4,6 +4,9 @@ import static data.TileGrid.GetTile;
 import static helpers.Artist.HEIGHT;
 import static helpers.Artist.TILE_SIZE;
 import static helpers.Artist.WIDTH;
+import static helpers.Artist.DrawQuadTex;
+import static helpers.Artist.DrawQuadTexAlpha;
+import static helpers.Artist.QuickLoad;
 import static helpers.Clock.Delta;
 
 import java.util.ArrayList;
@@ -12,6 +15,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.opengl.Texture;
 
 import UI.UI;
 import helpers.Clock;
@@ -22,7 +26,6 @@ public class Player {
 	private WaveManager waveManager;
 	
 	private boolean showPauseMenu, showTowerMenu, mouseButton0, mouseButton1, mouseWait;
-	private UI towerUI;
 	
 	private ArrayList<Tower> towerList;
 	private CopyOnWriteArrayList<AOE> AOEList;
@@ -30,13 +33,24 @@ public class Player {
 	private static AOEType CurrentAOEType;
 	private boolean placingTower, placingAOE;
 	
+	private static UI TowerUI;
+	
+	private static Texture ExpBarBackground = QuickLoad("playerexpbackground"),
+			ExpBarForeground = QuickLoad("playerexpforeground"),
+			ExpBarBorder = QuickLoad("playerexpborder");
+	
 	public static int Cash, Lives;
 	private static int PlayerLevel, CurrentExp;
 	
 	public static final int STARTING_CASH = 200, STARTING_LIVES = 5;
 	public static final int TOWER_LIST_ID = 703, ENEMY_LIST_ID = 333;
 	
-	private static final int[] EXP_LIST = {0, 100, 220, 370, 550, 770, 1030};
+	private static final int TOWER_CANNONRED_UNLOCK = 2,
+			TOWER_CANNONICE_UNLOCK = 4,
+			AOE_FIRESTRIKE_UNLOCK = 3,
+			AOE_TOWERBUFF_UNLOCK = 4,
+			AOE_SLOW_UNLOCK = 5;
+	private static final int[] EXP_LIST = {0, 100, 220, 370, 600, 920, 1430};
 	public static final int MAX_LEVEL = EXP_LIST.length - 1;
 
 	public Player(WaveManager waveManager) {
@@ -53,11 +67,10 @@ public class Player {
 		this.mouseWait = true;
 		
 		//Setup towerUI
-		this.towerUI = new UI();
-		towerUI.addButton("Towermenutitle", "towerselectbutton", (int) (WIDTH * .175f - 256), (int) (HEIGHT * .8f));	//Title bar, no functionality
-		towerUI.addButton("Towercannonblue", "cannonbaseblue", (int) (WIDTH * .075f - 32), (int) (HEIGHT * .9f));
-		towerUI.addButton("Towercannonred", "cannonbase", (int) (WIDTH * .175f - 32), (int) (HEIGHT * .9f));
-		towerUI.addButton("Towerice", "icetowerbase2", (int) (WIDTH * .275f - 32), (int) (HEIGHT * .9f));
+		TowerUI = new UI();
+		TowerUI.addButton("Towermenutitle", "towerselectbutton", (int) (WIDTH * .175f - 256), (int) (HEIGHT * .8f));	//Title bar, no functionality
+		TowerUI.addButton("Towercannonblue", "cannonbaseblue", (int) (WIDTH * .075f - 32), (int) (HEIGHT * .9f));
+		
 		
 		this.towerList = new ArrayList<Tower>();
 		this.AOEList = new CopyOnWriteArrayList<AOE>();
@@ -79,6 +92,8 @@ public class Player {
 		CurrentExp = 0;
 	}
 	
+	//To be used with persistent player profiles. Parameters should be read in from a file.
+	//May be modified to take a file as input
 	public static void Setup(int newCash, int newLives, int newPlayerLevel, int newCurrentExp){
 		Cash = newCash;
 		Lives = newLives;
@@ -113,17 +128,49 @@ public class Player {
 		if (PlayerLevel < MAX_LEVEL){
 			if (CurrentExp >= EXP_LIST[PlayerLevel]){
 				PlayerLevel++;
+				Lives ++;
+				UnlockTowers();
 				System.out.println("Advanced Player to Level " + PlayerLevel + "!");
 			}
 		}
 	}
 	
+	private static void UnlockTowers(){
+		if (PlayerLevel ==  TOWER_CANNONRED_UNLOCK){
+			TowerUI.addButton("Towercannonred", "cannonbase", (int) (WIDTH * .175f - 32), (int) (HEIGHT * .9f));
+		}
+		if (PlayerLevel ==  TOWER_CANNONICE_UNLOCK){
+			TowerUI.addButton("Towerice", "icetowerbase2", (int) (WIDTH * .275f - 32), (int) (HEIGHT * .9f));
+		}
+	}
+	
 	public static void DrawCash(){
-		Game.GameFont.drawString(WIDTH * .9f, HEIGHT * .92f, "Cash: $" + Integer.toString(Cash), Color.green);
+		Game.GameFont.drawString(WIDTH * .88f - 4, HEIGHT * .93f, "Cash: $" + Integer.toString(Cash), Color.green);
 	}
 	
 	public static void DrawLives(){
-		Game.GameFont.drawString(WIDTH * .9f, HEIGHT * .95f, "Lives: " + Integer.toString(Lives), Color.red);
+		Game.GameFont.drawString(WIDTH * .88f - 4, HEIGHT * .9f, "Lives: " + Integer.toString(Lives), Color.red);
+	}
+	
+	public static void DrawLevel() {
+		Game.GameFont.drawString(WIDTH * .88f - 4, HEIGHT - 31, "Player Level: " + PlayerLevel, Color.white);
+	}
+	
+	public static void DrawExp(){
+		int denominator;
+		int numerator;
+		if (PlayerLevel < MAX_LEVEL){
+			denominator = EXP_LIST[PlayerLevel] - EXP_LIST[PlayerLevel - 1];
+			numerator = CurrentExp - EXP_LIST[PlayerLevel - 1];	//Works when PlayerLeve = 1 because EXP_LIST[0] = 0
+		} else {
+			denominator = EXP_LIST[MAX_LEVEL];
+			numerator = EXP_LIST[MAX_LEVEL];
+		}
+		DrawQuadTexAlpha(ExpBarBackground, 0, HEIGHT - 32, ExpBarBackground.getImageWidth(), ExpBarBackground.getImageHeight(), .5f);
+		DrawQuadTexAlpha(ExpBarForeground, 0, HEIGHT - 32, ExpBarForeground.getImageWidth() * numerator / denominator, ExpBarForeground.getImageHeight(), .5f);
+		DrawQuadTex(ExpBarBorder, 0, HEIGHT - 32, ExpBarBorder.getImageWidth(), ExpBarBorder.getImageHeight());
+		
+		Game.GameFont.drawString(WIDTH / 2, HEIGHT - 31, numerator + "/" + denominator, Color.white);
 	}
 	
 	private void placeTower(Tower tower, Tile tile){
@@ -139,19 +186,19 @@ public class Player {
 	
 	private void UpdateButtons(){
 		if (Mouse.isButtonDown(0) && !mouseButton0){
-			if (towerUI.isButtonClicked("Towercannonblue")){
+			if (TowerUI.isButtonClicked("Towercannonblue")){
 				CurrentTowerType = TowerType.CannonBlue;
 				placingTower = true;
 				placingAOE = false;
 				mouseWait = true;
 			}
-			if (towerUI.isButtonClicked("Towercannonred") && PlayerLevel >= 2){
+			if (TowerUI.isButtonClicked("Towercannonred") && PlayerLevel >= 2){
 				CurrentTowerType = TowerType.CannonRed;
 				placingTower = true;
 				placingAOE = false;
 				mouseWait = true;
 			}
-			if (towerUI.isButtonClicked("Towerice") && PlayerLevel >= 3){
+			if (TowerUI.isButtonClicked("Towerice") && PlayerLevel >= 3){
 				CurrentTowerType = TowerType.IceTower;
 				placingTower = true;
 				placingAOE = false;
@@ -194,7 +241,7 @@ public class Player {
 			a.incrementCooldown(Delta());
 		}
 		if (showTowerMenu){
-			towerUI.draw();
+			TowerUI.draw();
 			UpdateButtons();
 		}
 		updateTowers();

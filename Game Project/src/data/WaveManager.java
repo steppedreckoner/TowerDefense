@@ -55,7 +55,7 @@ public class WaveManager {
 	}
 
 	public void drawWaveNumber(){
-		Game.GameFont.drawString(WIDTH * .9f, HEIGHT * .89f, "Wave: " + Integer.toString(waveNumber));
+		Game.GameFont.drawString(WIDTH * .88f - 4, HEIGHT * .87f, "Wave: " + Integer.toString(waveNumber));
 	}
 
 	public void update() {

@@ -22,10 +22,12 @@ public class UI {
 	
 	public boolean isButtonClicked(String buttonName){
 		Button b = getButton(buttonName);
-		float mouseY = HEIGHT - Mouse.getY() - 1;
-		if (Mouse.getX() > b.getX() && Mouse.getX() < b.getX() + b.getWidth() 
-				&& mouseY > b.getY() && mouseY < b.getY() + b.getHeight()){
-			return true;
+		if (b != null){
+			float mouseY = HEIGHT - Mouse.getY() - 1;
+			if (Mouse.getX() > b.getX() && Mouse.getX() < b.getX() + b.getWidth() 
+					&& mouseY > b.getY() && mouseY < b.getY() + b.getHeight()){
+				return true;
+			}
 		}
 		return false;
 	}

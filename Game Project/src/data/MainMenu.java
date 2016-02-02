@@ -53,7 +53,7 @@ public class MainMenu {
 	public void Update(){
 		ClearDisplay();
 		DrawQuadTex(background, (WIDTH - background.getImageWidth()) / 2, (HEIGHT - background.getImageHeight()) / 2, 2048, 1024);	//background tex is 1600 x 891
-		imageCreditFont.drawString(WIDTH - 150, HEIGHT - 100, "Image Credit", Color.gray);
+		imageCreditFont.drawString(WIDTH - 150, HEIGHT - 116, "Image Credit", Color.gray);
 		menuUI.draw();
 		UpdateButtons();
 	}

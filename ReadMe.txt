@@ -67,8 +67,12 @@ QUIT: Quits.
 
 
 Most Recent Changes:
--Fixed game pause menu bug (menu drawn behind enemies)
-
+-Player level now written to screen.
+-Player level exp bar shows progress towards next level.
+-Player now gains +1 life upon leveling up.
+-TowerUI is now static so that it can interact appropriately with player level.
+-Tower Menu doesn't draw buttons for locked towers.
+-UI.isButtonClicked checks to see if button is null before checking if its clicked.
 
 
 TowerDefense Tropes:
@@ -78,12 +82,14 @@ TowerDefense Tropes:
 -Fantasy
 -Minimalist
 -Scary Monsters
+-Military
 
 
 Known Issues:
+-Slow AOE continues to affect enemies that have moved out of range.
 -Loading invalid maps crashes the game.
 -Map files won't save unless ".txt" is manually entered.
--Items are drawn over game pause menu.
+-(FIXED) Items are drawn over game pause menu.
 
 
 To Do:
@@ -141,7 +147,7 @@ To Do:
 
 -Maps automatically saved with correct extension. 
 
--Change hardcoded constants to final variables.
+-(PARTIAL) Change hardcoded constants to final variables.
 
 -(DONE) Add pause function.
 
@@ -191,6 +197,8 @@ To Do:
 
 
 Old Changes:
+-Fixed game pause menu bug (menu drawn behind enemies)
+
 -Added player levels with some basic unlocks.
 -Reworked Enemy classes so that leveling up of enemies is handled more easily.
 -Added more UFO levels (now 1-5).
