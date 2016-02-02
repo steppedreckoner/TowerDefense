@@ -25,12 +25,13 @@ public class MainMenu {
 	private TrueTypeFont imageCreditFont;
 	
 	public MainMenu(){
-		this.mouseButton0 = false;
+		this.mouseButton0 = true;
 		this.background = QuickLoad("Ion_cannon_firing");
 		this.menuUI = new UI();
-		this.menuUI.addButton("Play", "playbutton", WIDTH / 2 - 128, (int) (HEIGHT * .6f));
-		this.menuUI.addButton("Editor", "editorbutton", WIDTH / 2 - 128, (int) (HEIGHT * .7f));
-		this.menuUI.addButton("Quit", "quitbutton", WIDTH / 2 - 128, (int) (HEIGHT * .8f));
+		this.menuUI.addButton("Play", "playbutton", WIDTH / 2 - 128, (int) (HEIGHT * .55f));
+		this.menuUI.addButton("Editor", "editorbutton", WIDTH / 2 - 128, (int) (HEIGHT * .64f));
+		this.menuUI.addButton("HowTo", "howtobutton", WIDTH / 2 - 128, (int) (HEIGHT * .73f));
+		this.menuUI.addButton("Quit", "quitbutton", WIDTH / 2 - 128, (int) (HEIGHT * .82f));
 		
 		imageCreditFont = new TrueTypeFont( new Font("Arial", Font.PLAIN, 18), false);
 	}
@@ -42,6 +43,9 @@ public class MainMenu {
 			}
 			if (menuUI.isButtonClicked("Editor")){
 				StateManager.setState(GameState.EDITOR);
+			}
+			if (menuUI.isButtonClicked("HowTo")){
+				StateManager.setState(GameState.HOWTO);
 			}
 			if (menuUI.isButtonClicked("Quit")){
 				System.exit(0);

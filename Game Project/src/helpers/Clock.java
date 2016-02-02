@@ -62,6 +62,10 @@ public class Clock {
 		isPaused = !isPaused;
 	}
 	
+	public static void Unpause() {
+		isPaused = false;
+	}
+	
 	public static boolean IsPaused(){
 		return isPaused;
 	}

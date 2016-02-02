@@ -108,7 +108,6 @@ public class Editor {
 				Path path = FileChooser.SaveFile(Leveler.GetMapString(), FileChooser.MAP_FILE);
 				recentlySaved = true;
 				saveTime = 0f;
-//				savePath = path.toString();
 				savePath = path.getFileName().toString();
 			}
 			if (editorUI.isButtonClicked("Load")){
@@ -117,7 +116,6 @@ public class Editor {
 					LoadMap(mapFile);
 					recentlyLoaded = true;
 					loadTime = 0f;
-//					loadPath = mapFile.toString();
 					loadPath = mapFile.getName();
 				}
 				else{

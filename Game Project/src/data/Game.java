@@ -10,6 +10,7 @@ import org.lwjgl.input.Mouse;
 import org.newdawn.slick.TrueTypeFont;
 
 import UI.UI;
+import helpers.Clock;
 import helpers.StateManager;
 import helpers.StateManager.GameState;
 
@@ -37,7 +38,9 @@ public class Game {
 		}
 		this.mouseButton0 = false;
 		this.gameUI = new UI();
-		gameUI.addButton("Menu", "menubutton", (WIDTH - 256) / 2, (int) (HEIGHT * .5f));
+		gameUI.addButton("Continue", "continuebutton", (WIDTH - 256) / 2, (int) (HEIGHT * .55f));
+		gameUI.addButton("HowTo", "howtobutton", (WIDTH - 256) / 2, (int) (HEIGHT * .64f));
+		gameUI.addButton("Menu", "menubutton", (WIDTH - 256) / 2, (int) (HEIGHT * .73f));
 		
 		GameFont = new TrueTypeFont( new Font("Tahoma", Font.BOLD, 24), false);
 		
@@ -48,6 +51,13 @@ public class Game {
 	
 	private void UpdateButtons(){
 		if (Mouse.isButtonDown(0) && !mouseButton0){
+			if (gameUI.isButtonClicked("Continue") && !mouseButton0){
+				player.closePauseMenu();
+				Clock.Unpause();
+			}
+			if (gameUI.isButtonClicked("HowTo") && !mouseButton0){
+				StateManager.setState(GameState.HOWTO);
+			}
 			if (gameUI.isButtonClicked("Menu")){
 				StateManager.setState(GameState.MAINMENU);
 			}
@@ -68,7 +78,7 @@ public class Game {
 		waveManager.update();	//Enemy Actions
 		player.update();		//Player Actions
 		drawGameInfo();
-		if (player.showPauseMenu()){
+		if (player.isShowPauseMenu()){
 			gameUI.draw();
 			UpdateButtons();
 		}

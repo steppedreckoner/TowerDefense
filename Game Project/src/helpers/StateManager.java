@@ -7,12 +7,13 @@ import java.io.File;
 import data.Editor;
 import data.Game;
 import data.GameOver;
+import data.HowTo;
 import data.MainMenu;
 
 public class StateManager {
 
 	public static enum GameState {
-		MAINMENU, GAME, EDITOR, GAMEOVER
+		MAINMENU, GAME, EDITOR, GAMEOVER, HOWTO
 	}
 	
 	public static GameState gameState = GameState.MAINMENU;
@@ -79,6 +80,12 @@ public class StateManager {
 				System.out.println("New Editor");
 			}
 			Editor.Update();
+			break;
+		case HOWTO:
+			if (!HowTo.IsSetup()) {
+				HowTo.Setup();
+			}
+			HowTo.Update();
 			break;
 		case GAMEOVER:
 			if (GameOver == null){

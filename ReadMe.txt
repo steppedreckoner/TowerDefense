@@ -60,19 +60,14 @@ that's (hopefully) why!
 
 EDITOR: Loads a map with all grass tiles. Tile type can be modified by clicking on a tile. Switch the type
 that clicking changes to by pressing the numbers 1-5 (1: Grass, 2: Dirt, 3: Water, 4: Start, 5: Goal). Press 
-'M' to access the editor menu, which allows for saving and loading maps. Note: If you're saving from the editor,
-make sure to include ".txt" file extension. It is currently not checked nor automatically added.
+'M' to access the editor menu, which allows for saving and loading maps. Note: If you're saving from the
+editor, make sure to include ".txt" file extension. It is currently not checked nor automatically added.
 
 QUIT: Quits.
 
 
 Most Recent Changes:
--Player level now written to screen.
--Player level exp bar shows progress towards next level.
--Player now gains +1 life upon leveling up.
--TowerUI is now static so that it can interact appropriately with player level.
--Tower Menu doesn't draw buttons for locked towers.
--UI.isButtonClicked checks to see if button is null before checking if its clicked.
+-Added game instructions (accessible at main menu or in game pause menu).
 
 
 TowerDefense Tropes:
@@ -93,6 +88,10 @@ Known Issues:
 
 
 To Do:
+
+-Ensure setting of Game States to null is done efficiently/correctly.
+
+-In game instructions.
 
 -Game pause menu is not clickable if a tower or AOE is selected.
 
@@ -197,6 +196,13 @@ To Do:
 
 
 Old Changes:
+-Player level now written to screen.
+-Player level exp bar shows progress towards next level.
+-Player now gains +1 life upon leveling up.
+-TowerUI is now static so that it can interact appropriately with player level.
+-Tower Menu doesn't draw buttons for locked towers.
+-UI.isButtonClicked checks to see if button is null before checking if its clicked.
+
 -Fixed game pause menu bug (menu drawn behind enemies)
 
 -Added player levels with some basic unlocks.

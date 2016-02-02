@@ -180,8 +180,12 @@ public class Player {
 		}
 	}
 	
-	public boolean showPauseMenu(){
+	public boolean isShowPauseMenu(){
 		return showPauseMenu;
+	}
+	
+	public void closePauseMenu(){
+		showPauseMenu = false;
 	}
 	
 	private void UpdateButtons(){
