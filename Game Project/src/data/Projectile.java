@@ -8,9 +8,9 @@ import static helpers.Artist.*;
 public abstract class Projectile implements Entity{
 
 	protected Texture texture;
-	protected float x, y;
+	protected float x, y, centerX, centerY;
 	protected float xVelocity, yVelocity;
-	private float speed;
+	protected float speed;
 	private int damage, width, height;
 	protected Enemy target;
 //	private float targetSpeed;
@@ -18,31 +18,55 @@ public abstract class Projectile implements Entity{
 
 	public Projectile(ProjectileType type, Enemy target, float x, float y) {
 		this.texture = type.texture;
-		this.x = x + ((TILE_SIZE - type.size) / 2);	//Handle offsets automatically (Offset comes from tracking upper left corner of projectile)
-		this.y = y + ((TILE_SIZE - type.size) / 2);
-		this.width = type.size;
-		this.height = type.size;
+		this.width = type.width;
+		this.height = type.height;
 		this.speed = type.speed;
 		this.damage = type.damage;
+		this.x = x;	//Handle spawn offsets automatically (Offset comes from tracking upper left corner of projectile)
+		this.y = y;	//Spawn offsets are to be handled in subclasses. This will allow for projectiles to originate from the end of the gun barrel.
+		this.centerX = x + (texture.getImageWidth() / 2);
+		this.centerY = y + (texture.getImageHeight() / 2);
 		this.target = target;
 		this.alive = true;
 		this.xVelocity = 0;
 		this.yVelocity = 0;
 		calculateVelocity();
-		// Target Prediction
-//		this.targetSpeed = target.getSpeed();
-//		int[] directions = target.getDirections();
-//		 xVelocity += directions[0] * speed;
-//		 yVelocity += directions[1] * speed;
 	}
-
+	
+	//Default calculate velocity uses centers of target and projectile.
 	protected void calculateVelocity() {
-		float xDistanceFromTarget = target.getX() - x + TILE_SIZE / 4;
-		float yDistanceFromTarget = target.getY() - y + TILE_SIZE / 4;
-		float normalizingFactor = (float) Math
+		calculateVelocity(centerX, centerY, target.getCenterX(), target.getCenterY());
+	}
+	
+	//Allows for targeting between specific part of projectile and center of enemy.
+	protected void calculateVelocity(float projX, float projY) {
+		calculateVelocity(projX, projY, target.getCenterX(), target.getCenterY());
+	}
+	
+	//Allows for targeting between specific parts of the projectile and enemy (e.g. rocket warhead).
+	protected void calculateVelocity(float projX, float projY, float targetX, float targetY) {
+		float xDistanceFromTarget = targetX - projX;
+		float yDistanceFromTarget = targetY - projY;
+		float magnitude = (float) Math
 				.sqrt(Math.pow(xDistanceFromTarget, 2) + Math.pow(yDistanceFromTarget, 2));
-		xVelocity = xDistanceFromTarget / normalizingFactor * speed;
-		yVelocity = yDistanceFromTarget / normalizingFactor * speed;
+		xVelocity = xDistanceFromTarget / magnitude * speed;
+		yVelocity = yDistanceFromTarget / magnitude * speed;
+	}
+	
+	protected void updatePosition() {
+		x += Delta() * xVelocity;
+		y += Delta() * yVelocity;
+		centerX = x + (texture.getImageWidth() / 2);
+		centerY = y + (texture.getImageHeight() / 2);
+	}
+	
+	protected boolean checkCollision() {
+		float deltaX = target.getCenterX() - centerX;
+		float deltaY = target.getCenterY() - centerY;
+		if (Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2)) < Math.min(width, height)) {
+			return true;
+		}
+		return false;
 	}
 	
 	public void doDamage(){
@@ -51,19 +75,15 @@ public abstract class Projectile implements Entity{
 	}
 	
 	public void draw() {
-		DrawQuadTex(texture, x, y, 32, 32);
+		DrawQuadTex(texture, x, y, texture.getImageWidth(), texture.getImageHeight());
 	}
 
+	//Handle velocity calculation in subclasses
+	//(e.g. @Override update() { calculateVelcocity; super.update(); })
 	public void update() {
 		if (alive) {
-			calculateVelocity(); // This allows for homing
-
-			x += Delta() * xVelocity; // "Dumb" Shooting
-			y += Delta() * yVelocity;
-			
-			//Make new variable "effectiveWidth/Height" to use for collision checks
-			if (CheckCollision(x, y, width, height, target.getX(), target.getY(), target.getWidth(),
-					target.getHeight())) {
+			updatePosition();
+			if (checkCollision()) {
 				doDamage();
 			}
 			this.draw();

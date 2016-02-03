@@ -6,6 +6,10 @@ public class ProjectileCannonBullet extends Projectile {
 		super(ProjectileType.ProjectileCannon, target, x, y);
 	}
 	
-	
+	@Override
+	public void update() {
+		calculateVelocity();
+		super.update();
+	}
 
 }

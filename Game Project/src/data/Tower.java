@@ -11,7 +11,8 @@ import helpers.Artist;
 
 public abstract class Tower implements Entity {
 
-	protected float x, y;
+	protected float x, y, barrelX, barrelY;
+	protected int barrelLength;
 	protected float timeSinceLastShot;
 	private float rateOfFire;
 	private float angle;
@@ -31,6 +32,9 @@ public abstract class Tower implements Entity {
 		this.startTile = startTile;
 		this.x = this.startTile.getX();
 		this.y = this.startTile.getY();
+		this.barrelLength = type.barrelLength;
+		this.barrelX = getCenterX();
+		this.barrelY = getCenterY() + barrelLength;
 		this.width = startTile.getWidth();
 		this.height = startTile.getHeight();
 		this.enemies = enemies;
@@ -100,8 +104,10 @@ public abstract class Tower implements Entity {
 		return (float) Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
 	}
 
-	private float calculateAngle() {
+	protected float calculateAngle() {
 		double angleTemp = Math.atan2(target.getY() - y, target.getX() - x);
+		barrelX = (float) (getCenterX() + barrelLength * Math.cos(angleTemp));	//angleTemp still in radians
+		barrelY = (float) (getCenterY() + barrelLength * Math.sin(angleTemp));	//Do this before rotating texture to fit with coordinates
 		return (float) Math.toDegrees(angleTemp) - 90;
 	}
 

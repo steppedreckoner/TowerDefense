@@ -139,11 +139,11 @@ public abstract class Enemy implements Entity {
 	}
 	
 	public float getCenterX(){
-		return x + (width / 2);
+		return x + (texture.getImageWidth() / 2);
 	}
 	
 	public float getCenterY(){
-		return y + (height / 2);
+		return y + (texture.getImageHeight() / 2);
 	}
 
 	public float getX() {

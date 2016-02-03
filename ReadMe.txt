@@ -67,12 +67,14 @@ QUIT: Quits.
 
 
 Most Recent Changes:
--Added new tower Rocket Launcher.
--Added new projectile Rocket.
---Does splash damage.
---Reacquires target if current target dies.
---Homing.
---Limited acceleration.
+-Improved collision detection for projectiles.
+--Now target the center of the enemy
+--Collision method in projectile class
+--Can be overridden for special projectile collisions (e.g. rocket detect collision based on tip of 
+  rocket and hitbox).
+-Overloaded projectile.calculateVelocity. Now to be used in subclasses.
+-Rocket projectiles now target where they think the enemy will be.
+-Rocket towers angle reflects their projectiles new targeting.
 
 
 
@@ -87,7 +89,8 @@ TowerDefense Tropes:
 
 
 Known Issues:
--Deleting a tower deletes all active projectiles fired by that tower.
+-Weird occasional bug where a rocket might get really close to, but not hit a target, and then get stuck.
+-Deleting a tower deletes all active projectiles fired by that tower (might keep this).
 -Slow AOE continues to affect enemies that have moved out of range.
 -Loading invalid maps crashes the game.
 -Map files won't save unless ".txt" is manually entered.
@@ -96,7 +99,9 @@ Known Issues:
 
 To Do:
 
--Clean up projectile collision. Make sure they're hitting the ~center of the target before doing damage. 
+-Fix rocket tower barrel texture (off center by one pixel).
+
+-(DONE) Clean up projectile collision. Make sure they're hitting the ~center of the target before doing damage. 
 
 -Ensure setting of Game States to null is done efficiently/correctly.
 
@@ -171,7 +176,7 @@ To Do:
 --Multi-Target tower (archer tower? upgrade increases number of targets. store targets in array. on upgrade, replace array with one of bigger size).
 --Railgun/Laser tower (Hits all targets in its path)
 
--Projectiles originate from the end of the gun barrel (currently spawn not quite at center of tower).
+-(DONE) Projectiles originate from the end of the gun barrel (currently spawn not quite at center of tower).
 
 -(DONE) Player controlled AOE actions (eg set all enemies on fire within radius x of mouse click)
 --(DONE) Fire
@@ -205,6 +210,13 @@ To Do:
 
 
 Old Changes:
+-Added new tower Rocket Launcher.
+-Added new projectile Rocket.
+--Does splash damage.
+--Reacquires target if current target dies.
+--Homing.
+--Limited acceleration.
+
 -Added game instructions (accessible at main menu or in game pause menu).
 
 -Player level now written to screen.

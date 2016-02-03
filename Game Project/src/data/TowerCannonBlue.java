@@ -11,7 +11,8 @@ public class TowerCannonBlue extends Tower {
 	@Override
 	public void shoot(Enemy target) {
 		this.timeSinceLastShot = 0;
-		projectiles.add(new ProjectileCannonBullet(target, x, y));
+		projectiles.add(new ProjectileCannonBullet(target, barrelX - (ProjectileType.ProjectileCannon.texture.getImageWidth() / 2), 
+				barrelY - (ProjectileType.ProjectileCannon.texture.getImageWidth() / 2)));
 	}
 
 	@Override

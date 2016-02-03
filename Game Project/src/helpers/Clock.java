@@ -40,6 +40,7 @@ public class Clock {
 		return multiplier;
 	}
 	
+	//Delta is constant through an entire update cycle
 	public static void Update(){
 		d = getDelta();
 		totalTime += d;
