@@ -36,7 +36,6 @@ public class ProjectileRocket extends Projectile{
 	protected void calculateVelocity() {
 		float preXVelocity = xVelocity;
 		float preYVelocity = yVelocity;
-		float preAngle = angle;
 		if (target.isAlive()) {
 			//Target approximately where the enemy should be when the rocket gets
 			//there, assuming the enemy does not change direction.

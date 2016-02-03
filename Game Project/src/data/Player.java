@@ -89,7 +89,7 @@ public class Player {
 	public static void Setup() {
 		Cash = STARTING_CASH;
 		Lives = STARTING_LIVES;
-		PlayerLevel = 5;
+		PlayerLevel = 1;
 		CurrentExp = 0;
 		UnlockTowers();
 	}

@@ -13,7 +13,7 @@ public enum TowerType {
 			return new TowerCannonRed(startTile, enemies);
 		}
 	},
-	CannonBlue(new Texture[]{QuickLoad("cannonbaseblue"), QuickLoad("cannongunblue")}, 2000, 2.5f, -40, 31) {
+	CannonBlue(new Texture[]{QuickLoad("cannonbaseblue"), QuickLoad("cannongunblue")}, 250, 2.5f, -40, 31) {
 		@Override
 		public Tower makeTower(Tile startTile, CopyOnWriteArrayList<Enemy> enemies) {
 			return new TowerCannonBlue(startTile, enemies);
@@ -26,7 +26,7 @@ public enum TowerType {
 		}
 	},
 	
-	RocketTower(new Texture[]{QuickLoad("rockettowerbase"), QuickLoad("rockettowerbarrel")}, 6000, 3f, -1, 28) {
+	RocketTower(new Texture[]{QuickLoad("rockettowerbase"), QuickLoad("rockettowerbarrel")}, 600, 4f, -120, 28) {
 		@Override
 		public Tower makeTower(Tile startTile, CopyOnWriteArrayList<Enemy> enemies) {
 			return new TowerRocketLauncher(startTile, enemies);

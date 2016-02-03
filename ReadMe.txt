@@ -67,6 +67,11 @@ QUIT: Quits.
 
 
 Most Recent Changes:
+-Ice projectiles now "hit" any enemy they collide with.
+-Red bullets do the same.
+-Balancing tweaks
+-Some code cleanup/commenting
+
 -Improved collision detection for projectiles.
 --Now target the center of the enemy
 --Collision method in projectile class
@@ -98,6 +103,8 @@ Known Issues:
 
 
 To Do:
+
+-Make enemy list static
 
 -Fix rocket tower barrel texture (off center by one pixel).
 

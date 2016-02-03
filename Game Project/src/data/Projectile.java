@@ -13,7 +13,6 @@ public abstract class Projectile implements Entity{
 	protected float speed;
 	private int damage, width, height;
 	protected Enemy target;
-//	private float targetSpeed;
 	private boolean alive;
 
 	public Projectile(ProjectileType type, Enemy target, float x, float y) {

@@ -12,7 +12,7 @@ public class TowerIce extends Tower{
 	public void shoot(Enemy target) {
 		this.timeSinceLastShot = 0;
 		projectiles.add(new ProjectileIceBullet(target, barrelX - (ProjectileType.ProjectileIceBullet.texture.getImageWidth() / 2), 
-				barrelY - (ProjectileType.ProjectileIceBullet.texture.getImageWidth() / 2)));
+				barrelY - (ProjectileType.ProjectileIceBullet.texture.getImageWidth() / 2), enemies));
 	}
 
 	@Override
