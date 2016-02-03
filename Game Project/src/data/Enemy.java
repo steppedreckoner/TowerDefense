@@ -114,6 +114,10 @@ public abstract class Enemy implements Entity {
 		slowDuration = duration;
 	}
 	
+	public float getStartHealth() {
+		return startHealth;
+	}
+	
 	public int getWidth() {
 		return width;
 	}

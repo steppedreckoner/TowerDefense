@@ -67,19 +67,10 @@ QUIT: Quits.
 
 
 Most Recent Changes:
--Ice projectiles now "hit" any enemy they collide with.
--Red bullets do the same.
--Balancing tweaks
--Some code cleanup/commenting
+-Added Nuke special shot to rocket towers. It deals 50% damage to all enemies in the wave, and shoots every 6th 
+ shot (5 normal shots between nukes).
+-Checks made to see if enemy is on a certain square now have tolerances that scale with time mult.
 
--Improved collision detection for projectiles.
---Now target the center of the enemy
---Collision method in projectile class
---Can be overridden for special projectile collisions (e.g. rocket detect collision based on tip of 
-  rocket and hitbox).
--Overloaded projectile.calculateVelocity. Now to be used in subclasses.
--Rocket projectiles now target where they think the enemy will be.
--Rocket towers angle reflects their projectiles new targeting.
 
 
 
@@ -192,7 +183,7 @@ To Do:
 
 -Level up of towers.
 
--One tower can shoot multiple types of projectiles. Perhaps "special shots" will be unlocked at a 
+-(PARTIAL) One tower can shoot multiple types of projectiles. Perhaps "special shots" will be unlocked at a 
  certain level.
  
 -(DONE) Manage deletion of "dead" projectiles (Use CopyOnWriteArrayList like with enemies)
@@ -207,7 +198,7 @@ To Do:
 
 -(DONE) Losing all lives causes a game over screen with an option to reset.
 
--Checks made to see if enemy is on a certain square have tolerances that scale with time mult (currently static).
+-(DONE) Checks made to see if enemy is on a certain square have tolerances that scale with time mult (currently static).
 
 -Sound
 
@@ -217,6 +208,20 @@ To Do:
 
 
 Old Changes:
+-Ice projectiles now "hit" any enemy they collide with.
+-Red bullets do the same.
+-Balancing tweaks
+-Some code cleanup/commenting
+
+-Improved collision detection for projectiles.
+--Now target the center of the enemy
+--Collision method in projectile class
+--Can be overridden for special projectile collisions (e.g. rocket detect collision based on tip of 
+  rocket and hitbox).
+-Overloaded projectile.calculateVelocity. Now to be used in subclasses.
+-Rocket projectiles now target where they think the enemy will be.
+-Rocket towers angle reflects their projectiles new targeting.
+
 -Added new tower Rocket Launcher.
 -Added new projectile Rocket.
 --Does splash damage.

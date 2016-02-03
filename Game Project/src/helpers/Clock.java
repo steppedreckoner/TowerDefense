@@ -36,7 +36,7 @@ public class Clock {
 		return totalTime;
 	}
 	
-	public static float Multiplier(){
+	public static float GetMultiplier(){
 		return multiplier;
 	}
 	

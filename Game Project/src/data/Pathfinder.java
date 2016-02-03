@@ -6,6 +6,8 @@ import static data.TileGrid.GetTile;
 
 import java.util.ArrayList;
 
+import helpers.Clock;
+
 public class Pathfinder {
 
 	public ArrayList<Tile> pathList;
@@ -38,7 +40,8 @@ public class Pathfinder {
 
 	public void checkCP(float x, float y) {
 		Tile t = pathList.get(currentCP);
-		if (x > t.getX() - 3 && x < t.getX() + 3 && y > t.getY() - 3 && y < t.getY() + 3) {
+		if (x > t.getX() - (3 * Clock.GetMultiplier()) && x < t.getX() + (3 * Clock.GetMultiplier()) 
+				&& y > t.getY() - (3 * Clock.GetMultiplier()) && y < t.getY() + (3 * Clock.GetMultiplier())) {
 			currentCP++;
 			x = t.getX();
 			y = t.getY();

@@ -42,7 +42,7 @@ public class Player {
 	public static int Cash, Lives;
 	private static int PlayerLevel, CurrentExp;
 	
-	public static final int STARTING_CASH = 200, STARTING_LIVES = 5;
+	public static final int STARTING_CASH = 20000, STARTING_LIVES = 50;
 	public static final int TOWER_LIST_ID = 703, ENEMY_LIST_ID = 333;
 	
 	private static final int TOWER_CANNONRED_UNLOCK = 2,
@@ -89,7 +89,7 @@ public class Player {
 	public static void Setup() {
 		Cash = STARTING_CASH;
 		Lives = STARTING_LIVES;
-		PlayerLevel = 1;
+		PlayerLevel = 5;
 		CurrentExp = 0;
 		UnlockTowers();
 	}

@@ -3,6 +3,9 @@ package data;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class TowerRocketLauncher extends Tower{
+	
+	private int shotsSinceNuke;
+	private static final int NUKE_FIRE_RATE = 5;
 
 	public TowerRocketLauncher(Tile startTile, CopyOnWriteArrayList<Enemy> enemies) {
 		super(TowerType.RocketTower, startTile, enemies);
@@ -34,8 +37,15 @@ public class TowerRocketLauncher extends Tower{
 	@Override
 	public void shoot(Enemy target) {
 		this.timeSinceLastShot = 0;
-		projectiles.add(new ProjectileRocket(target, barrelX - (ProjectileType.ProjectileRocket.texture.getImageWidth() / 2), 
+		if (shotsSinceNuke >= NUKE_FIRE_RATE) {
+			projectiles.add(new ProjectileRocketNuke(target, barrelX - (ProjectileType.ProjectileRocketNuke.texture.getImageWidth() / 2), 
+					barrelY - (ProjectileType.ProjectileRocketNuke.texture.getImageHeight() / 2), enemies));
+			shotsSinceNuke = 0;
+		} else {
+			projectiles.add(new ProjectileRocket(target, barrelX - (ProjectileType.ProjectileRocket.texture.getImageWidth() / 2), 
 				barrelY - (ProjectileType.ProjectileRocket.texture.getImageHeight() / 2), enemies));
+			shotsSinceNuke++;
+		}
 	}
 
 }
