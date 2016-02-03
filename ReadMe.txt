@@ -67,9 +67,9 @@ QUIT: Quits.
 
 
 Most Recent Changes:
--Added Nuke special shot to rocket towers. It deals 50% damage to all enemies in the wave, and shoots every 6th 
- shot (5 normal shots between nukes).
--Checks made to see if enemy is on a certain square now have tolerances that scale with time mult.
+-Tower can now be leveled up. Leveling up increases fire rate and damage.
+--Leveling up costs money (will later require certain amount of tower exp, too)
+-Rocket tower nuke special shot unlocked at tower level 5.
 
 
 
@@ -94,6 +94,14 @@ Known Issues:
 
 
 To Do:
+
+-(PARTIAL) Level up of towers.
+--Costs "tower exp" 
+--(DONE) Costs money.
+--Clicking on/hovering over a tower displays range and other info.
+--Exp bar for towers.
+
+-Add impact effect for nukes
 
 -Make enemy list static
 
@@ -181,8 +189,6 @@ To Do:
 --(DONE) Slow
 --(DONE) Tower buffs
 
--Level up of towers.
-
 -(PARTIAL) One tower can shoot multiple types of projectiles. Perhaps "special shots" will be unlocked at a 
  certain level.
  
@@ -208,6 +214,10 @@ To Do:
 
 
 Old Changes:
+-Added Nuke special shot to rocket towers. It deals 50% damage to all enemies in the wave, and shoots every 6th 
+ shot (5 normal shots between nukes).
+-Checks made to see if enemy is on a certain square now have tolerances that scale with time mult.
+
 -Ice projectiles now "hit" any enemy they collide with.
 -Red bullets do the same.
 -Balancing tweaks

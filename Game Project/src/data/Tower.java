@@ -14,21 +14,24 @@ public abstract class Tower implements Entity {
 	protected float x, y, barrelX, barrelY;
 	protected int barrelLength;
 	protected float timeSinceLastShot;
-	private float rateOfFire;
+	protected float rateOfFire;
+	protected int range;
 	private float angle;
-	private int width, height, range, cost;
+	private int width, height;
+	private int cost;
 	protected Enemy target;
 	private Texture[] textures;
 	private Tile startTile;
 	protected CopyOnWriteArrayList<Enemy> enemies;
 	protected CopyOnWriteArrayList<Projectile> projectiles;
 	protected boolean hasTarget, isBuffed;
-	private TowerType type;
+	protected TowerType type;
+	protected int level, maxLevel;
 
 	public Tower(TowerType type, Tile startTile, CopyOnWriteArrayList<Enemy> enemies) {
 		this.textures = type.textures;
-		this.range = type.range;
-		this.rateOfFire = type.rateOfFire;
+		this.range = type.getLevelListRange()[1];
+		this.rateOfFire = type.getLevelListFireRate()[1];
 		this.startTile = startTile;
 		this.x = this.startTile.getX();
 		this.y = this.startTile.getY();
@@ -43,8 +46,22 @@ public abstract class Tower implements Entity {
 		this.timeSinceLastShot = this.rateOfFire;
 		this.projectiles = new CopyOnWriteArrayList<Projectile>();
 		this.angle = 0f;
-		this.cost = type.getCost();
+		this.cost = type.getLevelListUpgradeCost()[0];
 		this.type = type;
+		this.level = 1;
+		this.maxLevel = type.maxLevel;
+	}
+	
+//	public abstract void levelUp();
+	
+	public void levelUp() {
+		if (level < maxLevel){
+			if (Player.ModifyCash(type.getLevelListUpgradeCost()[level])) {
+				level++;
+				rateOfFire = type.getLevelListFireRate()[level];
+				range = type.getLevelListRange()[level];
+			}	
+		}
 	}
 
 	public void update() {
@@ -121,7 +138,7 @@ public abstract class Tower implements Entity {
 	}
 	
 	public void resetRateOfFire(){
-		rateOfFire = type.rateOfFire;
+		rateOfFire = type.getLevelListFireRate()[level];
 	}
 	
 	public boolean isBuffed(){

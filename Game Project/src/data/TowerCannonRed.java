@@ -4,8 +4,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class TowerCannonRed extends Tower{
 	
+	private int level;
+	
 	public TowerCannonRed(Tile startTile, CopyOnWriteArrayList<Enemy> enemies){
 		super(TowerType.CannonRed, startTile, enemies);
+		this.level = 1;
 	}
 	
 	@Override
@@ -28,6 +31,10 @@ public class TowerCannonRed extends Tower{
 			}
 		}
 		return closest;
+	}
+	
+	public int getLevel() {
+		return level;
 	}
 	
 }

@@ -37,7 +37,7 @@ public class TowerRocketLauncher extends Tower{
 	@Override
 	public void shoot(Enemy target) {
 		this.timeSinceLastShot = 0;
-		if (shotsSinceNuke >= NUKE_FIRE_RATE) {
+		if (level >= 5 && shotsSinceNuke >= NUKE_FIRE_RATE) {
 			projectiles.add(new ProjectileRocketNuke(target, barrelX - (ProjectileType.ProjectileRocketNuke.texture.getImageWidth() / 2), 
 					barrelY - (ProjectileType.ProjectileRocketNuke.texture.getImageHeight() / 2), enemies));
 			shotsSinceNuke = 0;

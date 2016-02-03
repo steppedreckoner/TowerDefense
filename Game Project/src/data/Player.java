@@ -42,7 +42,7 @@ public class Player {
 	public static int Cash, Lives;
 	private static int PlayerLevel, CurrentExp;
 	
-	public static final int STARTING_CASH = 20000, STARTING_LIVES = 50;
+	public static final int STARTING_CASH = 200, STARTING_LIVES = 50;
 	public static final int TOWER_LIST_ID = 703, ENEMY_LIST_ID = 333;
 	
 	private static final int TOWER_CANNONRED_UNLOCK = 2,
@@ -89,7 +89,7 @@ public class Player {
 	public static void Setup() {
 		Cash = STARTING_CASH;
 		Lives = STARTING_LIVES;
-		PlayerLevel = 5;
+		PlayerLevel = 1;
 		CurrentExp = 0;
 		UnlockTowers();
 	}
@@ -178,13 +178,6 @@ public class Player {
 		Game.GameFont.drawString(WIDTH / 2, HEIGHT - 31, numerator + "/" + denominator, Color.white);
 	}
 	
-	private void placeTower(Tower tower, Tile tile){
-		if (!tile.hasTower()){
-			towerList.add(tower);
-			tile.setHasTower(true);
-		}
-	}
-	
 	public boolean isShowPauseMenu(){
 		return showPauseMenu;
 	}
@@ -220,6 +213,29 @@ public class Player {
 				mouseWait = true;
 			}
 		}
+	}
+	
+	private void placeTower(Tower tower, Tile tile){
+		if (!tile.hasTower()){
+			towerList.add(tower);
+			tile.setHasTower(true);
+		}
+	}
+	
+	//Gets tower at current mouse coordinates
+	private Tower getTower() {
+		Tile tile = GetTile((int) Math.floor(Mouse.getX() / TILE_SIZE),
+				(int) Math.floor((HEIGHT - Mouse.getY() - 1) / TILE_SIZE));
+		return getTower(tile);
+	}
+	
+	private Tower getTower(Tile tile) {
+		for (Tower t : towerList) {
+			if (tile == t.getStartTile()) {
+				return t;
+			}
+		}
+		return null;
 	}
 	
 	public void updateTowers(){
@@ -274,7 +290,7 @@ public class Player {
 			if (placingTower){
 				Tile tile = GetTile((int) Math.floor(Mouse.getX() / TILE_SIZE), (int) Math.floor((HEIGHT - Mouse.getY() - 1) / TILE_SIZE));
 				if (tile.canBuild() && !tile.hasTower()) {
-					if (ModifyCash(CurrentTowerType.getCost())) {
+					if (ModifyCash(CurrentTowerType.getLevelListUpgradeCost()[0])) {
 						placeTower(CurrentTowerType.makeTower(tile, waveManager.getCurrentWave().getEnemyList()), tile);
 					}
 					placingTower = false;	//If player doesn't have enough cash, cancel tower placement
@@ -362,21 +378,22 @@ public class Player {
 
 			// Tower deletion
 			if (Keyboard.getEventKey() == Keyboard.KEY_D && Keyboard.getEventKeyState()) {
-				Tile tile = GetTile((int) Math.floor(Mouse.getX() / TILE_SIZE),
-						(int) Math.floor((HEIGHT - Mouse.getY() - 1) / TILE_SIZE));
-				Tower tower = null;
-				for (Tower t : towerList) {
-					if (tile == t.getStartTile()) {
-						tower = t;
-						break;
-					}
-				}
+				Tower tower = getTower();
 				if (tower != null) {
 					ModifyCash((int) (-tower.getCost() * .8f));
 					towerList.remove(tower);
 					tower.getStartTile().setHasTower(false);	//There might be a way to abuse this, but it should work for now.
 				}
 			}
+			
+			//Tower upgrade
+			if (Keyboard.getEventKey() == Keyboard.KEY_U && Keyboard.getEventKeyState()) {
+				Tower tower = getTower();
+				if (tower != null) {
+					tower.levelUp();
+				}
+			}
+			
 		}
 		//Keep waiting until both buttons are not down. May be changed
 		//to have one for each button.
