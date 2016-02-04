@@ -1,5 +1,6 @@
 package data;
 
+import static data.WaveManager.EnemyList;
 import static helpers.Artist.DrawQuadTexAlpha;
 import static helpers.Clock.Delta;
 
@@ -14,7 +15,7 @@ public class AOEFireStrike extends AOE{
 
 	@Override
 	protected void doEffect() {
-		for (Enemy e : enemyList){
+		for (Enemy e : EnemyList){
 			if (isInRange(e.getCenterX(), e.getCenterY())){
 				e.decreaseHealth(damage * Delta() / duration);
 			}

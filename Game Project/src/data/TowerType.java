@@ -1,9 +1,8 @@
 package data;
 
-import org.newdawn.slick.opengl.Texture;
-import static helpers.Artist.*;
+import static helpers.Artist.QuickLoad;
 
-import java.util.concurrent.CopyOnWriteArrayList;
+import org.newdawn.slick.opengl.Texture;
 
 public enum TowerType {
 	
@@ -15,8 +14,8 @@ public enum TowerType {
 		private final int[] LevelListUpgradeExp = {0, 1, 2, 3, 4, 500};	//Same arrangement as cost
 		
 		@Override
-		public Tower makeTower(Tile startTile, CopyOnWriteArrayList<Enemy> enemies) {
-			return new TowerCannonRed(startTile, enemies);
+		public Tower makeTower(Tile startTile) {
+			return new TowerCannonRed(startTile);
 		}
 
 		@Override
@@ -36,12 +35,12 @@ public enum TowerType {
 		
 		private final float[] LevelListFireRate = {100f, 3f, 2.5f, 2f, 1.75f, 1.5f};	//list[i] is fire rate at level i.
 		private final int[] LevelListRange = {0, 200, 225, 250, 300, 350};	//Same as above
-		private final int[] LevelListUpgradeCost = {0, -20, -30, -50, -75, -100};	//Upgrade cost at list[i] is cost to go from level i to i+1.
+		private final int[] LevelListUpgradeCost = {-40, -20, -30, -50, -75, -100};	//Upgrade cost at list[i] is cost to go from level i to i+1.
 		private final int[] LevelListUpgradeExp = {0, 1, 2, 3, 4, 500};	//Same arrangement as cost
 		
 		@Override
-		public Tower makeTower(Tile startTile, CopyOnWriteArrayList<Enemy> enemies) {
-			return new TowerCannonBlue(startTile, enemies);
+		public Tower makeTower(Tile startTile) {
+			return new TowerCannonBlue(startTile);
 		}
 		
 		@Override
@@ -61,12 +60,12 @@ public enum TowerType {
 		
 		private final float[] LevelListFireRate = {100f, 2f, 1.75f, 1.5f, 1.25f, 1f};	//list[i] is fire rate at level i.
 		private final int[] LevelListRange = {0, 250, 275, 300, 325, 350};	//Same as above
-		private final int[] LevelListUpgradeCost = {0, -20, -30, -50, -75, -100};	//Upgrade cost at list[i] is cost to go from level i to i+1.
+		private final int[] LevelListUpgradeCost = {-100, -20, -30, -50, -75, -100};	//Upgrade cost at list[i] is cost to go from level i to i+1.
 		private final int[] LevelListUpgradeExp = {0, 1, 2, 3, 4, 500};	//Same arrangement as cost
 		
 		@Override
-		public Tower makeTower(Tile startTile, CopyOnWriteArrayList<Enemy> enemies) {
-			return new TowerIce(startTile, enemies);
+		public Tower makeTower(Tile startTile) {
+			return new TowerIce(startTile);
 		}
 		
 		@Override
@@ -86,12 +85,12 @@ public enum TowerType {
 		
 		private final float[] LevelListFireRate = {100f, 2.6f, 2.3f, 2f, 1.7f, 1.4f};	//list[i] is fire rate at level i.
 		private final int[] LevelListRange = {0, 400, 500, 600, 650, 700};	//Same as above
-		private final int[] LevelListUpgradeCost = {0, -20, -30, -50, -75, -100};	//Upgrade cost at list[i] is cost to go from level i to i+1.
+		private final int[] LevelListUpgradeCost = {-150, -20, -30, -50, -75, -100};	//Upgrade cost at list[i] is cost to go from level i to i+1.
 		private final int[] LevelListUpgradeExp = {0, 1, 2, 3, 4, 500};	//Same arrangement as cost
 		
 		@Override
-		public Tower makeTower(Tile startTile, CopyOnWriteArrayList<Enemy> enemies) {
-			return new TowerRocketLauncher(startTile, enemies);
+		public Tower makeTower(Tile startTile) {
+			return new TowerRocketLauncher(startTile);
 		}
 		
 		@Override
@@ -109,16 +108,18 @@ public enum TowerType {
 	};
 	
 	Texture[] textures;
-	int barrelLength;
+	int barrelLength, width, height;
 	int maxLevel;
 	
 	TowerType(Texture[] textures, int maxLevel, int barrelLength){
 		this.textures = textures;
 		this.maxLevel = maxLevel;
 		this.barrelLength = barrelLength;
+		this.width = textures[0].getImageWidth();
+		this.height = textures[0].getImageHeight();
 	}
 	
-	public abstract Tower makeTower(Tile startTile, CopyOnWriteArrayList<Enemy> enemies);
+	public abstract Tower makeTower(Tile startTile);
 	
 	public abstract float[] getLevelListFireRate();
 	public abstract int[] getLevelListRange();

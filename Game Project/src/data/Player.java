@@ -1,5 +1,14 @@
 package data;
 
+import static data.TowerType.CannonBlue;
+import static data.TowerType.CannonRed;
+import static data.TowerType.IceTower;
+import static data.TowerType.RocketTower;
+import static data.AOEType.FireStrike;
+import static data.AOEType.TowerBuff;
+import static data.AOEType.Slow;
+
+
 import static data.TileGrid.GetTile;
 import static helpers.Artist.HEIGHT;
 import static helpers.Artist.TILE_SIZE;
@@ -23,27 +32,25 @@ import helpers.StateManager;
 
 public class Player {
 
-	private WaveManager waveManager;
 	
 	private boolean showPauseMenu, showTowerMenu, mouseButton0, mouseButton1, mouseWait;
 	
-	private ArrayList<Tower> towerList;
-	private CopyOnWriteArrayList<AOE> AOEList;
 	private static TowerType CurrentTowerType;
 	private static AOEType CurrentAOEType;
 	private boolean placingTower, placingAOE;
 	
-	private static UI TowerUI;
 	
 	private static Texture ExpBarBackground = QuickLoad("playerexpbackground"),
 			ExpBarForeground = QuickLoad("playerexpforeground"),
 			ExpBarBorder = QuickLoad("playerexpborder");
 	
-	public static int Cash, Lives;
+	private static UI TowerUI;
 	private static int PlayerLevel, CurrentExp;
+	public static CopyOnWriteArrayList<AOE> AOEList;
+	public static ArrayList<Tower> TowerList;
+	public static int Cash, Lives;
 	
-	public static final int STARTING_CASH = 200, STARTING_LIVES = 50;
-	public static final int TOWER_LIST_ID = 703, ENEMY_LIST_ID = 333;
+	public static final int STARTING_CASH = 300, STARTING_LIVES = 10;
 	
 	private static final int TOWER_CANNONRED_UNLOCK = 2,
 			TOWER_ICE_UNLOCK = 3,
@@ -54,10 +61,9 @@ public class Player {
 	private static final int[] EXP_LIST = {0, 100, 220, 370, 600, 920, 1430};
 	public static final int MAX_LEVEL = EXP_LIST.length - 1;
 
-	public Player(WaveManager waveManager) {
+	public Player() {
 		PlayerLevel = 1;
 		CurrentExp = 0;
-		this.waveManager = waveManager;
 		this.showPauseMenu = false;
 		this.showTowerMenu = false;
 		this.placingTower = false;
@@ -73,8 +79,6 @@ public class Player {
 		TowerUI.addButton("Towercannonblue", "cannonbaseblue", TILE_SIZE * 1, TILE_SIZE * 13);
 		
 		
-		this.towerList = new ArrayList<Tower>();
-		this.AOEList = new CopyOnWriteArrayList<AOE>();
 		CurrentTowerType = TowerType.CannonBlue;
 		CurrentAOEType = AOEType.NULL;
 		for (AOEType a : AOEType.values()){
@@ -91,6 +95,8 @@ public class Player {
 		Lives = STARTING_LIVES;
 		PlayerLevel = 1;
 		CurrentExp = 0;
+		TowerList = new ArrayList<Tower>();
+		AOEList = new CopyOnWriteArrayList<AOE>();
 		UnlockTowers();
 	}
 	
@@ -215,11 +221,31 @@ public class Player {
 		}
 	}
 	
-	private void placeTower(Tower tower, Tile tile){
-		if (!tile.hasTower()){
-			towerList.add(tower);
-			tile.setHasTower(true);
-		}
+	private void selectTowerType(TowerType type) {
+		CurrentTowerType = type;
+		placingTower = true;
+		placingAOE = false;
+	}
+	
+	private boolean canBuild() {
+		Tile tile = GetTile((int) Math.floor(Mouse.getX() / TILE_SIZE),
+				(int) Math.floor((HEIGHT - Mouse.getY() - 1) / TILE_SIZE));
+		return canBuild(tile);
+	}
+	
+	private boolean canBuild(Tile tile) {
+		return (tile.canBuild() && !tile.hasTower());
+	}
+	
+	private void placeTower() {
+		Tile tile = GetTile((int) Math.floor(Mouse.getX() / TILE_SIZE),
+				(int) Math.floor((HEIGHT - Mouse.getY() - 1) / TILE_SIZE));
+		placeTower(tile);
+	}
+	
+	private void placeTower(Tile tile) {
+		CurrentTowerType.makeTower(tile);
+		tile.setHasTower(true);
 	}
 	
 	//Gets tower at current mouse coordinates
@@ -229,8 +255,9 @@ public class Player {
 		return getTower(tile);
 	}
 	
+	//Gets tower at specified tile
 	private Tower getTower(Tile tile) {
-		for (Tower t : towerList) {
+		for (Tower t : TowerList) {
 			if (tile == t.getStartTile()) {
 				return t;
 			}
@@ -238,31 +265,55 @@ public class Player {
 		return null;
 	}
 	
+	private void levelUpTower() {
+		levelUpTower(getTower());
+	}
+	
+	private void levelUpTower(Tower tower) {
+		if (tower != null) {
+			tower.levelUp();
+		}
+	}
+	
+	private void deleteTower() {
+		deleteTower(getTower());
+	}
+	
+	private void deleteTower(Tower tower) {
+		if (tower != null) {
+			tower.delete();
+		}
+	}
+	
 	public void updateTowers(){
-		for (Tower t : towerList) {
-			t.refreshEnemies(waveManager.getCurrentWave().getEnemyList());
+		for (Tower t : TowerList) {
 			t.update();
 		}
 	}
 	
-	private void placeAOE(AOE a, int listID){
-		AOEList.add(a);
-		if (listID == ENEMY_LIST_ID){
-			a.setEnemyList(waveManager.getCurrentWave().getEnemyList());
-		}
-		else if (listID == TOWER_LIST_ID){
-			a.setTowerList(towerList);
-		}
+	private void selectAOEType(AOEType type) {
+		CurrentAOEType = type;
+		placingTower = false;
+		placingAOE = true;
 	}
 	
+	private void placeAOE() {
+		int x = Mouse.getX();
+		int y = (int) Math.floor(HEIGHT - Mouse.getY() - 1);
+		placeAOE(x, y);
+	}
+	
+	private void placeAOE(int x, int y){
+		CurrentAOEType.makeAOE(x, y);
+		CurrentAOEType.resetCooldown();
+		placingAOE = false;
+	}
+	
+	//Deletion is now managed in the AOE class by calling die method during update methods
 	public void updateAOE(){
 		for (AOE a : AOEList){
 			if (a.isAlive()){
-				a.refreshEnemies(waveManager.getCurrentWave().getEnemyList());
 				a.update();
-			}
-			else{
-				AOEList.remove(a);
 			}
 		}
 	}
@@ -277,8 +328,10 @@ public class Player {
 		}
 		updateTowers();
 		updateAOE();
+		
+		//Pick which style of placement drawing I like better, and use that one for both.
 		if (placingTower){
-			Tower.PlacementDraw(CurrentTowerType, Mouse.getX() - 32, (int) Math.floor(HEIGHT - Mouse.getY() - 1) - 32);
+			Tower.PlacementDraw(CurrentTowerType, Mouse.getX(), (int) Math.floor(HEIGHT - Mouse.getY() - 1));
 		}
 		if (placingAOE){
 			CurrentAOEType.PlacementDraw(Mouse.getX(), (int) Math.floor(HEIGHT - Mouse.getY() - 1));
@@ -286,21 +339,24 @@ public class Player {
 
 		// Handle mouse input
 		
+		//Left Mouse was newly clicked
 		if (Mouse.isButtonDown(0) && !mouseButton0 && !mouseWait){
 			if (placingTower){
-				Tile tile = GetTile((int) Math.floor(Mouse.getX() / TILE_SIZE), (int) Math.floor((HEIGHT - Mouse.getY() - 1) / TILE_SIZE));
-				if (tile.canBuild() && !tile.hasTower()) {
+				if (canBuild()) {
 					if (ModifyCash(CurrentTowerType.getLevelListUpgradeCost()[0])) {
-						placeTower(CurrentTowerType.makeTower(tile, waveManager.getCurrentWave().getEnemyList()), tile);
+						placeTower();
 					}
 					placingTower = false;	//If player doesn't have enough cash, cancel tower placement
 				}
 			}
-			if (placingAOE && CurrentAOEType.cooldownComplete()){
-					//Use placeAOE method to ensure AOEs aren't placed without fetching the appropriate list
-					placeAOE(CurrentAOEType.makeAOE(Mouse.getX(), (int) Math.floor(HEIGHT - Mouse.getY() - 1)), CurrentAOEType.getListID());
-					CurrentAOEType.resetCooldown();
-					placingAOE = false;
+			else if (placingAOE && CurrentAOEType.cooldownComplete()){
+				placeAOE();
+			}
+			else if (!placingTower && !placingAOE) {
+				Tower tower = getTower();
+				if (tower != null) {
+					System.out.println("Clicked on " + tower.towerName);
+				}
 			}
 		}
 		//Cancel tower or AOE placement by pressing right mouse
@@ -338,60 +394,38 @@ public class Player {
 			}
 			//Hotkeys for tower selection
 			if (Keyboard.getEventKey() == Keyboard.KEY_1 && Keyboard.getEventKeyState()) {
-				CurrentTowerType = TowerType.CannonBlue;
-				placingTower = true;
-				placingAOE = false;
+				selectTowerType(CannonBlue);
 			}
 			if (Keyboard.getEventKey() == Keyboard.KEY_2 && Keyboard.getEventKeyState() && PlayerLevel >= TOWER_CANNONRED_UNLOCK) {
-				CurrentTowerType = TowerType.CannonRed;
-				placingTower = true;
-				placingAOE = false;
+				selectTowerType(CannonRed);
 			}
 			if (Keyboard.getEventKey() == Keyboard.KEY_3 && Keyboard.getEventKeyState() && PlayerLevel >= TOWER_ICE_UNLOCK) {
-				CurrentTowerType = TowerType.IceTower;
-				placingTower = true;
-				placingAOE = false;
+				selectTowerType(IceTower);
 			}
 			if (Keyboard.getEventKey() == Keyboard.KEY_4 && Keyboard.getEventKeyState() && PlayerLevel >= TOWER_ROCKET_UNLOCK) {
-				CurrentTowerType = TowerType.RocketTower;
-				placingTower = true;
-				placingAOE = false;
+				selectTowerType(RocketTower);
 			}
 			
 			//Select and begin placing AOE
 			
 			if (Keyboard.getEventKey() == Keyboard.KEY_Q && Keyboard.getEventKeyState() && PlayerLevel >= AOE_FIRESTRIKE_UNLOCK) {
-				CurrentAOEType = AOEType.FireStrike;
-				placingAOE = true;
-				placingTower = false;
+				selectAOEType(FireStrike);
 			}
 			if (Keyboard.getEventKey() == Keyboard.KEY_W && Keyboard.getEventKeyState() && PlayerLevel >= AOE_TOWERBUFF_UNLOCK) {
-				CurrentAOEType = AOEType.TowerBuff;
-				placingAOE = true;
-				placingTower = false;
+				selectAOEType(TowerBuff);
 			}
 			if (Keyboard.getEventKey() == Keyboard.KEY_E && Keyboard.getEventKeyState() && PlayerLevel >= AOE_SLOW_UNLOCK) {
-				CurrentAOEType = AOEType.Slow;
-				placingAOE = true;
-				placingTower = false;
+				selectAOEType(Slow);
 			}
 
 			// Tower deletion
 			if (Keyboard.getEventKey() == Keyboard.KEY_D && Keyboard.getEventKeyState()) {
-				Tower tower = getTower();
-				if (tower != null) {
-					ModifyCash((int) (-tower.getCost() * .8f));
-					towerList.remove(tower);
-					tower.getStartTile().setHasTower(false);	//There might be a way to abuse this, but it should work for now.
-				}
+				deleteTower();
 			}
 			
 			//Tower upgrade
 			if (Keyboard.getEventKey() == Keyboard.KEY_U && Keyboard.getEventKeyState()) {
-				Tower tower = getTower();
-				if (tower != null) {
-					tower.levelUp();
-				}
+				levelUpTower();
 			}
 			
 		}

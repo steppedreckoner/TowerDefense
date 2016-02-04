@@ -13,7 +13,7 @@ public abstract class Projectile implements Entity{
 	protected float speed;
 	private int damage, width, height;
 	protected Enemy target;
-	private boolean alive;
+	private boolean alive, killedEnemy;
 
 	public Projectile(ProjectileType type, Enemy target, float x, float y) {
 		this.texture = type.texture;
@@ -70,6 +70,7 @@ public abstract class Projectile implements Entity{
 	
 	public void doDamage(){
 		target.decreaseHealth(damage);
+		this.killedEnemy = !target.isAlive();
 		this.alive = false;
 	}
 	
@@ -87,6 +88,10 @@ public abstract class Projectile implements Entity{
 			}
 			this.draw();
 		}
+	}
+	
+	public boolean killedEnemy() {
+		return killedEnemy;
 	}
 
 	public Enemy getTarget() {

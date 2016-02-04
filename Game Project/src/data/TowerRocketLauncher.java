@@ -1,24 +1,24 @@
 package data;
 
-import java.util.concurrent.CopyOnWriteArrayList;
+import static data.WaveManager.EnemyList;
 
 public class TowerRocketLauncher extends Tower{
 	
 	private int shotsSinceNuke;
 	private static final int NUKE_FIRE_RATE = 5;
 
-	public TowerRocketLauncher(Tile startTile, CopyOnWriteArrayList<Enemy> enemies) {
-		super(TowerType.RocketTower, startTile, enemies);
+	public TowerRocketLauncher(Tile startTile) {
+		super(TowerType.RocketTower, startTile);
 	}
 
 	@Override
 	protected Enemy acquireTarget() {
 		hasTarget = false;
 		Enemy closest = null;
-		for (int i = 0; i < this.enemies.size(); i++) {
-			if (this.enemies.get(i).isAlive()) {
+		for (int i = 0; i < EnemyList.size(); i++) {
+			if (EnemyList.get(i).isAlive()) {
 				hasTarget = true;
-				return this.enemies.get(i);
+				return EnemyList.get(i);
 			}
 		}
 		return closest;
@@ -39,11 +39,11 @@ public class TowerRocketLauncher extends Tower{
 		this.timeSinceLastShot = 0;
 		if (level >= 5 && shotsSinceNuke >= NUKE_FIRE_RATE) {
 			projectiles.add(new ProjectileRocketNuke(target, barrelX - (ProjectileType.ProjectileRocketNuke.texture.getImageWidth() / 2), 
-					barrelY - (ProjectileType.ProjectileRocketNuke.texture.getImageHeight() / 2), enemies));
+					barrelY - (ProjectileType.ProjectileRocketNuke.texture.getImageHeight() / 2), EnemyList));
 			shotsSinceNuke = 0;
 		} else {
 			projectiles.add(new ProjectileRocket(target, barrelX - (ProjectileType.ProjectileRocket.texture.getImageWidth() / 2), 
-				barrelY - (ProjectileType.ProjectileRocket.texture.getImageHeight() / 2), enemies));
+				barrelY - (ProjectileType.ProjectileRocket.texture.getImageHeight() / 2), EnemyList));
 			shotsSinceNuke++;
 		}
 	}

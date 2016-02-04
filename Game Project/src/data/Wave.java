@@ -1,14 +1,13 @@
 package data;
 
+import static data.WaveManager.EnemyList;
 import static helpers.Clock.Delta;
-
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Wave {
 
 	private float timeSinceLastSpawn, spawnTime;
 	private EnemyType enemyType;
-	private CopyOnWriteArrayList<Enemy> enemyList;
+//	private CopyOnWriteArrayList<Enemy> enemyList;
 	private int level, enemiesPerWave, enemiesSpawned;
 	private boolean waveComplete;
 
@@ -21,7 +20,7 @@ public class Wave {
 		this.spawnTime = spawnTime;
 		this.waveComplete = false;
 		this.timeSinceLastSpawn = 0;
-		this.enemyList = new CopyOnWriteArrayList<Enemy>();
+//		this.enemyList = new CopyOnWriteArrayList<Enemy>();
 
 		spawn(enemyType, level);
 	}
@@ -36,14 +35,14 @@ public class Wave {
 				timeSinceLastSpawn = 0;
 			}
 		}
-		for (Enemy e : enemyList) {
+		for (Enemy e : EnemyList) {
 			if (e.isAlive()) {
 				allEnemiesDead = false;
 				e.update();
 				e.draw();
 			}
 			else{
-				enemyList.remove(e);
+				EnemyList.remove(e);
 			}
 		}
 		if (allEnemiesDead){
@@ -53,15 +52,12 @@ public class Wave {
 	
 	//Might want to change this so that start tile can be set by spawn method
 	public void spawn(EnemyType type, int level) {
-		enemyList.add(type.makeEnemy(level));
+		EnemyList.add(type.makeEnemy(level));
 		enemiesSpawned++;
 	}
 
 	public boolean isComplete() {
 		return waveComplete;
 	}
-	
-	public CopyOnWriteArrayList<Enemy> getEnemyList(){
-		return enemyList;
-	}
+
 }

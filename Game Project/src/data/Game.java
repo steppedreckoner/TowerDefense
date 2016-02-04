@@ -28,8 +28,9 @@ public class Game {
 		//Note: When loading maps from file, ensure there's only one start and one goal tile.
 		CreateMap(newMap);	//Initializes the map (TileGrid Class)
 		
+		WaveManager.Setup();
 		waveManager = new WaveManager();	//Deals with spawning enemies
-		player = new Player(waveManager);	//Allows for player interactions
+		player = new Player();				//Allows for player interactions
 		if (newGame){
 			Player.Setup();
 		}
@@ -44,6 +45,7 @@ public class Game {
 		
 		GameFont = new TrueTypeFont( new Font("Tahoma", Font.BOLD, 24), false);
 		
+		//Ensures the game begins unpaused (could happen if game is paused and exited and another game is started)
 		if (IsPaused()){
 			Pause();
 		}

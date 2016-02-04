@@ -18,11 +18,6 @@ public enum AOEType {
 		public AOE makeAOE(float x, float y) {
 			return new AOEFireStrike(x, y);
 		}
-
-		@Override
-		public int getListID(){
-			return Player.ENEMY_LIST_ID;
-		}
 		
 		@Override
 		public void PlacementDraw(float x, float y) {
@@ -68,11 +63,6 @@ public enum AOEType {
 		public AOE makeAOE(float x, float y) {
 			return new AOETowerBuff(x, y);
 		}
-
-		@Override
-		public int getListID(){
-			return Player.TOWER_LIST_ID;
-		}
 		
 		@Override
 		public void PlacementDraw(float x, float y) {
@@ -117,11 +107,6 @@ public enum AOEType {
 		@Override
 		public AOE makeAOE(float x, float y) {
 			return new AOESlow(x, y);
-		}
-
-		@Override
-		public int getListID() {
-			return Player.ENEMY_LIST_ID;
 		}
 
 		@Override
@@ -189,11 +174,6 @@ public enum AOEType {
 		public boolean cooldownComplete() {
 			return false;
 		}
-
-		@Override
-		public int getListID() {
-			return 0;
-		}
 		
 	};
 	
@@ -213,7 +193,6 @@ public enum AOEType {
 	
 	public abstract AOE makeAOE(float x, float y);
 	
-	public abstract int getListID();
 	public abstract void PlacementDraw(float x, float y);
 	public abstract void resetCooldown();
 	public abstract void incrementCooldown(float time);

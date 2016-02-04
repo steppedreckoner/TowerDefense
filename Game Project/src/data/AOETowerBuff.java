@@ -1,5 +1,6 @@
 package data;
 
+import static data.Player.TowerList;
 import static helpers.Artist.DrawQuadTexAlpha;
 
 public class AOETowerBuff extends AOE{
@@ -14,7 +15,7 @@ public class AOETowerBuff extends AOE{
 
 	@Override
 	protected void doEffect() {
-		for (Tower t : towerList){
+		for (Tower t : TowerList){
 			if (isInRange(t.getCenterX(), t.getCenterY()) && !t.isBuffed()){
 				t.rateOfFireMultiplier(rofIncrease);
 			}
@@ -23,7 +24,7 @@ public class AOETowerBuff extends AOE{
 	
 	@Override
 	protected void endEffect() {
-		for (Tower t : towerList){
+		for (Tower t : TowerList){
 			if (t.isBuffed()){
 				t.debuff();
 			}

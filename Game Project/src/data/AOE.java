@@ -1,12 +1,9 @@
 package data;
 
-import org.newdawn.slick.opengl.Texture;
-
 import static helpers.Artist.DrawQuadTex;
 import static helpers.Clock.Delta;
 
-import java.util.ArrayList;
-import java.util.concurrent.CopyOnWriteArrayList;
+import org.newdawn.slick.opengl.Texture;
 
 public abstract class AOE implements Entity{
 	
@@ -17,8 +14,7 @@ public abstract class AOE implements Entity{
 	protected Texture activeTex;
 	protected boolean isAlive;
 	
-	protected CopyOnWriteArrayList<Enemy> enemyList;
-	protected ArrayList<Tower> towerList;
+	private static int TotalAOEPlaced = 0;
 	
 	public AOE(AOEType type, float x, float y){
 		this.isAlive = true;
@@ -32,16 +28,8 @@ public abstract class AOE implements Entity{
 		this.width = type.width;
 		this.height = type.height;
 		System.out.println(x + ", " + y);
-		enemyList = new CopyOnWriteArrayList<Enemy>();
-		towerList = new ArrayList<Tower>();
-	}
-	
-	public void setEnemyList(CopyOnWriteArrayList<Enemy> newEnemies){
-		enemyList = newEnemies;
-	}
-	
-	public void setTowerList(ArrayList<Tower> newTowers){
-		towerList = newTowers;
+		Player.AOEList.add(this);
+		TotalAOEPlaced++;
 	}
 	
 	public void update(){
@@ -50,8 +38,7 @@ public abstract class AOE implements Entity{
 			doEffect();
 			timeAlive += Delta();
 			if (timeAlive > duration){
-				endEffect();
-				isAlive = false;
+				die();
 			}
 		}
 	}
@@ -63,6 +50,12 @@ public abstract class AOE implements Entity{
 	//Used to illustrate AOEs that are about to be placed
 	public static void PlacementDraw(AOEType type, int x, int y){
 		DrawQuadTex(type.placingTex, x - (type.width / 2), y - (type.height / 2), type.width, type.height);
+	}
+	
+	private void die() {
+		endEffect();
+		isAlive = false;
+		Player.AOEList.remove(this);
 	}
 	
 	protected boolean isInRange(float xCoord, float yCoord) {
@@ -79,8 +72,8 @@ public abstract class AOE implements Entity{
 		return (float) Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
 	}
 	
-	public void refreshEnemies(CopyOnWriteArrayList<Enemy> newEnemies){
-		enemyList = newEnemies;
+	public static int GetTotalAOEPlaced() {
+		return TotalAOEPlaced;
 	}
 	
 	public boolean isAlive(){

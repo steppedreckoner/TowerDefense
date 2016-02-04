@@ -66,9 +66,12 @@ QUIT: Quits.
 
 
 Most Recent Changes:
--Tower can now be leveled up. Leveling up increases fire rate and damage.
---Leveling up costs money (will later require certain amount of tower exp, too)
--Rocket tower nuke special shot unlocked at tower level 5.
+-Player.TowerList is now static
+-WaveManager.EnemyList is now static
+-Towers now track stats (shotsFired, totalKills)
+-Towers are now named (to be used in future towerUI)
+-Clicking on a tower prints out tower name (prep step for displaying tower menus)
+-Cleaned up player.update() method
 
 
 
@@ -102,7 +105,7 @@ To Do:
 
 -Add impact effect for nukes
 
--Make enemy list static
+-(DONE) Make enemy list static
 
 -Fix rocket tower barrel texture (off center by one pixel).
 
@@ -116,7 +119,7 @@ To Do:
 
 -Rework Game update method so that enemies are drawn above towers, but AOEs are still above enemies.
 
--Clean up update method in Player class.
+-(PARTIAL) Clean up update method in Player class (maybe have methods for handling mouse and keyboard input).
 
 -Clean up isInRange methods.
 
@@ -180,6 +183,7 @@ To Do:
 --(DONE) Rocket tower (Homing with splash damage)
 --Multi-Target tower (archer tower? upgrade increases number of targets. store targets in array. on upgrade, replace array with one of bigger size).
 --Railgun/Laser tower (Hits all targets in its path)
+--Chain damage tower (lightning?)
 
 -(DONE) Projectiles originate from the end of the gun barrel (currently spawn not quite at center of tower).
 
@@ -213,6 +217,10 @@ To Do:
 
 
 Old Changes:
+-Tower can now be leveled up. Leveling up increases fire rate and damage.
+--Leveling up costs money (will later require certain amount of tower exp, too)
+-Rocket tower nuke special shot unlocked at tower level 5.
+
 -Added Nuke special shot to rocket towers. It deals 50% damage to all enemies in the wave, and shoots every 6th 
  shot (5 normal shots between nukes).
 -Checks made to see if enemy is on a certain square now have tolerances that scale with time mult.

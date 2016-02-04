@@ -1,5 +1,6 @@
 package data;
 
+import static data.WaveManager.EnemyList;
 import static helpers.Artist.DrawQuadTexAlpha;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class AOESlow extends AOE{
 
 	@Override
 	protected void doEffect() {
-		for (Enemy e : enemyList){
+		for (Enemy e : EnemyList){
 			if (!e.isSlowed() && isInRange(e.getCenterX(), e.getCenterY())){
 				slowedEnemyList.add(e);
 				e.setSlowDuration(999f);

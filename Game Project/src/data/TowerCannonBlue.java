@@ -1,11 +1,11 @@
 package data;
 
-import java.util.concurrent.CopyOnWriteArrayList;
+import static data.WaveManager.EnemyList;
 
 public class TowerCannonBlue extends Tower {
 
-	public TowerCannonBlue(Tile startTile, CopyOnWriteArrayList<Enemy> enemies) {
-		super(TowerType.CannonBlue, startTile, enemies);
+	public TowerCannonBlue(Tile startTile) {
+		super(TowerType.CannonBlue, startTile);
 	}
 
 	@Override
@@ -19,10 +19,10 @@ public class TowerCannonBlue extends Tower {
 	protected Enemy acquireTarget() {
 		hasTarget = false;
 		Enemy target = null;
-		for (int i = 0; i < this.enemies.size(); i++){
-			if (this.isInRange(this.enemies.get(i))){
+		for (int i = 0; i < EnemyList.size(); i++){
+			if (this.isInRange(EnemyList.get(i))){
 				hasTarget = true;
-				return this.enemies.get(i);
+				return EnemyList.get(i);
 			}
 		}
 		return target;

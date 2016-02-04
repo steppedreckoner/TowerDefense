@@ -1,32 +1,32 @@
 package data;
 
-import java.util.concurrent.CopyOnWriteArrayList;
+import static data.WaveManager.EnemyList;
 
 public class TowerIce extends Tower{
 	
-	public TowerIce(Tile startTile, CopyOnWriteArrayList<Enemy> enemies){
-		super(TowerType.IceTower, startTile, enemies);
+	public TowerIce(Tile startTile){
+		super(TowerType.IceTower, startTile);
 	}
 	
 	@Override
 	public void shoot(Enemy target) {
 		this.timeSinceLastShot = 0;
 		projectiles.add(new ProjectileIceBullet(target, barrelX - (ProjectileType.ProjectileIceBullet.texture.getImageWidth() / 2), 
-				barrelY - (ProjectileType.ProjectileIceBullet.texture.getImageWidth() / 2), enemies));
+				barrelY - (ProjectileType.ProjectileIceBullet.texture.getImageWidth() / 2), EnemyList));
 	}
 
 	@Override
 	protected Enemy acquireTarget() {
 		hasTarget = false;
-		for (int i = 0; i < this.enemies.size(); i++){
-			if (this.isInRange(this.enemies.get(i)) && !this.enemies.get(i).isSlowed()){	//Earliest spawned that is not already slowed
+		for (int i = 0; i < EnemyList.size(); i++){
+			if (this.isInRange(EnemyList.get(i)) && !EnemyList.get(i).isSlowed()){	//Earliest spawned that is not already slowed
 				hasTarget = true;
-				return this.enemies.get(i);
+				return EnemyList.get(i);
 			}
 		}
-		if (this.enemies.size() > 0){
+		if (EnemyList.size() > 0){
 			hasTarget = true;
-			return this.enemies.get(0);
+			return EnemyList.get(0);
 		}
 		return null;
 	}

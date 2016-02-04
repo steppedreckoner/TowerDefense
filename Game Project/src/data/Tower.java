@@ -1,5 +1,6 @@
 package data;
 
+import static helpers.Artist.DrawQuadTex;
 import static helpers.Artist.DrawQuadTexRotate;
 import static helpers.Clock.Delta;
 
@@ -22,13 +23,15 @@ public abstract class Tower implements Entity {
 	protected Enemy target;
 	private Texture[] textures;
 	private Tile startTile;
-	protected CopyOnWriteArrayList<Enemy> enemies;
 	protected CopyOnWriteArrayList<Projectile> projectiles;
 	protected boolean hasTarget, isBuffed;
 	protected TowerType type;
-	protected int level, maxLevel;
+	protected int level, maxLevel, shotsFired, totalKills;
+	protected String towerName;
+	
+	private static int TotalTowersPlaced = 0, CurrentTowers = 0;
 
-	public Tower(TowerType type, Tile startTile, CopyOnWriteArrayList<Enemy> enemies) {
+	public Tower(TowerType type, Tile startTile) {
 		this.textures = type.textures;
 		this.range = type.getLevelListRange()[1];
 		this.rateOfFire = type.getLevelListFireRate()[1];
@@ -40,7 +43,6 @@ public abstract class Tower implements Entity {
 		this.barrelY = getCenterY() + barrelLength;
 		this.width = startTile.getWidth();
 		this.height = startTile.getHeight();
-		this.enemies = enemies;
 		this.hasTarget = false;
 		this.isBuffed = false;
 		this.timeSinceLastShot = this.rateOfFire;
@@ -50,9 +52,22 @@ public abstract class Tower implements Entity {
 		this.type = type;
 		this.level = 1;
 		this.maxLevel = type.maxLevel;
+		this.shotsFired = 0;
+		this.totalKills = 0;
+		TotalTowersPlaced++;
+		CurrentTowers++;
+		towerName = "Tower " + Integer.toString(TotalTowersPlaced);
+		System.out.println(towerName);
+		System.out.println("Currently " + CurrentTowers + " towers");
+		Player.TowerList.add(this);
 	}
 	
-//	public abstract void levelUp();
+	public void delete() {
+		Player.ModifyCash((int) (-cost * .8f));	//negative cost to add money
+		Player.TowerList.remove(this);
+		startTile.setHasTower(false);
+		CurrentTowers--;	//There might be a way to abuse this, but it should work for now.
+	}
 	
 	public void levelUp() {
 		if (level < maxLevel){
@@ -72,6 +87,7 @@ public abstract class Tower implements Entity {
 			if (timeSinceLastShot > rateOfFire && this.isInRange(target)) {
 				shoot(target);
 				timeSinceLastShot = 0;
+				shotsFired++;
 			}
 		}
 		for (Projectile p : projectiles) {
@@ -79,6 +95,9 @@ public abstract class Tower implements Entity {
 				p.update();
 			}
 			else{
+				if (p.killedEnemy()) {
+					totalKills++;
+				}
 				projectiles.remove(p);
 			}
 		}
@@ -88,7 +107,7 @@ public abstract class Tower implements Entity {
 	//Used to illustrate towers that are about to be placed
 	public static void PlacementDraw(TowerType type, int x, int y){
 		for (int i = 0; i < type.textures.length; i++){
-			DrawQuadTexRotate(type.textures[i], x, y, 64, 64, 0);
+			DrawQuadTex(type.textures[i], x - (type.width / 2), y - (type.height / 2), type.width, type.height);
 		}
 	}
 
@@ -126,10 +145,6 @@ public abstract class Tower implements Entity {
 		barrelX = (float) (getCenterX() + barrelLength * Math.cos(angleTemp));	//angleTemp still in radians
 		barrelY = (float) (getCenterY() + barrelLength * Math.sin(angleTemp));	//Do this before rotating texture to fit with coordinates
 		return (float) Math.toDegrees(angleTemp) - 90;
-	}
-
-	public void refreshEnemies(CopyOnWriteArrayList<Enemy> newEnemies) {
-		enemies = newEnemies;
 	}
 	
 	public void rateOfFireMultiplier(float mult){
