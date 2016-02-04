@@ -49,14 +49,13 @@ be made in the editor. Alternatively, you can comment/uncomment lines 64 - 71 in
 the default map by canceling the file selection. Note the map must have a path from start to end, otherwise
 the game will crash. Enemy type cannot currently be changed. Select a tower type with either the tower menu 
 (T) or with the hotkeys (1 - 4). Once a type is selected, place towers by left-clicking. Cancel a placement
-by right-clicking Towers can be deleted with 80% refund by hovering over a tower and pressing 'D'. Time can be 
-accelerated/decelerated with the right/left arrow key respectively (Note: fast forwarding may cause enemies to
-fly off the course. This will be addressed eventually).	Reset the time multiplier with the up arrow. Access AOE
-Fire Strike by pressing 'Q' and clicking on the map. Fire Strike has a 4 second duration and has a 10 second 
-cooldown. Get AOE Tower Buff by pressing 'W'. This will increase the rate of fire for all towers in its range.
-Get Slow AOE by pressing 'E'. This will slow in-range enemies. With the addition of player levels, certain
-towers and AOEs are locked until you reach a high enough player level. So, if you can't place a tower/AOE, 
-that's (hopefully) why!
+by right-clicking Towers can be deleted with 80% refund by hovering over a tower and pressing 'D'. Upgrade a
+tower by pressing 'U'. Time can be accelerated/decelerated with the right/left arrow key respectively. Reset
+the time multiplier with the up arrow. Access AOE Fire Strike by pressing 'Q' and clicking on the map. Fire
+Strike has a 4 second duration and has a 10 second cooldown. Get AOE Tower Buff by pressing 'W'. This will
+increase the rate of fire for all towers in its range. Get Slow AOE by pressing 'E'. This will slow in-range
+enemies. With the addition of player levels, certain towers and AOEs are locked until you reach a high enough
+player level. So, if you can't place a tower/AOE, that's (hopefully) why!
 
 EDITOR: Loads a map with all grass tiles. Tile type can be modified by clicking on a tile. Switch the type
 that clicking changes to by pressing the numbers 1-5 (1: Grass, 2: Dirt, 3: Water, 4: Start, 5: Goal). Press 
