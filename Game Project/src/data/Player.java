@@ -33,7 +33,7 @@ import helpers.StateManager;
 public class Player {
 
 	
-	private boolean showPauseMenu, showTowerMenu, mouseButton0, mouseButton1, mouseWait;
+	private boolean showPauseMenu, showTowerSelectMenu, mouseButton0, mouseButton1, mouseWait;
 	
 	private static TowerType CurrentTowerType;
 	private static AOEType CurrentAOEType;
@@ -44,7 +44,7 @@ public class Player {
 			ExpBarForeground = QuickLoad("playerexpforeground"),
 			ExpBarBorder = QuickLoad("playerexpborder");
 	
-	private static UI TowerUI;
+	private static UI TowerSelectUI;
 	private static int PlayerLevel, CurrentExp;
 	public static CopyOnWriteArrayList<AOE> AOEList;
 	public static ArrayList<Tower> TowerList;
@@ -52,7 +52,8 @@ public class Player {
 	
 	public static final int STARTING_CASH = 300, STARTING_LIVES = 10;
 	
-	private static final int TOWER_CANNONRED_UNLOCK = 2,
+	private static final int 
+			TOWER_CANNONRED_UNLOCK = 2,
 			TOWER_ICE_UNLOCK = 3,
 			TOWER_ROCKET_UNLOCK = 4,
 			AOE_FIRESTRIKE_UNLOCK = 3,
@@ -65,7 +66,7 @@ public class Player {
 		PlayerLevel = 1;
 		CurrentExp = 0;
 		this.showPauseMenu = false;
-		this.showTowerMenu = false;
+		this.showTowerSelectMenu = false;
 		this.placingTower = false;
 		this.mouseButton0 = false;
 		this.mouseButton1 = false;
@@ -74,9 +75,9 @@ public class Player {
 		this.mouseWait = true;
 		
 		//Setup towerUI
-		TowerUI = new UI();
-		TowerUI.addButton("Towermenutitle", "towerselectbutton", TILE_SIZE, TILE_SIZE * 12);	//Title bar, no functionality
-		TowerUI.addButton("Towercannonblue", "cannonbaseblue", TILE_SIZE * 1, TILE_SIZE * 13);
+		TowerSelectUI = new UI();
+		TowerSelectUI.addButton("Towermenutitle", "towerselectbutton", TILE_SIZE, TILE_SIZE * 12);	//Title bar, no functionality
+		TowerSelectUI.addButton("Towercannonblue", "cannonbaseblue", TILE_SIZE * 1, TILE_SIZE * 13);
 		
 		
 		CurrentTowerType = TowerType.CannonBlue;
@@ -88,6 +89,8 @@ public class Player {
 		
 		Cash = 0; // These are modified when setup() is called
 		Lives = 0;
+		
+		Tower.Setup();
 	}
 
 	public static void Setup() {
@@ -145,13 +148,13 @@ public class Player {
 	
 	private static void UnlockTowers(){
 		if (PlayerLevel >=  TOWER_CANNONRED_UNLOCK){
-			TowerUI.addButton("Towercannonred", "cannonbase", TILE_SIZE * 2, TILE_SIZE * 13);
+			TowerSelectUI.addButton("Towercannonred", "cannonbase", TILE_SIZE * 2, TILE_SIZE * 13);
 		}
 		if (PlayerLevel >=  TOWER_ICE_UNLOCK){
-			TowerUI.addButton("Towerice", "icetowerbase2", TILE_SIZE * 3, TILE_SIZE * 13);
+			TowerSelectUI.addButton("Towerice", "icetowerbase2", TILE_SIZE * 3, TILE_SIZE * 13);
 		}
 		if (PlayerLevel >=  TOWER_ROCKET_UNLOCK){
-			TowerUI.addButton("Towerrocket", "rockettowerbase", TILE_SIZE * 4, TILE_SIZE * 13);
+			TowerSelectUI.addButton("Towerrocket", "rockettowerbase", TILE_SIZE * 4, TILE_SIZE * 13);
 		}
 	}
 	
@@ -183,54 +186,11 @@ public class Player {
 		
 		Game.GameFont.drawString(WIDTH / 2, HEIGHT - 31, numerator + "/" + denominator, Color.white);
 	}
-	
-	public boolean isShowPauseMenu(){
-		return showPauseMenu;
-	}
-	
-	public void closePauseMenu(){
-		showPauseMenu = false;
-	}
-	
-	private void UpdateButtons(){
-		if (Mouse.isButtonDown(0) && !mouseButton0){
-			if (TowerUI.isButtonClicked("Towercannonblue")){
-				CurrentTowerType = TowerType.CannonBlue;
-				placingTower = true;
-				placingAOE = false;
-				mouseWait = true;
-			}
-			if (TowerUI.isButtonClicked("Towercannonred") && PlayerLevel >= TOWER_CANNONRED_UNLOCK){
-				CurrentTowerType = TowerType.CannonRed;
-				placingTower = true;
-				placingAOE = false;
-				mouseWait = true;
-			}
-			if (TowerUI.isButtonClicked("Towerice") && PlayerLevel >= TOWER_ICE_UNLOCK){
-				CurrentTowerType = TowerType.IceTower;
-				placingTower = true;
-				placingAOE = false;
-				mouseWait = true;
-			}
-			if (TowerUI.isButtonClicked("Towerrocket") && PlayerLevel >= TOWER_ROCKET_UNLOCK){
-				CurrentTowerType = TowerType.RocketTower;
-				placingTower = true;
-				placingAOE = false;
-				mouseWait = true;
-			}
-		}
-	}
-	
+
 	private void selectTowerType(TowerType type) {
 		CurrentTowerType = type;
 		placingTower = true;
 		placingAOE = false;
-	}
-	
-	private boolean canBuild() {
-		Tile tile = GetTile((int) Math.floor(Mouse.getX() / TILE_SIZE),
-				(int) Math.floor((HEIGHT - Mouse.getY() - 1) / TILE_SIZE));
-		return canBuild(tile);
 	}
 	
 	private boolean canBuild(Tile tile) {
@@ -244,8 +204,13 @@ public class Player {
 	}
 	
 	private void placeTower(Tile tile) {
-		CurrentTowerType.makeTower(tile);
-		tile.setHasTower(true);
+		if (canBuild(tile)){
+			if (ModifyCash(CurrentTowerType.getLevelListUpgradeCost()[0])) {
+				CurrentTowerType.makeTower(tile);
+				tile.setHasTower(true);
+			}
+		}
+		placingTower = false;
 	}
 	
 	//Gets tower at current mouse coordinates
@@ -285,10 +250,25 @@ public class Player {
 		}
 	}
 	
+	private void setMenuTower() {
+		setMenuTower(getTower());
+	}
+	
+	private void setMenuTower(Tower t) {
+		if (t != null) {
+			t.showMenu();
+		}
+	}
+	
 	public void updateTowers(){
+		Tower.UnlockMouse();
 		for (Tower t : TowerList) {
 			t.update();
 		}
+		if (Tower.GetMenuTower() != null) {
+			Tower.GetMenuTower().updateUI();
+		}
+		Tower.SetMouseButton0();
 	}
 	
 	private void selectAOEType(AOEType type) {
@@ -318,12 +298,49 @@ public class Player {
 		}
 	}
 	
+	public boolean isShowPauseMenu(){
+		return showPauseMenu;
+	}
+	
+	public void closePauseMenu(){
+		showPauseMenu = false;
+	}
+	
+	private void UpdateButtons(){
+		if (Mouse.isButtonDown(0) && !mouseButton0){
+			if (TowerSelectUI.isButtonClicked("Towercannonblue")){
+				CurrentTowerType = TowerType.CannonBlue;
+				placingTower = true;
+				placingAOE = false;
+				mouseWait = true;
+			}
+			if (TowerSelectUI.isButtonClicked("Towercannonred") && PlayerLevel >= TOWER_CANNONRED_UNLOCK){
+				CurrentTowerType = TowerType.CannonRed;
+				placingTower = true;
+				placingAOE = false;
+				mouseWait = true;
+			}
+			if (TowerSelectUI.isButtonClicked("Towerice") && PlayerLevel >= TOWER_ICE_UNLOCK){
+				CurrentTowerType = TowerType.IceTower;
+				placingTower = true;
+				placingAOE = false;
+				mouseWait = true;
+			}
+			if (TowerSelectUI.isButtonClicked("Towerrocket") && PlayerLevel >= TOWER_ROCKET_UNLOCK){
+				CurrentTowerType = TowerType.RocketTower;
+				placingTower = true;
+				placingAOE = false;
+				mouseWait = true;
+			}
+		}
+	}
+	
 	public void update() {
 		for (AOEType a : AOEType.values()){
 			a.incrementCooldown(Delta());
 		}
-		if (showTowerMenu){
-			TowerUI.draw();
+		if (showTowerSelectMenu){
+			TowerSelectUI.draw();
 			UpdateButtons();
 		}
 		updateTowers();
@@ -342,21 +359,13 @@ public class Player {
 		//Left Mouse was newly clicked
 		if (Mouse.isButtonDown(0) && !mouseButton0 && !mouseWait){
 			if (placingTower){
-				if (canBuild()) {
-					if (ModifyCash(CurrentTowerType.getLevelListUpgradeCost()[0])) {
-						placeTower();
-					}
-					placingTower = false;	//If player doesn't have enough cash, cancel tower placement
-				}
+				placeTower();
 			}
 			else if (placingAOE && CurrentAOEType.cooldownComplete()){
 				placeAOE();
 			}
 			else if (!placingTower && !placingAOE) {
-				Tower tower = getTower();
-				if (tower != null) {
-					System.out.println("Clicked on " + tower.towerName);
-				}
+				setMenuTower();
 			}
 		}
 		//Cancel tower or AOE placement by pressing right mouse
@@ -390,7 +399,7 @@ public class Player {
 			
 			//Open tower menu
 			if (Keyboard.getEventKey() == Keyboard.KEY_T && Keyboard.getEventKeyState()) {
-				showTowerMenu = !showTowerMenu;
+				showTowerSelectMenu = !showTowerSelectMenu;
 			}
 			//Hotkeys for tower selection
 			if (Keyboard.getEventKey() == Keyboard.KEY_1 && Keyboard.getEventKeyState()) {

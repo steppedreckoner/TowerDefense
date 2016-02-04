@@ -66,12 +66,15 @@ QUIT: Quits.
 
 
 Most Recent Changes:
--Player.TowerList is now static
--WaveManager.EnemyList is now static
--Towers now track stats (shotsFired, totalKills)
--Towers are now named (to be used in future towerUI)
--Clicking on a tower prints out tower name (prep step for displaying tower menus)
--Cleaned up player.update() method
+-Interactive Tower Menu
+--Click to bring up
+--See tower stats
+--Upgrade the tower
+--Delete the tower
+
+(From last update)
+-Towers and AOE are now added to appropriate list on construction
+-Placement methods have been updated to reflect this 
 
 
 
@@ -100,7 +103,8 @@ To Do:
 -(PARTIAL) Level up of towers.
 --Costs "tower exp" 
 --(DONE) Costs money.
---Clicking on/hovering over a tower displays range and other info.
+--(PARTIAL) Clicking on/hovering over a tower displays range and other info.
+---Hovering over upgrade button shows new stats.
 --Exp bar for towers.
 
 -Add impact effect for nukes
@@ -217,6 +221,13 @@ To Do:
 
 
 Old Changes:
+-Player.TowerList is now static
+-WaveManager.EnemyList is now static
+-Towers now track stats (shotsFired, totalKills)
+-Towers are now named (to be used in future towerUI)
+-Clicking on a tower prints out tower name (prep step for displaying tower menus)
+-Cleaned up player.update() method
+
 -Tower can now be leveled up. Leveling up increases fire rate and damage.
 --Leveling up costs money (will later require certain amount of tower exp, too)
 -Rocket tower nuke special shot unlocked at tower level 5.
