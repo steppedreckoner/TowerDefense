@@ -2,6 +2,7 @@ package data;
 
 import static helpers.Artist.DrawQuadTex;
 import static helpers.Artist.DrawQuadTexRotate;
+import static helpers.Artist.QuickLoad;
 import static helpers.Artist.WIDTH;
 import static helpers.Artist.HEIGHT;
 import static helpers.Artist.TILE_SIZE;
@@ -11,6 +12,7 @@ import java.awt.Font;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.lwjgl.input.Mouse;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.opengl.Texture;
 
@@ -39,6 +41,7 @@ public abstract class Tower implements Entity {
 	private UI towerUI;
 	private boolean showTowerUI;
 	private int menuX, menuY, drawOffset;
+	private static Texture RangeCircleTex, RangeCircleUpgradeTex;
 	private static TrueTypeFont TowerFont, TowerTitleFont;
 	private static boolean MouseButton0, MouseWait;
 	private static Tower MenuTower;
@@ -89,6 +92,8 @@ public abstract class Tower implements Entity {
 	public static void Setup() {
 		TowerTitleFont = new TrueTypeFont( new Font("Tahoma", Font.BOLD, 14), false);
 		TowerFont = new TrueTypeFont( new Font("Tahoma", Font.BOLD, 12), false);
+		RangeCircleTex = QuickLoad("rangecircle");
+		RangeCircleUpgradeTex = QuickLoad("rangecircleupgrade");
 		MouseButton0 = true;
 		MouseWait = true;
 		TotalTowersPlaced = 0;
@@ -136,6 +141,12 @@ public abstract class Tower implements Entity {
 		}
 	}
 	
+	public static void CloseMenu() {
+		if (MenuTower != null) {
+			MenuTower.closeMenu();
+		}
+	}
+	
 	public void closeMenu() {
 		MenuTower = null;
 		showTowerUI = false;
@@ -148,6 +159,31 @@ public abstract class Tower implements Entity {
 	
 	private void drawUI() {
 		towerUI.draw();
+	}
+	
+	private void drawTowerInfo() {
+		TowerTitleFont.drawString(menuX + (MENU_WIDTH / 2) - 28 - drawOffset, menuY + 2, towerName);
+		if (towerUI.isButtonClicked("Upgrade") && level < maxLevel) {
+			TowerFont.drawString(menuX + 6, menuY + 22, "Level: " + (level + 1) + " ($" + -type.getLevelListUpgradeCost()[level] + ")", Color.green);
+			TowerFont.drawString(menuX + 6, menuY + 42, "Range: " + type.getLevelListRange()[level + 1], Color.green);
+			TowerFont.drawString(menuX + 6, menuY + 58, "RoF: " + type.getLevelListFireRate()[level + 1] + " sec/shot", Color.green);
+			TowerFont.drawString(menuX + 6, menuY + 78, "Shots: " + shotsFired);
+			TowerFont.drawString(menuX + 6, menuY + 94, "Kills: " + totalKills);
+		} else {
+			TowerFont.drawString(menuX + 6, menuY + 22, "Level: " + level);
+			TowerFont.drawString(menuX + 6, menuY + 42, "Range: " + range);
+			TowerFont.drawString(menuX + 6, menuY + 58, "RoF: " + rateOfFire + " sec/shot");
+			TowerFont.drawString(menuX + 6, menuY + 78, "Shots: " + shotsFired);
+			TowerFont.drawString(menuX + 6, menuY + 94, "Kills: " + totalKills);
+		}
+	}
+	
+	private void drawRangeCircle() {
+		if (towerUI.isButtonClicked("Upgrade") && level <= type.getLevelListUpgradeCost().length - 2) {
+			DrawQuadTex(RangeCircleUpgradeTex, getCenterX() - type.getLevelListRange()[level + 1], getCenterY() - type.getLevelListRange()[level + 1], 
+					2 * type.getLevelListRange()[level + 1], 2 * type.getLevelListRange()[level + 1]);
+		}
+		DrawQuadTex(RangeCircleTex, getCenterX() - range, getCenterY() - range, 2 * range, 2 * range);
 	}
 	
 	private void updateButtons() {
@@ -166,20 +202,12 @@ public abstract class Tower implements Entity {
 				MouseWait = true;
 			}
 		}
-		if (towerUI.isButtonClicked("Upgrade")) {
-			System.out.println("Print upgrade features");
-		}
 	}
 	
 	public void updateUI() {
+		drawRangeCircle();
 		drawUI();
-		TowerTitleFont.drawString(menuX + (MENU_WIDTH / 2) - 28 - drawOffset, menuY + 2, towerName);
-		TowerFont.drawString(menuX + 6, menuY + 22, "Level: " + level);
-		TowerFont.drawString(menuX + 6, menuY + 42, "Range: " + range);
-		TowerFont.drawString(menuX + 6, menuY + 58, "RoF: " + rateOfFire + " sec/shot");
-		TowerFont.drawString(menuX + 6, menuY + 78, "Shots: " + shotsFired);
-		TowerFont.drawString(menuX + 6, menuY + 94, "Kills: " + totalKills);
-		
+		drawTowerInfo();
 		updateButtons();
 	}
 
@@ -210,6 +238,8 @@ public abstract class Tower implements Entity {
 	
 	//Used to illustrate towers that are about to be placed
 	public static void PlacementDraw(TowerType type, int x, int y){
+		DrawQuadTex(RangeCircleTex, x - type.getLevelListRange()[1], y - type.getLevelListRange()[1],
+				2 * type.getLevelListRange()[1], 2 * type.getLevelListRange()[1]);
 		for (int i = 0; i < type.textures.length; i++){
 			DrawQuadTex(type.textures[i], x - (type.width / 2), y - (type.height / 2), type.width, type.height);
 		}

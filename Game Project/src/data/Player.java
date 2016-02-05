@@ -191,6 +191,7 @@ public class Player {
 		CurrentTowerType = type;
 		placingTower = true;
 		placingAOE = false;
+		Tower.CloseMenu();
 	}
 	
 	private boolean canBuild(Tile tile) {
@@ -275,6 +276,7 @@ public class Player {
 		CurrentAOEType = type;
 		placingTower = false;
 		placingAOE = true;
+		Tower.CloseMenu();
 	}
 	
 	private void placeAOE() {
@@ -368,10 +370,11 @@ public class Player {
 				setMenuTower();
 			}
 		}
-		//Cancel tower or AOE placement by pressing right mouse
-		if (Mouse.isButtonDown(1) && (placingTower || placingAOE) && !mouseButton1 && !mouseWait){
+		//Cancel tower or AOE placement or close tower menu by pressing right mouse
+		if (Mouse.isButtonDown(1) && !mouseButton1 && !mouseWait){
 			placingTower = false;
 			placingAOE = false;
+			Tower.CloseMenu();
 		}
 		mouseButton0 = Mouse.isButtonDown(0);
 		mouseButton1 = Mouse.isButtonDown(1);

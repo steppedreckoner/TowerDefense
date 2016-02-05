@@ -62,19 +62,16 @@ that clicking changes to by pressing the numbers 1-5 (1: Grass, 2: Dirt, 3: Wate
 'M' to access the editor menu, which allows for saving and loading maps. Note: If you're saving from the
 editor, make sure to include ".txt" file extension. It is currently not checked nor automatically added.
 
+HOWTO: Displays instructions
+
 QUIT: Quits.
 
 
 Most Recent Changes:
--Interactive Tower Menu
---Click to bring up
---See tower stats
---Upgrade the tower
---Delete the tower
-
-(From last update)
--Towers and AOE are now added to appropriate list on construction
--Placement methods have been updated to reflect this 
+-Towers show range circle when being placed.
+-Towers show range circle when selected (menu open).
+-Tower menu updates to show potential changes when upgrade button is hovered over.
+-Tower's range circle show potential when upgrade button is hovered over.
 
 
 
@@ -221,6 +218,16 @@ To Do:
 
 
 Old Changes:
+-Interactive Tower Menu
+--Click to bring up
+--See tower stats
+--Upgrade the tower
+--Delete the tower
+
+(From last update)
+-Towers and AOE are now added to appropriate list on construction
+-Placement methods have been updated to reflect this 
+
 -Player.TowerList is now static
 -WaveManager.EnemyList is now static
 -Towers now track stats (shotsFired, totalKills)
